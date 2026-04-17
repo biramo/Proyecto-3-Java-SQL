@@ -1,0 +1,15 @@
+# Ignorar archivos de IntelliJ
+.idea/
+*.iml
+out/
+
+# Permitir código fuente
+!src/
+!src/**
+
+# Permitir archivos útiles del proyecto
+!.gitignore
+!README.md
+!pom.xml
+!build.gradle
+!build.gradle.kts
