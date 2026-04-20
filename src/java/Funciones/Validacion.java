@@ -47,6 +47,7 @@ public class Validacion {
         return comprobador;
 
     }
+    //-------------------------------FUNCION POR DESARROLLAR-------------------------------
 
     /*public static "OBJETO" TipoObjValidador"OBJETO"(Scanner entrada) {
         "OBJETO" tipo=null;
@@ -70,6 +71,7 @@ public class Validacion {
 
         return tipo; // Devolvemos el Enum ya validado
     }*/
+    //-----------------------------------------------------------------------------------
 
     public static void mostrarError(String texto) {
         System.out.println(ROJO + texto + RESET);
