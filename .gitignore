@@ -7,6 +7,9 @@ out/
 !src/
 !src/**
 
+# Ignorar esta carpeta concreta
+src/java/Controller/ConexionBD
+
 # Permitir archivos útiles del proyecto
 !.gitignore
 !README.md
