@@ -1,14 +1,14 @@
 package model;
 
-public class Persona {
-    //Atributos
+public abstract class Persona {
+    //ATRIBUTOS
     private String dni;
     private String nombre;
     private String apellidos;
     private String telefono;
     private String email;
 
-    //Constructor
+    //-----CONSTRUCTOR-----
     public Persona(String dni, String nombre, String telefono, String apellidos, String email) {
         this.dni = dni;
         this.nombre = nombre;
@@ -17,7 +17,7 @@ public class Persona {
         this.email = email;
     }
 
-    //Getter
+    //-----GETTER-----
     public String getDni() {
         return this.dni;
     }
@@ -37,6 +37,7 @@ public class Persona {
     public String getEmail() {
         return this.email;
     }
+    //-----SETTER-----
 
     @Override
     public String toString() {
