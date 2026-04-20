@@ -1,4 +1,4 @@
 package model;
 
-public class Reserva {
+public interface Reserva {
 }

@@ -1,4 +1,4 @@
 package model;
 
-public class Persona {
+public interface Persona {
 }
