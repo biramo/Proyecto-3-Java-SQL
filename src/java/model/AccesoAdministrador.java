@@ -1,4 +1,4 @@
 package model;
 
-public interface AccesoAdministrador {
+public class AccesoAdministrador {
 }

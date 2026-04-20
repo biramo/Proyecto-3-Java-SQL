@@ -1,4 +1,4 @@
 package model;
 
-public interface EmpresaAlquiler {
+public class EmpresaAlquiler {
 }
