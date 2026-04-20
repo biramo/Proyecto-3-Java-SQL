@@ -1,4 +1,4 @@
 package model;
 
-public class Alquiler {
+public interface Alquiler {
 }
