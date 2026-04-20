@@ -1,4 +1,4 @@
 package model;
 
-public interface Instrumento {
+public class Instrumento {
 }

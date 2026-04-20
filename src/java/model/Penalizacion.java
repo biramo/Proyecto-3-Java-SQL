@@ -1,4 +1,4 @@
 package model;
 
-public interface Penalizacion {
+public class Penalizacion {
 }
