@@ -1,4 +1,6 @@
 package model.Enum;
 
-public class EstadoPago {
+public enum EstadoPago {
+    PAGADO,
+    PENDIENTE
 }
