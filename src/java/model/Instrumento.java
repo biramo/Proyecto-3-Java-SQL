@@ -71,7 +71,8 @@ public class Instrumento implements InAlquilable {
                 ", estado=" + estado +
                 '}';
     }
-//Métodos de la clase
+
+    //Métodos de la clase
 
     //Método de disponibilidad
     @Override
@@ -87,7 +88,7 @@ public class Instrumento implements InAlquilable {
     @Override
     public void registrarSalida() {
         stockDisponible -= stockDisponible;
-        if(stockDisponible >= 0){
+        if(stockDisponible == 0){
             estado = EstadoInstrumento.SIN_STOCK;}
     }
 
