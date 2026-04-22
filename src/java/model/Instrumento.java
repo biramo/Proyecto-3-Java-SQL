@@ -68,8 +68,8 @@ public class Instrumento implements InAlquilable {
 
     //Métodos de la clase
     @Override
-    public boolean estaDisponible() {
-        return true; //Por defecto estará disponible
+    public boolean estaDisponible(){
+        return (stockDisponible > 0) ? true : false;
     }
 
     @Override
