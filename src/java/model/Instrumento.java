@@ -94,6 +94,9 @@ public class Instrumento implements InAlquilable {
     @Override
     public void registrarEntrada() {
         stockDisponible += stockDisponible;
+        if (stockDisponible > 0){
+            estado = EstadoInstrumento.DISPONIBLE;
+        }
     }
 
     public void reducirStock(){
