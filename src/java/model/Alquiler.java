@@ -4,6 +4,7 @@ import model.Enum.TipoDesperfecto;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit; // esta classe nos va a permitir operar (sumas, restas, etc.) amb objecte de la classe LocalDate
+import java.util.ArrayList;
 
 public class Alquiler {
     private int id; // (auto-increment BD), en cada nueva entrada en la base datos se incrementara en +1 el valor, de forma automàtica
