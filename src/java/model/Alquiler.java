@@ -5,16 +5,17 @@ import model.Enum.TipoDesperfecto;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit; // esta classe nos va a permitir operar (sumas, restas, etc.) amb objecte de la classe LocalDate
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Alquiler {
     private int id; // (auto-increment BD), en cada nueva entrada en la base datos se incrementara en +1 el valor, de forma automàtica
     private Cliente cliente; // (asociacion)
     private Instrumento instrumento; // (asociación)
-    private LocalDate fechaInicio;
-    private LocalDate fechaFinPrevista;
-    private LocalDate fechaDevolucion;
+    private Calendar fechaInicio;
+    private Calendar fechaFinPrevista;
+    private Calendar fechaDevolucion;
     private double importeBase;
-    private ArrayList<Penalizacion> penalizacion;
+    private ArrayList<Penalizacion> penalizacion; // composición
     private String observaciones;
     private boolean pagado;
 
@@ -23,7 +24,7 @@ public class Alquiler {
     }
     //Constructor con valores
 
-    public Alquiler(Cliente cliente, Instrumento instrumento, LocalDate fechaInicio, LocalDate fechaFinPrevista, LocalDate fechaDevolucion, double importeBase, String observaciones, boolean pagado) {
+    public Alquiler(Cliente cliente, Instrumento instrumento, Calendar fechaInicio, Calendar fechaFinPrevista, Calendar fechaDevolucion, double importeBase, String observaciones, boolean pagado) {
         this.cliente = cliente;
         this.instrumento = instrumento;
         this.fechaInicio = fechaInicio;
@@ -36,10 +37,6 @@ public class Alquiler {
     }
 
     // getters y Setters
-
-    public int getId() {
-        return id;
-    }
 
     public Cliente getCliente() {
         return cliente;
@@ -57,27 +54,27 @@ public class Alquiler {
         this.instrumento = instrumento;
     }
 
-    public LocalDate getFechaInicio() {
+    public Calendar getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(LocalDate fechaInicio) {
+    public void setFechaInicio(Calendar fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public LocalDate getFechaFinPrevista() {
+    public Calendar getFechaFinPrevista() {
         return fechaFinPrevista;
     }
 
-    public void setFechaFinPrevista(LocalDate fechaFinPrevista) {
+    public void setFechaFinPrevista(Calendar fechaFinPrevista) {
         this.fechaFinPrevista = fechaFinPrevista;
     }
 
-    public LocalDate getFechaDevolucion() {
+    public Calendar getFechaDevolucion() {
         return fechaDevolucion;
     }
 
-    public void setFechaDevolucion(LocalDate fechaDevolucion) {
+    public void setFechaDevolucion(Calendar fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
     }
 
@@ -89,9 +86,13 @@ public class Alquiler {
         this.importeBase = importeBase;
     }
 
-    public ArrayList<Penalizacion> getPenalizacion(ArrayList<Penalizacion> penalizacion){
+    public ArrayList<Penalizacion> getPenalizacion() {
         return penalizacion;
-        }
+    }
+
+    public void setPenalizacion(ArrayList<Penalizacion> penalizacion) {
+        this.penalizacion = penalizacion;
+    }
 
     public String getObservaciones() {
         return observaciones;
@@ -108,6 +109,7 @@ public class Alquiler {
     public void setPagado(boolean pagado) {
         this.pagado = pagado;
     }
+
     // toString()
 
     @Override
@@ -127,9 +129,9 @@ public class Alquiler {
     }
     // funcion para calcular los dias que dura el alquiler
     public int calcularDiasAlquiler(){
-        long dif = ChronoUnit.DAYS.between(fechaInicio, fechaFinPrevista); // obtenemos el numero de dias que hay entre la fecha de inicio y la fecha de devolucion.
+        // long dif = ChronoUnit.DAYS.between(fechaInicio, fechaFinPrevista); // obtenemos el numero de dias que hay entre la fecha de inicio y la fecha de devolucion.
         // es un long ya que el metodo ".between" devuelve un long.
-        return (int) dif;
+        // return (int) dif;
     }
     public void registrarDevolucion{
 
