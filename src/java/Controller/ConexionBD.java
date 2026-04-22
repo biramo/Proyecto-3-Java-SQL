@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import static Funciones.ControlErrores.ErrorHandler;
+
 public class ConexionBD {
     private static final String URL = "";
     private static final String USER = "";
@@ -12,7 +14,7 @@ public class ConexionBD {
         try{
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            System.out.println("Error de conexión: " + e.getMessage());
+            ErrorHandler(e);
             return null;
         }
     }

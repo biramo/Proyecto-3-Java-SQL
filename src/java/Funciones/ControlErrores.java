@@ -5,7 +5,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.SQLInvalidAuthorizationSpecException;
 
 public class ControlErrores {
-    public void ErrorHandler(SQLException e){
+    public static void ErrorHandler(SQLException e) {
 
         if( e instanceof SQLIntegrityConstraintViolationException){
             // Si es un error de duplicadp de PrimaryKey
