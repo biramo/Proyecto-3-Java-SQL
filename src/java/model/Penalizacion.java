@@ -8,8 +8,7 @@ public class Penalizacion {
     private double importe;
     private TipoDesperfecto desperfecto;
 
-    public Penalizacion(int id, String motivo, double importe, TipoDesperfecto desperfecto) {
-        this.id = id;
+    public Penalizacion(String motivo, double importe, TipoDesperfecto desperfecto) {
         this.motivo = motivo;
         this.importe = importe;
         this.desperfecto = desperfecto;
