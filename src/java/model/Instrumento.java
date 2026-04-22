@@ -67,7 +67,7 @@ public class Instrumento implements InAlquilable {
     }
 
     //Métodos de la clase
-    public void mostrarinformación(){
+    public void mostrarInformación() {
         System.out.println("id: " + id + "marca: " + marca + "modelo: " + modelo + "Precio por Dia: " + precioDia + "Stock Total: " + stockTotal + "Stock Disponible" + stockDisponible + "Categoria: " + categoria + "Estado: " + estado);
     }
 
