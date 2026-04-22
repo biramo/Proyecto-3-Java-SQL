@@ -8,7 +8,7 @@ public class ControlErrores {
     public static void ErrorHandler(SQLException e) {
 
         if( e instanceof SQLIntegrityConstraintViolationException){
-            // Si es un error de duplicadp de PrimaryKey
+            //Si es un error de duplicado de PrimaryKey
             System.out.println("El código introducido, ya esta en uso");
 
         }else if(e instanceof SQLInvalidAuthorizationSpecException){
