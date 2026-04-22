@@ -54,7 +54,7 @@ public class Validacion {
         boolean valido = false;
 
         while (!valido) {
-            mostrarTexto("Introduce el tipo (PORTATIL o SOBREMESA): ");
+            mostrarTexto("Introduce el tipo (PORTATIL o SOBREMESA):);
             // Leemos y limpiamos la entrada
             String entradaUsuario = entrada.nextLine().toUpperCase().trim();
 
