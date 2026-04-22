@@ -38,7 +38,27 @@ public abstract class Persona {
         return this.email;
     }
     //-----SETTER-----
+    public void setDni(final String dni) {
+        this.dni = dni;
+    }
 
+    public void setNombre(final String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellidos(final String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public void setTelefono(final String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    //To string
     @Override
     public String toString() {
         return "Persona{" +
