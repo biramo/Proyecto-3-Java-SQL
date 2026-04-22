@@ -20,7 +20,15 @@ public class Cliente extends Persona implements InCliente {
 
     //Metodo devuelve texto con los datos del cliente
     public String mostrarCliente() {
-        return "Cliente: Dni: " + getDni() + ", Nombre: " + getNombre() + ", Apellidos: " + getApellidos() + calcularEdad();
+        //Para mejor gestion de memoria usamos StringBuilder
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Cliente: DNI: ").append(getDni())
+                .append(", Nombre: ").append(getNombre())
+                .append(", Apellidos: ").append(getApellidos())
+                .append(", Edad: ").append(calcularEdad());
+
+        return sb.toString();
     }
 
     //Calcula la edad con la fecha
@@ -32,7 +40,7 @@ public class Cliente extends Persona implements InCliente {
         return 0;
     }
 
-    //-------------------------Metodo en STANBY-------------------------
+    //-------------------------Metodo en STANDBY-------------------------
     //public double calcularDeuda(){}
 
     //To string

@@ -3,6 +3,6 @@ package model.Interfaces;
 public interface InCliente {
     public int calcularEdad();
 
-    //-------------------------Metodo en STANBY-------------------------
+    //-------------------------Metodo en STANDBY-------------------------
     //public double calcularDeuda();
 }
