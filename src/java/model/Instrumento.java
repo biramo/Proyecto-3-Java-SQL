@@ -71,4 +71,14 @@ public class Instrumento implements InAlquilable {
                 ", estado=" + estado +
                 '}';
     }
+
+    @Override
+    public boolean estaDisponible() {
+        return true;
+    }
+
+    @Override
+    public double calcularImporte(int dias) {
+        return precioDia * dias;
+    }
 }
