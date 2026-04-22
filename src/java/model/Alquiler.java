@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit; // esta classe nos va a permitir operar (sumas, restas, etc.) amb objecte de la classe LocalDate
 
 public class Alquiler {
     private int id; // (auto-increment BD), en cada nueva entrada en la base datos se incrementara en +1 el valor, de forma automàtica
@@ -18,8 +19,7 @@ public class Alquiler {
     public Alquiler() {
     }
     //Constructor con valores
-    public Alquiler(int id, Cliente cliente, Instrumento instrumento, LocalDate fechaInicio, LocalDate fechaFinPrevista, LocalDate fechaDevolucion, double importeBase, ArrayList<Penalizacion> penalizacion, String observaciones, boolean pagado) {
-        this.id = id;
+    public Alquiler(Cliente cliente, Instrumento instrumento, LocalDate fechaInicio, LocalDate fechaFinPrevista, LocalDate fechaDevolucion, double importeBase, ArrayList<Penalizacion> penalizacion, String observaciones, boolean pagado) {
         this.cliente = cliente;
         this.instrumento = instrumento;
         this.fechaInicio = fechaInicio;
@@ -34,10 +34,6 @@ public class Alquiler {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Cliente getCliente() {
@@ -129,7 +125,14 @@ public class Alquiler {
                 '}';
     }
     // funcion para calcular los dias que dura el alquiler
-    prublic int calcularDiasAlquiler(){
-        LocalDate.
+    public int calcularDiasAlquiler(){
+        long dif = ChronoUnit.DAYS.between(fechaInicio, fechaDevolucion); // obtenemos el numero de dias que hay entre la fecha de inicio y la fecha de devolucion.
+        // es un long ya que el metodo ".between" devuelve un long.
+        return (int) dif;
     }
+    public void registrarDevolucion{
+
+    }
+
+
 }
