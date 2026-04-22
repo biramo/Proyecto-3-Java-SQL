@@ -5,9 +5,9 @@ import model.Enum.EstadoInstrumento;
 import model.Interfaces.InAlquilable;
 
 public class Instrumento implements InAlquilable {
-    private int id;
-    private String marca;
-    private String modelo;
+    private final int id;
+    private final String marca;
+    private final String modelo;
     private double precioDia;
     private int stockTotal;
     private int stockDisponible;
