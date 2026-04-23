@@ -3,38 +3,34 @@ package model;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class AccesoAdministrador {
+public abstract class AccesoAdministrador {
     private static final String codigo = "clotfje";
-    private boolean accesoValido = false;
-    Scanner sc = new Scanner(System.in);
-    private String respuesta;
+    private static final int limintentos = 3;
 
-    public AccesoAdministrador(boolean accesoValido, Scanner sc, String respuesta) {
-        this.accesoValido = accesoValido;
-        this.respuesta = respuesta;
-    }
-
-    public void validador(int intentos) {
+    public static boolean validador(Scanner sc) {
+        String respuesta = "";
+        int intentos = 0;
         do {
             try {
                 System.out.println("Introduce el código de Administrador");
-                respuesta = sc.nextLine();
+                respuesta = sc.nextLine().trim();
 
-                if (respuesta == codigo) {
+                if (respuesta.equals(codigo)) {
                     System.out.println("Acceso Validado");
-                    accesoValido = true;
+                    return true;
                 } else {
                     System.out.println("Acceso Denegado");
                     intentos++;
                 }
                 sc.nextLine();
-                if(intentos == 3){
+                if (intentos == limintentos) {
                     System.out.println("Has superado el número de intentos");
                     break;
                 }
-            }catch(InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("Tienes que escribir un código con símbolos válidos, " + e.getMessage());
             }
-        }while(respuesta != codigo);
+        } while (!respuesta.equals(codigo));
+        return false;
     }
 }
