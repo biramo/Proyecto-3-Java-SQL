@@ -45,8 +45,9 @@ public class Cliente extends Persona implements InCliente {
     }
 
     //-------------------------Metodo en STANDBY-------------------------
-    //public double TotalAlquileres(){
-    //}
+    public int totalAlquileres() {
+        return 0;
+    }
 
     //To string
     @Override

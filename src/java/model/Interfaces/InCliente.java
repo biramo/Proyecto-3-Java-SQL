@@ -4,5 +4,5 @@ public interface InCliente {
     public int calcularEdad();
 
     //-------------------------Metodo en STANDBY-------------------------
-    //public double calcularDeuda();
+    public int totalAlquileres();
 }
