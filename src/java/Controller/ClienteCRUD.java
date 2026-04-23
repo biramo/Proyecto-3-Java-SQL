@@ -3,6 +3,8 @@ package Controller;
 import model.Cliente;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ClienteCRUD {
 
@@ -44,13 +46,81 @@ public class ClienteCRUD {
 
             int filas = ps.executeUpdate();
 
-            System.out.println("Cliente: " + cliente.getNombre() + " " + cliente.getApellidos() + ", actualizado correctamento");
+            if (filas > 0) {
+                System.out.println("Cliente con dni:  " + cliente.getDni() + ", actualizado correctamento");
+            } else {
+                System.out.println("No se encontró ningún cliente con DNI: " + cliente.getDni());
+            }
 
         }
     }
 
-    public void listarTodosClientes() {
-        String sql = ""
+    public ArrayList<Cliente> listarTodosClientes() throws SQLException {
+        String sql = "SELECT * FROM clientes";
+        ArrayList<Cliente> listaClientes = new ArrayList<>();
+
+        try (Connection con = ConexionBD.conexion(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Cliente cliente = new Cliente(rs.getString("dni"),
+                        rs.getString("nombre"),
+                        rs.getString("telefono"),
+                        rs.getString("apellidos"),
+                        rs.getString("email"),
+                        rs.getObject("fecha_nacimiento", LocalDate.class));//Formateo para que el constructor acepte el valor
+
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+
+        }
+    }
+
+    //Devuelve null si no hay coincidencias, despues tratamos ese null en el programa
+    public Cliente listarClientePorDni(String dni) throws SQLException {
+        String sql = "SELECT * FROM clientes WHERE dni=?";
+        Cliente cliente = null;
+
+        try (Connection con = ConexionBD.conexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, dni);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+                    cliente = new Cliente(rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("telefono"),
+                            rs.getString("apellidos"),
+                            rs.getString("email"),
+                            rs.getObject("fecha_nacimiento", LocalDate.class));//Formateo para que el constructor acepte el valor
+                }
+
+            }
+
+
+        }
+        return cliente;
+    }
+
+    public void deleteCliente(String dni) throws SQLException {
+        String sql = "DELETE FROM clientes WHERE dni=?";
+
+        try (Connection con = ConexionBD.conexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, dni);
+
+            int filas = ps.executeUpdate();
+
+            if (filas <= 0) {
+                System.out.println("Cliente con dni: " + dni + ", no existe.");
+
+            } else {
+                System.out.println("Cliente con dni: " + dni + "eliminado");
+            }
+
+        }
+
     }
 
 }
