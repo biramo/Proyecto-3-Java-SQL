@@ -1,16 +1,18 @@
 package model;
 import model.Enum.TipoDesperfecto;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit; // para operar con fechas
 import java.util.ArrayList;
-import java.util.Calendar;
+
 
 public class Alquiler {
     private int id; // (auto-increment BD), en cada nueva entrada en la base datos se incrementara en +1 el valor, de forma automàtica
     private Cliente cliente; // (asociacion)
     private Instrumento instrumento; // (asociación)
-    private Calendar fechaInicio;
-    private Calendar fechaFinPrevista;
-    private Calendar fechaDevolucion;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFinPrevista;
+    private LocalDate fechaDevolucion;
     private double importeBase;
     private ArrayList<Penalizacion> penalizacion; // composición
     private String observaciones;
@@ -21,7 +23,7 @@ public class Alquiler {
     }
     //Constructor con valores
 
-    public Alquiler(Cliente cliente, Instrumento instrumento, Calendar fechaInicio, Calendar fechaFinPrevista, Calendar fechaDevolucion, double importeBase, String observaciones, boolean pagado) {
+    public Alquiler(Cliente cliente, Instrumento instrumento, LocalDate fechaInicio, LocalDate fechaFinPrevista, LocalDate fechaDevolucion, double importeBase, String observaciones, boolean pagado) {
         this.cliente = cliente;
         this.instrumento = instrumento;
         this.fechaInicio = fechaInicio;
@@ -51,27 +53,27 @@ public class Alquiler {
         this.instrumento = instrumento;
     }
 
-    public Calendar getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Calendar fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Calendar getFechaFinPrevista() {
+    public LocalDate getFechaFinPrevista() {
         return fechaFinPrevista;
     }
 
-    public void setFechaFinPrevista(Calendar fechaFinPrevista) {
+    public void setFechaFinPrevista(LocalDate fechaFinPrevista) {
         this.fechaFinPrevista = fechaFinPrevista;
     }
 
-    public Calendar getFechaDevolucion() {
+    public LocalDate getFechaDevolucion() {
         return fechaDevolucion;
     }
 
-    public void setFechaDevolucion(Calendar fechaDevolucion) {
+    public void setFechaDevolucion(LocalDate fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
     }
 
@@ -126,19 +128,9 @@ public class Alquiler {
     }
     // funcion para calcular los dias que dura el alquiler
     public int calcularDiasAlquiler(){
-
-        // Calcular la diferencia en milisegundos
-        long m1 = fechaInicio.getTimeInMillis();
-        long m2 = fechaFinPrevista.getTimeInMillis();
-        long diffInMs = Math.abs(m2 - m1);
-
-        // Convertir milisegundos a dias
-        long diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-        return (int) diffInDays;
-        // asi seria con la classe LocalDate
-        // long dif = ChronoUnit.DAYS.between(fechaInicio, fechaFinPrevista); // obtenemos el numero de dias que hay entre la fecha de inicio y la fecha de devolucion.
+        long dif = ChronoUnit.DAYS.between(fechaInicio, fechaFinPrevista); // obtenemos el numero de dias que hay entre la fecha de inicio y la fecha de devolucion.
         // es un long ya que el metodo ".between" devuelve un long.
-        // return (int) dif;
+        return (int) dif;
     }
     public void registrarDevolucion(){
         
