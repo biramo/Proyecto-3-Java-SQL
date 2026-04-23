@@ -9,7 +9,7 @@ out/
 
 # Ignorar esta carpeta concreta
 src/java/Controller/ConexionBD
-
+src/.env
 # Permitir archivos útiles del proyecto
 !.gitignore
 !README.md
