@@ -9,13 +9,17 @@ public class Cliente extends Persona implements InCliente {
 
     //Atributos
     private LocalDate fechaNacimiento;
-    private double deudaPendiente;
+
 
     //Constructor
-    public Cliente(final String dni, final String nombre, final String telefono, final String apellidos, final String email, final LocalDate fechaNacimiento, final double deudaPendiente) {
+    public Cliente(final String dni, final String nombre, final String telefono, final String apellidos, final String email, final LocalDate fechaNacimiento) {
         super(dni, nombre, telefono, apellidos, email);
         this.fechaNacimiento = fechaNacimiento;
-        this.deudaPendiente = deudaPendiente;
+    }
+
+    //GETTER
+    public LocalDate getFechaNacimiento() {
+        return this.fechaNacimiento;
     }
 
     //Metodo devuelve texto con los datos del cliente
@@ -41,14 +45,15 @@ public class Cliente extends Persona implements InCliente {
     }
 
     //-------------------------Metodo en STANDBY-------------------------
-    //public double calcularDeuda(){}
+    //public double TotalAlquileres(){
+    //}
 
     //To string
     @Override
     public String toString() {
         return super.toString() + "Cliente{" +
                 "fechaNacimiento=" + fechaNacimiento +
-                ", deudaPendiente=" + deudaPendiente +
                 '}';
     }
+
 }
