@@ -133,7 +133,7 @@ public class Alquiler {
         return (int) dif;
     }
     public void registrarDevolucion(){
-        
+        // falta CRUD Alquiler
     }
 
     public void mostrarResumen(){
@@ -142,6 +142,8 @@ public class Alquiler {
 
     public void crearPenalizacion(String motivo, double importe, TipoDesperfecto desperfecto){
         Penalizacion p = new Penalizacion(motivo, importe, desperfecto);
+        // falta insertar CRUD
         this.penalizacion.add(p);
+
     }
 }
