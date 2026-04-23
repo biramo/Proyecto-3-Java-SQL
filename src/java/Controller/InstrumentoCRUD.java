@@ -20,4 +20,33 @@ public class InstrumentoCRUD {
         }
     }
     */
+
+    public void eliminar(int id){
+
+        String sql = "DELETE FROM Instrumentos WHERE id=? ";
+
+        try{
+            Connection conn = ConexionBD.conexion();
+            if (conn == null) return;
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, id);
+
+            int fA = ps.executeUpdate();
+
+            if(fA > 0){
+                System.out.println("Instrumento eliminado");
+            } else {
+                System.out.println("No hay ningún instrumento con esta id/ Este ordenador no existe");
+            }
+
+            ps.close();
+            conn.close();
+
+        } catch (Exception e) {
+            System.out.println("Error al eliminar: " + e.getMessage());
+        }
+    }
+
 }
