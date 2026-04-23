@@ -7,7 +7,7 @@ public class AccesoAdministrador {
     private static final String codigo = "clotfje";
     private boolean accesoValido = false;
     Scanner sc = new Scanner(System.in);
-    String respuesta;
+    private String respuesta;
 
     public AccesoAdministrador(boolean accesoValido, Scanner sc, String respuesta) {
         this.accesoValido = accesoValido;
