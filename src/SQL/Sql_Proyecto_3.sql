@@ -188,3 +188,7 @@ FROM Alquileres a
 
 -- SET GLOBAL time_zone = '+1:00'; para que funciones bien la conexion con InntelliJ
 SET GLOBAL time_zone = '+1:00';
+
+ALTER TABLE Clientes
+DROP
+COLUMN deuda_pendiente;
