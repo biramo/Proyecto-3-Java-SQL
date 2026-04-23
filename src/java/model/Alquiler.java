@@ -23,12 +23,11 @@ public class Alquiler {
     }
     //Constructor con valores
 
-    public Alquiler(Cliente cliente, Instrumento instrumento, LocalDate fechaInicio, LocalDate fechaFinPrevista, LocalDate fechaDevolucion, double importeBase, String observaciones, boolean pagado) {
+    public Alquiler(Cliente cliente, Instrumento instrumento, LocalDate fechaInicio, LocalDate fechaFinPrevista, double importeBase, String observaciones, boolean pagado) {
         this.cliente = cliente;
         this.instrumento = instrumento;
         this.fechaInicio = fechaInicio;
         this.fechaFinPrevista = fechaFinPrevista;
-        this.fechaDevolucion = fechaDevolucion;
         this.importeBase = importeBase;
         this.penalizacion = new ArrayList<>();
         this.observaciones = observaciones;
