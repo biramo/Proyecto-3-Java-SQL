@@ -1,9 +1,6 @@
 package model;
-
 import model.Enum.TipoDesperfecto;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit; // esta classe nos va a permitir operar (sumas, restas, etc.) amb objecte de la classe LocalDate
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -129,6 +126,16 @@ public class Alquiler {
     }
     // funcion para calcular los dias que dura el alquiler
     public int calcularDiasAlquiler(){
+
+        // Calcular la diferencia en milisegundos
+        long m1 = fechaInicio.getTimeInMillis();
+        long m2 = fechaFinPrevista.getTimeInMillis();
+        long diffInMs = Math.abs(m2 - m1);
+
+        // Convertir milisegundos a dias
+        long diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+        return (int) diffInDays;
+        // asi seria con la classe LocalDate
         // long dif = ChronoUnit.DAYS.between(fechaInicio, fechaFinPrevista); // obtenemos el numero de dias que hay entre la fecha de inicio y la fecha de devolucion.
         // es un long ya que el metodo ".between" devuelve un long.
         // return (int) dif;
