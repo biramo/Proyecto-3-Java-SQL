@@ -140,11 +140,11 @@ public class Alquiler {
         // es un long ya que el metodo ".between" devuelve un long.
         // return (int) dif;
     }
-    public void registrarDevolucion{
-
+    public void registrarDevolucion(){
+        
     }
 
-    public void mostrarResumen{
+    public void mostrarResumen(){
         System.out.println(this.toString());
     }
 
