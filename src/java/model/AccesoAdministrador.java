@@ -5,8 +5,14 @@ import java.util.Scanner;
 
 public class AccesoAdministrador {
     private static final String codigo = "clotfje";
+    private boolean accesoValido = false;
     Scanner sc = new Scanner(System.in);
     String respuesta;
+
+    public AccesoAdministrador(boolean accesoValido, Scanner sc, String respuesta) {
+        this.accesoValido = accesoValido;
+        this.respuesta = respuesta;
+    }
 
     public void validador(int intentos) {
         do {
@@ -16,7 +22,7 @@ public class AccesoAdministrador {
 
                 if (respuesta == codigo) {
                     System.out.println("Acceso Validado");
-                    boolean accesoValido = true;
+                    accesoValido = true;
                 } else {
                     System.out.println("Acceso Denegado");
                     intentos++;
