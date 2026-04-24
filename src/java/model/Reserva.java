@@ -73,16 +73,7 @@ public class Reserva {
     }
 
     // METODOS
-
-    // Imprime mensaje de confirmacion y la confirma con crud
-    public void confirmarReserva() throws SQLException {
-        this.activa = false;
-        ReservaCRUD reservaCRUD = new ReservaCRUD();
-        reservaCRUD.updateReserva(this);
-        System.out.println("Reserva confirmada!, estas en la posicion: " + posicionListaEspera);
-    }
-
-    // Cambia la variable booleana para determinar si esta cancelada o no
+    // Cambia la variable para determinar si esta cancelada o no; ademas de llamar al crud que se encargara del reordenamiento de la cola
     public void cancelarReserva() throws SQLException {
         if (this.activa == false) {
             System.out.println("La reserva ya estaba cancelada anteriormente");
@@ -90,8 +81,7 @@ public class Reserva {
             this.activa = false;
             //llamamos al crud para realizar el cancel
             ReservaCRUD reservaCRUD = new ReservaCRUD();
-            reservaCRUD.updateReserva(this);
-
+            reservaCRUD.cancelarReserva(this);
             System.out.println("Reserva cancelada correctamente!");
         }
     }

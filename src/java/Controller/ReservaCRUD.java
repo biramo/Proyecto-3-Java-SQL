@@ -46,6 +46,35 @@ public class ReservaCRUD {
         }
     }
 
+    public void cancelarReserva(Reserva reserva) throws SQLException {
+        String sqlCancelar = "UPDATE Reservas SET activa=false WHERE id=?";
+
+        String sqlReordenar = "UPDATE Reservas SET posicion_lista_espera = posicion_lista_espera - 1 " +
+                "WHERE id_instrumento=? AND activa=true AND posicion_lista_espera > ?";
+
+        try (Connection con = ConexionBD.conexion()) {
+
+            // Cancelamos la reserva en el objeto
+            reserva.setActiva(false);
+
+            // Cancelamos la reserva en la base de datos
+            try (PreparedStatement ps = con.prepareStatement(sqlCancelar)) {
+                ps.setInt(1, reserva.getId());
+                ps.executeUpdate();
+            }
+
+            // Reordenamos las reservas que estaban por debajo
+            try (PreparedStatement ps = con.prepareStatement(sqlReordenar)) {
+                ps.setInt(1, reserva.getInstrumento().getId());
+                ps.setInt(2, reserva.getPosicionListaEspera());
+                ps.executeUpdate();
+            }
+
+            System.out.println("Reserva cancelada correctamente y lista de espera actualizada");
+        }
+    }
+
+    /* No quiero Usarlo - complicaria la gestion de las colas en la reserva inecesariamente*/
     public void updateReserva(Reserva reserva) throws SQLException {
         String sql = "UPDATE Reservas SET dni_cliente=?, id_instrumento=?, fecha_reserva=?, posicion_lista_espera=?, activa=? WHERE id=?";
 
@@ -69,24 +98,7 @@ public class ReservaCRUD {
         }
     }
 
-    public void cancelarReserva(int idReserva) throws SQLException {
-        String sql = "UPDATE Reservas SET activa=false WHERE id=?";
-
-        try (Connection con = ConexionBD.conexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, idReserva);
-
-            int filas = ps.executeUpdate();
-
-            if (filas > 0) {
-                System.out.println("Reserva con ID: " + idReserva + ", cancelada correctamente");
-            } else {
-                System.out.println("No existe ninguna reserva con ID: " + idReserva);
-            }
-        }
-    }
-
+    /*No quiero usarlo, prefiero el SOFT Delete de cancelar */
     public void deleteReserva(int id) throws SQLException {
         String sql = "DELETE FROM Reservas WHERE id=?";
 
@@ -152,6 +164,27 @@ public class ReservaCRUD {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idInstrumento);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Reserva reserva = crearReservaDesdeResultSet(rs);
+                    listaReservas.add(reserva);
+                }
+            }
+        }
+
+        return listaReservas;
+    }
+
+    //al pasarle el cliente que me monte una lista de reservas y desde el menu seleccionare una para poder operar
+    public ArrayList<Reserva> listarReservasActivasPorCliente(Cliente cliente) throws SQLException {
+        String sql = "SELECT * FROM Reservas WHERE dni_cliente=? AND activa=true ORDER BY fecha_reserva ASC";
+        ArrayList<Reserva> listaReservas = new ArrayList<>();
+
+        try (Connection con = ConexionBD.conexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, cliente.getDni());
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
