@@ -5,9 +5,9 @@ import model.Enum.EstadoInstrumento;
 import model.Interfaces.InAlquilable;
 
 public class Instrumento implements InAlquilable {
-    private final int id;
-    private final String marca;
-    private final String modelo;
+    private int id;
+    private String marca;
+    private String modelo;
     private double precioDia;
     private int stockTotal;
     private int stockDisponible;
@@ -17,9 +17,15 @@ public class Instrumento implements InAlquilable {
     //Getters y Setters
     public int getId() { return id; }
 
+    public void setId(int id) { this.id = id; }
+
     public String getMarca() { return marca; }
 
+    public void setMarca(String marca){ this.marca = marca; }
+
     public String getModelo() { return modelo; }
+
+    public void setModelo(String modelo) { this.modelo = modelo; }
 
     public double getPrecioDia() { return precioDia; }
 
@@ -83,24 +89,26 @@ public class Instrumento implements InAlquilable {
 
     @Override
     public void registrarSalida() {
-        stockDisponible -= stockDisponible;
+        if(stockDisponible > 0){
+            stockDisponible--;
+        }
         if(stockDisponible == 0){
             estado = EstadoInstrumento.SIN_STOCK;}
     }
 
     @Override
     public void registrarEntrada() {
-        stockDisponible += stockDisponible;
-        if (stockDisponible > 0){
-            estado = EstadoInstrumento.DISPONIBLE;
+        if(stockDisponible < stockTotal){
+            stockDisponible++;
         }
+            estado = EstadoInstrumento.DISPONIBLE;
     }
 
     public void reducirStock(){
-        stockTotal -= stockTotal;
+        stockTotal--;
     }
 
     public void aumentarStock(){
-        stockTotal += stockTotal;
+        stockTotal++;
     }
 }
