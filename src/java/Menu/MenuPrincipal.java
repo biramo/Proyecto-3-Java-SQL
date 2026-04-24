@@ -38,7 +38,7 @@ public class MenuPrincipal {
         System.out.println(estilo + "  6. ⚠️ Menú Penalización                                  " + RESET);
         System.out.println(estilo + "  0. ❌ Salir del Sistema                                  " + RESET);
         System.out.println(estilo + "-----------------------------------------------------------" + RESET);
-        System.out.print("👉 Seleccione: "); // Sin estilo de fondo para la entrada del usuario
+        System.out.print("Seleccione una opción: "); // Sin estilo de fondo para la entrada del usuario
     }
 
 
