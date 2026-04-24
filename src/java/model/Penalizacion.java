@@ -14,12 +14,36 @@ public class Penalizacion {
         this.desperfecto = desperfecto;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
     public double getImporte() {
         return importe;
     }
 
     public void setImporte(double importe) {
         this.importe = importe;
+    }
+
+    public TipoDesperfecto getDesperfecto() {
+        return desperfecto;
+    }
+
+    public void setDesperfecto(TipoDesperfecto desperfecto) {
+        this.desperfecto = desperfecto;
     }
 
     public String mostrarPenalizacion() {

@@ -1,8 +1,11 @@
 package model;
+
+import Controller.PenalizacionCRUD;
 import model.Enum.TipoDesperfecto;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit; // para operar con fechas
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 
@@ -35,6 +38,15 @@ public class Alquiler {
     }
 
     // getters y Setters
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Cliente getCliente() {
         return cliente;
@@ -125,24 +137,26 @@ public class Alquiler {
                 ", pagado=" + pagado +
                 '}';
     }
+
     // funcion para calcular los dias que dura el alquiler
-    public int calcularDiasAlquiler(){
+    public int calcularDiasAlquiler() {
         long dif = ChronoUnit.DAYS.between(fechaInicio, fechaFinPrevista); // obtenemos el numero de dias que hay entre la fecha de inicio y la fecha de devolucion.
         // es un long ya que el metodo ".between" devuelve un long.
         return (int) dif;
     }
-    public void registrarDevolucion(){
+
+    public void registrarDevolucion() {
         // falta CRUD Alquiler
     }
 
-    public void mostrarResumen(){
+    public void mostrarResumen() {
         System.out.println(this.toString());
     }
 
-    public void crearPenalizacion(String motivo, double importe, TipoDesperfecto desperfecto){
+    public void crearPenalizacion(String motivo, double importe, TipoDesperfecto desperfecto) throws SQLException {
         Penalizacion p = new Penalizacion(motivo, importe, desperfecto);
-        // falta insertar CRUD
+        PenalizacionCRUD penalizacionCRUD = new PenalizacionCRUD();
+        penalizacionCRUD.insertarPenalizacion(this.id, p);
         this.penalizacion.add(p);
-
     }
 }
