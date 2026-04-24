@@ -4,23 +4,12 @@ import model.Enum.CategoriaInstrumento;
 import model.Enum.EstadoInstrumento;
 import model.Instrumento;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class InstrumentoCRUD {
-
-    /* Para reo */
-    /*
-    int filasAfectadas = ps.executeUpdate();
-
-    if (filasAfectadas > 0) {
-        try (ResultSet rs = ps.getGeneratedKeys()) {
-            if (rs.next()) {
-                int idGenerado = rs.getInt(1);
-                System.out.println("ID generado: " + idGenerado);
-            }
-        }
-    }
-    */
 
     public void insertar(Instrumento instrumento) throws SQLException {
         String sql = "INSERT INTO Instrumentos(id, marca, modelo, precio_dia, stock_total, stock_disponible, categoria, estado) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
@@ -78,21 +67,6 @@ public class InstrumentoCRUD {
         return instrumento;
     }
 
-    // Metodo privado para no repetir codigo al crear objetos Instrumento desde la base de datos
-    private Instrumento crearInstrumentoDesdeResultSet(ResultSet rs) throws SQLException {
-        Instrumento instrumento = new Instrumento(
-                rs.getInt("id"),
-                rs.getString("marca"),
-                rs.getString("modelo"),
-                rs.getDouble("precio_dia"),
-                rs.getInt("stock_total"),
-                rs.getInt("stock_disponible"),
-                CategoriaInstrumento.valueOf(rs.getString("categoria")),
-                EstadoInstrumento.valueOf(rs.getString("estado"))
-        );
-
-        return instrumento;
-    }
 
     public void actualizar(Instrumento instrumento) throws SQLException {
         String sql = "UPDATE Instrumentos SET marca=?, modelo=?, precio_dia=?, stock_total=?, stock_disponible=?, categoria=?, estado=? WHERE id=?";
@@ -131,6 +105,22 @@ public class InstrumentoCRUD {
                 System.out.println("No hay ningún instrumento con esta id/ Este instrumento no existe");
             }
         }
+    }
+
+    // Metodo privado para no repetir codigo al crear objetos Instrumento desde la base de datos
+    private Instrumento crearInstrumentoDesdeResultSet(ResultSet rs) throws SQLException {
+        Instrumento instrumento = new Instrumento(
+                rs.getInt("id"),
+                rs.getString("marca"),
+                rs.getString("modelo"),
+                rs.getDouble("precio_dia"),
+                rs.getInt("stock_total"),
+                rs.getInt("stock_disponible"),
+                CategoriaInstrumento.valueOf(rs.getString("categoria")),
+                EstadoInstrumento.valueOf(rs.getString("estado"))
+        );
+
+        return instrumento;
     }
 }
 
