@@ -4,62 +4,76 @@ import model.Enum.CategoriaInstrumento;
 import model.Enum.EstadoInstrumento;
 import model.Instrumento;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class InstrumentoCRUD {
 
     public void insertar(Instrumento instrumento) throws SQLException {
-        String sql = "INSERT INTO Instrumentos(id, marca, modelo, precio_dia, stock_total, stock_disponible, categoria, estado) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Instrumentos(marca, modelo, precio_dia, stock_total, stock_disponible, categoria, estado) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = ConexionBD.conexion();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexionBD.conexion()) {
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setInt(1, instrumento.getId());
-            ps.setString(2, instrumento.getMarca());
-            ps.setString(3, instrumento.getModelo());
-            ps.setDouble(4, instrumento.getPrecioDia());
-            ps.setInt(5, instrumento.getStockTotal());
-            ps.setInt(6, instrumento.getStockDisponible());
-            ps.setString(7, instrumento.getCategoria().name());
-            ps.setString(8, instrumento.getEstado().name());
+                ps.setString(1, instrumento.getMarca());
+                ps.setString(2, instrumento.getModelo());
+                ps.setDouble(3, instrumento.getPrecioDia());
+                ps.setInt(4, instrumento.getStockTotal());
+                ps.setInt(5, instrumento.getStockDisponible());
+                ps.setString(6, instrumento.getCategoria().name());
+                ps.setString(7, instrumento.getEstado().name());
 
-            ps.executeUpdate();
+                int fA = ps.executeUpdate();
 
-            System.out.println("Instrumento insertado: " + instrumento.getId());
+                if (fA > 0) {
+                    try (ResultSet rs = ps.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            int idGenerada = rs.getInt(1);
+                            instrumento.setId(idGenerada);
+                            System.out.println("Instrumento insertado, ID: " + idGenerada);
+                        }
+                    }
+                } else {
+                    System.out.println("No se ha podido añadir el Instrumento");
+                }
+            }
         }
     }
 
-    public void listar() throws SQLException { //listar todos los instrumentos
+    public List<Instrumento> listarTodo() throws SQLException { //listar todos los instrumentos
         String sql = "SELECT * FROM Instrumentos";
+        List<Instrumento> lista = new ArrayList<>();
 
-        try (Connection conn = ConexionBD.conexion();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = ConexionBD.conexion()) {
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
 
-            System.out.println("\n\n Lista de Instrumentos");
-
-            while (rs.next()) {
-                Instrumento instrumento = crearInstrumentoDesdeResultSet(rs);
-                System.out.println(instrumento);
+                while (rs.next()) {
+                    Instrumento ins = crearInstrumentoDesdeResultSet(rs);
+                    lista.add(ins);
+                }
             }
         }
+        return lista;
     }
 
     public Instrumento listarInstrumentoPorId(int idInstrumento) throws SQLException {
         String sql = "SELECT * FROM Instrumentos WHERE id=?";
         Instrumento instrumento = null;
 
-        try (Connection con = ConexionBD.conexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection conn = ConexionBD.conexion()) {
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, idInstrumento);
+                ps.setInt(1, idInstrumento);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    instrumento = crearInstrumentoDesdeResultSet(rs);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        instrumento = crearInstrumentoDesdeResultSet(rs);
+                    }
                 }
             }
         }
@@ -67,49 +81,10 @@ public class InstrumentoCRUD {
         return instrumento;
     }
 
-
-    public void actualizar(Instrumento instrumento) throws SQLException {
-        String sql = "UPDATE Instrumentos SET marca=?, modelo=?, precio_dia=?, stock_total=?, stock_disponible=?, categoria=?, estado=? WHERE id=?";
-
-        try (Connection conn = ConexionBD.conexion();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, instrumento.getMarca());
-            ps.setString(2, instrumento.getModelo());
-            ps.setDouble(3, instrumento.getPrecioDia());
-            ps.setInt(4, instrumento.getStockTotal());
-            ps.setInt(5, instrumento.getStockDisponible());
-            ps.setString(6, instrumento.getCategoria().name());
-            ps.setString(7, instrumento.getEstado().name());
-            ps.setInt(8, instrumento.getId());
-
-            ps.executeUpdate();
-
-            System.out.println("Instrumento actualizado: Id: " + instrumento.getId());
-        }
-    }
-
-    public void eliminar(int id) throws SQLException { //eliminar 1 instrumento
-        String sql = "DELETE FROM Instrumentos WHERE id=?";
-
-        try (Connection conn = ConexionBD.conexion();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-
-            int fA = ps.executeUpdate();
-
-            if (fA > 0) {
-                System.out.println("Instrumento eliminado");
-            } else {
-                System.out.println("No hay ningún instrumento con esta id/ Este instrumento no existe");
-            }
-        }
-    }
-
-    // Metodo privado para no repetir codigo al crear objetos Instrumento desde la base de datos
+    // Método privado para no repetir código al crear objetos Instrumento desde la base de datos
     private Instrumento crearInstrumentoDesdeResultSet(ResultSet rs) throws SQLException {
-        Instrumento instrumento = new Instrumento(
+
+        return new Instrumento(
                 rs.getInt("id"),
                 rs.getString("marca"),
                 rs.getString("modelo"),
@@ -119,8 +94,77 @@ public class InstrumentoCRUD {
                 CategoriaInstrumento.valueOf(rs.getString("categoria")),
                 EstadoInstrumento.valueOf(rs.getString("estado"))
         );
+    }
 
-        return instrumento;
+    public List<Instrumento> listarInstrumentoPorTipo(String tipoInstrumento) throws SQLException{
+
+        String sql = "SELECT * FROM Instrumentos WHERE categoria=?";
+        List<Instrumento> listaTipo = new ArrayList<>();
+
+
+        try (Connection conn = ConexionBD.conexion()){
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql)){
+
+                ps.setString(1, tipoInstrumento);
+
+                try (ResultSet rs = ps.executeQuery()){
+                    System.out.println("Lista de instrumentos de tipo: " + tipoInstrumento);
+
+                    while (rs.next()){
+                        listaTipo.add(crearInstrumentoDesdeResultSet(rs));
+                    }
+                }
+            }
+        }
+        return listaTipo;
+    }
+
+    public void updateInstrumento(Instrumento instrumento) throws SQLException {
+        String sql = "UPDATE Instrumentos SET marca=?, modelo=?, precio_dia=?, stock_total=?, stock_disponible=?, categoria=?, estado=? WHERE id=?";
+
+        try (Connection conn = ConexionBD.conexion()) {
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setString(1, instrumento.getMarca());
+                ps.setString(2, instrumento.getModelo());
+                ps.setDouble(3, instrumento.getPrecioDia());
+                ps.setInt(4, instrumento.getStockTotal());
+                ps.setInt(5, instrumento.getStockDisponible());
+                ps.setString(6, instrumento.getCategoria().name());
+                ps.setString(7, instrumento.getEstado().name());
+                ps.setInt(8, instrumento.getId());
+
+                int fA = ps.executeUpdate();
+
+                if (fA > 0) {
+                    System.out.println("Instrumento actualizado: Id: " + instrumento.getId());
+                } else{
+                    System.out.println("Ya hay un instrumento con esta Id / Este instrumento no existe");
+                }
+            }
+        }
+    }
+
+    public void eliminar(int id) throws SQLException { //eliminar 1 instrumento
+        String sql = "DELETE FROM Instrumentos WHERE id=?";
+
+        try (Connection conn = ConexionBD.conexion()) {
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setInt(1, id);
+
+                int fA = ps.executeUpdate();
+
+                if (fA > 0) {
+                    System.out.println("Instrumento eliminado");
+                } else {
+                    System.out.println("No hay ningún instrumento con esta id/ Este instrumento no existe");
+                }
+            }
+        }
     }
 }
 
