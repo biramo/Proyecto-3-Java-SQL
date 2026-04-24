@@ -21,17 +21,14 @@ public class Alquiler {
     private String observaciones;
     private boolean pagado;
 
-    // Constructor por defecto
-    public Alquiler() {
-    }
     //Constructor con valores
 
-    public Alquiler(Cliente cliente, Instrumento instrumento, LocalDate fechaInicio, LocalDate fechaFinPrevista, double importeBase, String observaciones, boolean pagado) {
+    public Alquiler(Cliente cliente, Instrumento instrumento, LocalDate fechaInicio, LocalDate fechaFinPrevista, String observaciones, boolean pagado) {
         this.cliente = cliente;
         this.instrumento = instrumento;
         this.fechaInicio = fechaInicio;
         this.fechaFinPrevista = fechaFinPrevista;
-        this.importeBase = importeBase;
+        this.importeBase = calcularDiasAlquiler() * instrumento.getPrecioDia();
         this.penalizacion = new ArrayList<>();
         this.observaciones = observaciones;
         this.pagado = pagado;
