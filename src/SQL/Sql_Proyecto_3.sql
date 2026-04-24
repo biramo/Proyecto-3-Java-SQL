@@ -192,3 +192,6 @@ SET GLOBAL time_zone = '+1:00';
 ALTER TABLE Clientes
 DROP
 COLUMN deuda_pendiente;
+
+ALTER TABLE Alquileres
+    CHANGE COLUMN penalizacion importe_final double;
