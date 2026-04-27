@@ -1,5 +1,7 @@
 package Funciones;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Validacion {
@@ -46,6 +48,26 @@ public class Validacion {
 
         return comprobador;
 
+    }
+
+    public static LocalDate validadorFechaDefault(Scanner sc) {
+        LocalDate fechaValida = null;
+        boolean esValida = false;
+
+        while (!esValida) {
+            System.out.print("Introduce fecha de nacimiento (AAAA-MM-DD): ");
+            String entrada = sc.nextLine();
+
+            try {
+                // Al no pasarle un Formatter, usa el formato ISO-8601 por defecto
+                fechaValida = LocalDate.parse(entrada);
+                esValida = true;
+            } catch (DateTimeParseException e) {
+                System.out.println("Error: Formato incorrecto. Use el estándar Año-Mes-Día (ej: 2026-12-31).");
+            }
+        }
+
+        return fechaValida;
     }
     //-------------------------------FUNCION POR DESARROLLAR-------------------------------
 
