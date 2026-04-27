@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class InstrumentoCRUD {
 
+    //Insertar un instrumento
     public void insertar(Instrumento instrumento) throws SQLException {
         String sql = "INSERT INTO Instrumentos(marca, modelo, precio_dia, stock_total, stock_disponible, categoria, estado) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
@@ -25,7 +26,7 @@ public class InstrumentoCRUD {
                 ps.setString(6, instrumento.getCategoria().name());
                 ps.setString(7, instrumento.getEstado().name());
 
-                int fA = ps.executeUpdate();
+                int fA = ps.executeUpdate(); //Mira la cantidad de filas afectadas, si el número equivale a 0, no se ha hecho un cambio en la tabla.
 
                 if (fA > 0) {
                     try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -60,7 +61,7 @@ public class InstrumentoCRUD {
         return lista;
     }
 
-    public Instrumento listarInstrumentoPorId(int idInstrumento) throws SQLException {
+    public Instrumento listarInstrumentoPorId(int idInstrumento) throws SQLException { //El mismo de arriba pero solo con la id.
         String sql = "SELECT * FROM Instrumentos WHERE id=?";
         Instrumento instrumento = null;
 
@@ -96,7 +97,7 @@ public class InstrumentoCRUD {
         );
     }
 
-    public List<Instrumento> listarInstrumentoPorTipo(String tipoInstrumento) throws SQLException{
+    public List<Instrumento> listarInstrumentoPorTipo(String tipoInstrumento) throws SQLException{ //Mismo de los 2 de arriba pero ahora solo con el tipo de instrumento
 
         String sql = "SELECT * FROM Instrumentos WHERE categoria=?";
         List<Instrumento> listaTipo = new ArrayList<>();
@@ -120,7 +121,7 @@ public class InstrumentoCRUD {
         return listaTipo;
     }
 
-    public void updateInstrumento(Instrumento instrumento) throws SQLException {
+    public void updateInstrumento(Instrumento instrumento) throws SQLException { //Actualizar un instrumento
         String sql = "UPDATE Instrumentos SET marca=?, modelo=?, precio_dia=?, stock_total=?, stock_disponible=?, categoria=?, estado=? WHERE id=?";
 
         try (Connection conn = ConexionBD.conexion()) {
@@ -147,7 +148,7 @@ public class InstrumentoCRUD {
         }
     }
 
-    public void eliminar(int id) throws SQLException { //eliminar 1 instrumento
+    public void eliminar(int id) throws SQLException { //Eliminar 1 instrumento
         String sql = "DELETE FROM Instrumentos WHERE id=?";
 
         try (Connection conn = ConexionBD.conexion()) {
