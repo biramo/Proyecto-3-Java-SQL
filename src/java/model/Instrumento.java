@@ -78,14 +78,10 @@ public class Instrumento implements InAlquilable {
     }
 
     @Override
-    public boolean estaDisponible(){
-        return (stockDisponible > 0) ? true : false;
-    }
+    public boolean estaDisponible(){ return (stockDisponible > 0) ? true : false; }
 
     @Override
-    public double calcularImporte(int dias) {
-        return precioDia * dias;
-    }
+    public double calcularImporte(int dias) { return precioDia * dias; }
 
     @Override
     public void registrarSalida() {
@@ -104,11 +100,7 @@ public class Instrumento implements InAlquilable {
             estado = EstadoInstrumento.DISPONIBLE;
     }
 
-    public void reducirStock(){
-        stockTotal--;
-    }
+    public void reducirStock(){ stockTotal--; }
 
-    public void aumentarStock(){
-        stockTotal++;
-    }
+    public void aumentarStock(){ stockTotal++; }
 }
