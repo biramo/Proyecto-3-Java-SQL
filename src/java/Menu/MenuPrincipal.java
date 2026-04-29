@@ -66,7 +66,7 @@ public class MenuPrincipal {
         vOpciones();
     }
 
-    public void sPrincipal(Scanner sc) throws InterruptedException {
+    public static void sPrincipal(Scanner sc) throws InterruptedException {
         int opcion;
 
         System.out.println("Iniciando Menú...");
