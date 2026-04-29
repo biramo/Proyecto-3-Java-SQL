@@ -2,15 +2,14 @@ package Services;
 
 import Controller.InstrumentoCRUD;
 import Funciones.Validacion;
+import Menu.MenuClientes;
 import Menu.MenuInstrumentos;
-import model.Cliente;
 import model.Enum.CategoriaInstrumento;
 import model.Enum.EstadoInstrumento;
 import model.Instrumento;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -112,6 +111,7 @@ public class ServiceInstrumento {
     //Switch para llamar a las funciones
     public void vLlamarFunciones(Scanner sc) {
         int id;
+        Instrumento instrumento;
         while (true) {
             int opcion = intMostrarMenu(sc);
             switch (opcion) {
@@ -128,26 +128,34 @@ public class ServiceInstrumento {
                     break;
 
                 case 3:
-                    Cliente clienteInsert = crearNuevoCliente(sc);
-                    vInsertarNuevoCliente(clienteInsert);
+                    instrumento = crearInstrumento(sc);
+                    vInsertarNuevoInstrumento(instrumento);
                     MenuInstrumentos.vEspera(sc);
                     break;
 
                 case 4:
-                    Cliente clienteUpdate = crearNuevoCliente(sc);
-                    vModificarRegistro(clienteUpdate);
+                    System.out.print("Introduce el id del instrumento: ");
+                    id = Validacion.validadorInt(sc);
+                    instrumento = crearInstrumento(sc);
+                    instrumento.setId(id);
+                    vModificarRegistro(instrumento);
                     MenuInstrumentos.vEspera(sc);
-
                     break;
 
                 case 5:
-                    System.out.println("Introduce el dni: ");
-                    String dniEliminar = Validacion.validadorString(sc);
-                    vEliminarCliente(dniEliminar);
+                    System.out.println("Introduce el id: ");
+                    id = Validacion.validadorInt(sc);
+                    vEliminarInstrumento(id);
+                    MenuInstrumentos.vEspera(sc);
                     break;
 
                 case 6:
                     return;
+
+                default:
+                    System.out.println("Opcion no valida");
+                    MenuClientes.vEspera(sc);
+                    break;
             }
         }
     }
