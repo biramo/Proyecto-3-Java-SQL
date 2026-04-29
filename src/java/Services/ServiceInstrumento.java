@@ -1,0 +1,155 @@
+package Services;
+
+import Controller.InstrumentoCRUD;
+import Funciones.Validacion;
+import Menu.MenuInstrumentos;
+import model.Cliente;
+import model.Enum.CategoriaInstrumento;
+import model.Enum.EstadoInstrumento;
+import model.Instrumento;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+
+import static Funciones.ControlErrores.errorHandler;
+
+public class ServiceInstrumento {
+
+    private static final InstrumentoCRUD instrumentoCrud = new InstrumentoCRUD();
+    //Menus del servicio
+
+    public int intMostrarMenu(Scanner sc) {
+        MenuInstrumentos.vMostrarMenu();
+        return Validacion.validadorInt(sc);
+    }
+
+    //Metodo para entrar datos y devolver objeto creado
+    public Instrumento crearInstrumento(Scanner sc) {
+        String marca = "", modelo = "";
+        double precioDia;
+        int stockTotal, stockDisponible;
+        CategoriaInstrumento categoria;
+        EstadoInstrumento estado;
+
+
+        System.out.print("Introduce la marca: ");
+        marca = Validacion.validadorString(sc);
+        System.out.print("Introduce modelo: ");
+        modelo = Validacion.validadorString(sc);
+        System.out.print("Introduce el precio por dia: ");
+        precioDia = Validacion.validadorDouble(sc);
+        System.out.print("Introduce el stock total: ");
+        stockTotal = Validacion.validadorInt(sc);
+        System.out.print("Introduce el stock actual ");
+        stockDisponible = Validacion.validadorInt(sc);
+        categoria = Validacion.validadorGenericoEnum(sc, CategoriaInstrumento.class);
+        estado = Validacion.validadorGenericoEnum(sc, EstadoInstrumento.class);
+
+        return new Instrumento(marca, modelo, precioDia, stockTotal, stockDisponible, categoria, estado);
+    }
+
+    //Metodos de CRUD
+    public void vMostrarTodos() {
+        List<Instrumento> resultadoQuery;
+        try {
+            resultadoQuery = instrumentoCrud.listarTodo();
+            Iterator<Instrumento> it = resultadoQuery.iterator();
+            while (it.hasNext()) {
+                Instrumento i = it.next();
+                i.mostrarInformación();
+            }
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+
+    }
+
+    public void vMostrarPorId(int id) {
+        Instrumento instrumento = null;
+
+        try {
+            instrumento = instrumentoCrud.listarInstrumentoPorId(id);
+            if (instrumento != null) {
+                instrumento.mostrarInformación();
+
+            }
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+
+    }
+
+    public void vInsertarNuevoInstrumento(Instrumento instrumento) {
+        try {
+            instrumentoCrud.insertar(instrumento);
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+    public void vModificarRegistro(Instrumento instrumento) {
+
+        try {
+            instrumentoCrud.updateInstrumento(instrumento);
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+    public void vEliminarInstrumento(int id) {
+        try {
+            instrumentoCrud.eliminar(id);
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+
+    }
+
+    //Switch para llamar a las funciones
+    public void vLlamarFunciones(Scanner sc) {
+        int id;
+        while (true) {
+            int opcion = intMostrarMenu(sc);
+            switch (opcion) {
+
+                case 1:
+                    vMostrarTodos();
+                    break;
+
+                case 2:
+                    System.out.println("Introduce el id: ");
+                    id = Validacion.validadorInt(sc);
+                    vMostrarPorId(id);
+                    MenuInstrumentos.vEspera(sc);
+                    break;
+
+                case 3:
+                    Cliente clienteInsert = crearNuevoCliente(sc);
+                    vInsertarNuevoCliente(clienteInsert);
+                    MenuInstrumentos.vEspera(sc);
+                    break;
+
+                case 4:
+                    Cliente clienteUpdate = crearNuevoCliente(sc);
+                    vModificarRegistro(clienteUpdate);
+                    MenuInstrumentos.vEspera(sc);
+
+                    break;
+
+                case 5:
+                    System.out.println("Introduce el dni: ");
+                    String dniEliminar = Validacion.validadorString(sc);
+                    vEliminarCliente(dniEliminar);
+                    break;
+
+                case 6:
+                    return;
+            }
+        }
+    }
+
+}

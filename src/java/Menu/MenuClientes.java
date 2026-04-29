@@ -37,7 +37,14 @@ public class MenuClientes {
     public static void vMostrarMenu() {
         vLimpiarConsola();
         vOpciones();
+    }
 
+    public static void vEspera(Scanner sc) {
+        if (sc.hasNextLine()) {
+            sc.nextLine();
+        }
+        System.out.println("PRESIONA [ENTER] para continuar...");
+        sc.nextLine();
     }
 
     public void sCliente(Scanner sc){

@@ -71,8 +71,12 @@ public class ClienteCRUD {
 
                 listaClientes.add(cliente);
             }
-            return listaClientes;
+            if (listaClientes.isEmpty()) {
 
+                System.out.println("No hay entradas de clientes en la base de datos");
+            }
+
+            return listaClientes;
         }
     }
 
@@ -100,8 +104,13 @@ public class ClienteCRUD {
 
 
         }
+        if (cliente == null) {
+
+            System.out.println("No hay coincidencias de clientes con el dni: " + dni);
+        }
         return cliente;
     }
+
 
     public void deleteCliente(String dni) throws SQLException {
         String sql = "DELETE FROM clientes WHERE dni=?";
@@ -122,5 +131,4 @@ public class ClienteCRUD {
         }
 
     }
-
 }

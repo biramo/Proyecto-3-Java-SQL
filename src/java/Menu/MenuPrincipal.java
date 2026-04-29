@@ -1,11 +1,16 @@
 package Menu;
 
 import java.util.InputMismatchException;
+
+import Services.ServiceMenu;
+
 import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
 public class MenuPrincipal {
+    //Servicio que tendra dentro todos los servicios,cada uno con sus respectivos metodos para llamar a sus funciones y sus CRUDS
+    private ServiceMenu serviceMenu;
     Scanner sc = new Scanner(System.in);
     // Reset
     private static final String RESET = "\u001B[0m";
@@ -40,7 +45,7 @@ public class MenuPrincipal {
         System.out.println(estilo + "  4. 🤝 Menú Alquiler                                      " + RESET);
         System.out.println(estilo + "  5. 🔄 Menú Devolución                                    " + RESET);
         System.out.println(estilo + "  6. ⚠️ Menú Penalización                                  " + RESET);
-        System.out.println(estilo + "  7. ❌ Salir del Sistema                                  " + RESET);
+        System.out.println(estilo + "  0. ❌ Salir del Sistema                                  " + RESET);
         System.out.println(estilo + "-----------------------------------------------------------" + RESET);
         System.out.print("Seleccione una opción: "); // Sin estilo de fondo para la entrada del usuario
     }

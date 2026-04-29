@@ -1,5 +1,8 @@
 package Funciones;
 
+import model.Enum.CategoriaInstrumento;
+import model.Enum.EstadoInstrumento;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -69,38 +72,34 @@ public class Validacion {
 
         return fechaValida;
     }
-    //-------------------------------FUNCION POR DESARROLLAR-------------------------------
 
-    /*public static "OBJETO" TipoObjValidador"OBJETO"(Scanner entrada) {
-        "OBJETO" tipo=null;
+    public static <T extends Enum<T>> T validadorGenericoEnum(Scanner entrada, Class<T> enumClass) {
+        T resultado = null;
         boolean valido = false;
 
+        // Obtenemos los nombres de las constantes para mostrarlas dinámicamente
+        String opciones = java.util.Arrays.toString(enumClass.getEnumConstants());
+
         while (!valido) {
-            mostrarTexto("Introduce el tipo (PORTATIL o SOBREMESA):);
-            // Leemos y limpiamos la entrada
+            mostrarTexto("Introduce el tipo " + opciones + ":");
             String entradaUsuario = entrada.nextLine().toUpperCase().trim();
 
             try {
-                // Validamos: si no existe en el Enum, saltará al catch
-                tipo = "OBJETO".valueOf(entradaUsuario);
-
-                // Si llegamos aquí, es válido. Guardamos el String
+                resultado = Enum.valueOf(enumClass, entradaUsuario);
                 valido = true;
             } catch (IllegalArgumentException e) {
-                mostrarError(" [!] '" + entradaUsuario + "' no es una opción válida (PORTATIL/SOBREMESA):");
+                mostrarError(" [!] '" + entradaUsuario + "' no es una opción válida.");
             }
         }
-
-        return tipo; // Devolvemos el Enum ya validado
-    }*/
-    //-----------------------------------------------------------------------------------
+        return resultado;
+    }
 
     public static void mostrarError(String texto) {
-        System.out.println(ROJO + texto + RESET);
+        System.out.print(ROJO + texto + RESET);
     }
 
     public static void mostrarTexto(String texto) {
-        System.out.println(CIAN + texto + RESET);
+        System.out.print(CIAN + texto + RESET);
     }
 
 }
