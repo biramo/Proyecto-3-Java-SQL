@@ -1,8 +1,12 @@
 package Menu;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static java.lang.Thread.sleep;
+
 public class MenuPrincipal {
+    Scanner sc = new Scanner(System.in);
     // Reset
     private static final String RESET = "\u001B[0m";
 
@@ -36,7 +40,7 @@ public class MenuPrincipal {
         System.out.println(estilo + "  4. 🤝 Menú Alquiler                                      " + RESET);
         System.out.println(estilo + "  5. 🔄 Menú Devolución                                    " + RESET);
         System.out.println(estilo + "  6. ⚠️ Menú Penalización                                  " + RESET);
-        System.out.println(estilo + "  0. ❌ Salir del Sistema                                  " + RESET);
+        System.out.println(estilo + "  7. ❌ Salir del Sistema                                  " + RESET);
         System.out.println(estilo + "-----------------------------------------------------------" + RESET);
         System.out.print("Seleccione una opción: "); // Sin estilo de fondo para la entrada del usuario
     }
@@ -60,5 +64,40 @@ public class MenuPrincipal {
         vLimpiarConsola();
         vTitulo();
         vOpciones();
+    }
+
+    public void sPrincipal(Scanner sc) throws InterruptedException {
+        int opcion;
+
+        System.out.println("Iniciando Menú...");
+        sleep(500);
+
+        do{ //Bucle DTCW(do-try-catch-while) para que el usuario pueda volver a introducir un valor, esta vez correcto, en vez de cerrarse el programa.
+            vMostrarMenu(sc);
+            opcion = sc.nextInt();
+            try{
+                switch (opcion){
+                    case 1:
+                        MenuInstrumentos.sInstrumento(sc);
+                    case 2:
+                        MenuClientes.sCliente(sc);
+                    case 3:
+                        MenuReservas.sReserva(sc);
+                    case 4:
+                        MenuAlquileres.sAlquiler(sc);
+                    case 5:
+                        MenuDevoluciones.sDevolucion(sc);
+                    case 6:
+                        MenuPenalizaciones.sPenalizacion(sc);
+                    case 7:
+                        System.out.println("Gracias por usar el programa!");
+                        System.exit(0);
+                    default:
+                        System.out.println("Valor Incorrecto.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Inserte un número entero válido");
+            }
+        }while(opcion != 7);
     }
 }
