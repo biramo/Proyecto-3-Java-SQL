@@ -83,17 +83,11 @@ public class MenuPrincipal {
             try{
                 switch (opcion){
                     case 1:
-                        MenuInstrumentos.sInstrumento(sc);
                     case 2:
-                        MenuClientes.sCliente(sc);
                     case 3:
-                        MenuReservas.sReserva(sc);
                     case 4:
-                        MenuAlquileres.sAlquiler(sc);
                     case 5:
-                        MenuDevoluciones.sDevolucion(sc);
                     case 6:
-                        MenuPenalizaciones.sPenalizacion(sc);
                     case 7:
                         System.out.println("Gracias por usar el programa!");
                         System.exit(0);
