@@ -58,6 +58,16 @@ public class Instrumento implements InAlquilable {
         this.estado = estado;
     }
 
+    public Instrumento(String marca, String modelo, double precioDia, int stockTotal, int stockDisponible, CategoriaInstrumento categoria, EstadoInstrumento estado) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.precioDia = precioDia;
+        this.stockTotal = stockTotal;
+        this.stockDisponible = stockDisponible;
+        this.categoria = categoria;
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "Instrumento{" +
