@@ -67,6 +67,23 @@ public class ServiceAlquiler {
     }
 
     //Metodos de CRUD
+    public void vInsertarAlquiler(Alquiler alquiler) {
+        try {
+            alquilerCrud.insertarAlquiler(alquiler);
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+    public void vUpdateAlquiler(Alquiler alquiler) {
+
+        try {
+            alquilerCrud.updateAlquiler(alquiler);
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
     public void vMostrarTodos() {
         ArrayList<Alquiler> resultadoQuery;
         try {
@@ -83,7 +100,7 @@ public class ServiceAlquiler {
     }
 
     public void vMostrarPorId(int id) {
-        Alquiler alquiler = null;
+        Alquiler alquiler;
 
         try {
             alquiler = alquilerCrud.listarAlquilerPorId(id);
@@ -97,17 +114,62 @@ public class ServiceAlquiler {
 
     }
 
-    public void vMostrarPorCliente() {
+    public void vMostrarPorCliente(String dni) {
+        ArrayList<Alquiler> resultadoQuery;
 
-    }
-
-    public void vInsertarNuevoCliente(Cliente cliente) {
         try {
-            clienteCrud.insertarCliente(cliente);
+            resultadoQuery = alquilerCrud.listarAlquileresPorCliente(dni);
+            Iterator<Alquiler> it = resultadoQuery.iterator();
+            while (it.hasNext()) {
+                Alquiler a = it.next();
+                a.mostrarResumen();
+            }
+
         } catch (SQLException e) {
             errorHandler(e);
         }
     }
+
+    public void vMostrarPorInstrumento(int idInstrumento) {
+        ArrayList<Alquiler> resultadoQuery;
+        try {
+            resultadoQuery = alquilerCrud.listarAlquileresPorInstrumento(idInstrumento);
+            Iterator<Alquiler> it = resultadoQuery.iterator();
+            while (it.hasNext()) {
+                Alquiler a = it.next();
+                a.mostrarResumen();
+            }
+
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+
+    public void vMostrarPorAlquileresActivos() {
+        ArrayList<Alquiler> resultadoQuery;
+        try {
+            resultadoQuery = alquilerCrud.listarAlquileresActivos();
+            Iterator<Alquiler> it = resultadoQuery.iterator();
+            while (it.hasNext()) {
+                Alquiler a = it.next();
+                a.mostrarResumen();
+            }
+
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+    public void vRegistrarDevolucion(Alquiler alquiler, LocalDate fechaFinReal) {
+        try {
+            alquilerCrud.registrarDevolucion(alquiler, fechaFinReal);
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+
+    }
+
 
     public void vModificarRegistro(Cliente cliente) {
 
