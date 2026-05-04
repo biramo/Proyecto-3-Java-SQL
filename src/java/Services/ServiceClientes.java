@@ -17,12 +17,14 @@ import static Funciones.ControlErrores.errorHandler;
 public class ServiceClientes {
     private static final ClienteCRUD clienteCrud = new ClienteCRUD();
 
-    //Menus del servicio
+    // ------------MENUS DEL SERVICIO------------ //
+
     public int intMostrarMenu(Scanner sc) {
         MenuClientes.vMostrarMenu();
         return Validacion.validadorInt(sc);
     }
 
+    //Metodo para crear nuevo cliente usado en insert y update
     public Cliente crearNuevoCliente(Scanner sc) {
         String dni = "", nombre = "", telefono = "", apellidos = "", email = "";
         LocalDate fechaNacimiento = null;
@@ -46,7 +48,9 @@ public class ServiceClientes {
 
     }
 
-    //Metodos de CRUD
+    // ------------ METODOS CRUD ------------ //
+
+    // ------------ MOSTRAR TODOS LOS CLIENTES ------------ //
     public void vMostrarTodos() {
         ArrayList<Cliente> resultadoQuery;
         try {
@@ -62,6 +66,7 @@ public class ServiceClientes {
 
     }
 
+    // ------------ MOSTRAR POR EL DNI ------------ //
     public void vMostrarPorDni(String dni) {
         Cliente cliente = null;
 
@@ -77,6 +82,7 @@ public class ServiceClientes {
 
     }
 
+    // ------------ INSERTAR EL CLIENTE EN LA BD ------------ //
     public void vInsertarNuevoCliente(Cliente cliente) {
         try {
             clienteCrud.insertarCliente(cliente);
@@ -85,6 +91,7 @@ public class ServiceClientes {
         }
     }
 
+    // ------------ MODIFICAR REGISTRO DEL CLIENTE EXISTENTE ------------ //
     public void vModificarRegistro(Cliente cliente) {
 
         try {
@@ -94,6 +101,7 @@ public class ServiceClientes {
         }
     }
 
+    // ------------ ELIMINAR CLIENTE EXISTENTE ------------ //
     public void vEliminarCliente(String dni) {
         try {
             clienteCrud.deleteCliente(dni);
@@ -143,6 +151,8 @@ public class ServiceClientes {
                     break;
 
                 case 6:
+                    System.out.println("Saliendo del menu de clientes...");
+                    MenuClientes.vEspera(sc);
                     return;
                 default:
                     System.out.println("Opcion no valida");

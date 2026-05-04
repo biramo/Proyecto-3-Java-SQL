@@ -19,14 +19,14 @@ import static Funciones.ControlErrores.errorHandler;
 public class ServiceInstrumento {
 
     private static final InstrumentoCRUD instrumentoCrud = new InstrumentoCRUD();
-    //Menus del servicio
 
+    // ------------ MENUS DEL SERVICIO ------------ //
     public int intMostrarMenu(Scanner sc) {
         MenuInstrumentos.vMostrarMenu();
         return Validacion.validadorInt(sc);
     }
 
-    //Metodo para entrar datos y devolver objeto creado
+    //Metodo para entrar datos y devolver objeto creado, usado en insert y update
     public Instrumento crearInstrumento(Scanner sc) {
         String marca = "", modelo = "";
         double precioDia;
@@ -51,7 +51,9 @@ public class ServiceInstrumento {
         return new Instrumento(marca, modelo, precioDia, stockTotal, stockDisponible, categoria, estado);
     }
 
-    //Metodos de CRUD
+    // ------------METODOS CRUD ------------ //
+
+    // ------------ MOSTRAR TODOS ------------ //
     public void vMostrarTodos() {
         List<Instrumento> resultadoQuery;
         try {
@@ -67,6 +69,7 @@ public class ServiceInstrumento {
 
     }
 
+    // ------------ MARCAR POR ID------------ //
     public void vMostrarPorId(int id) {
         Instrumento instrumento = null;
 
@@ -82,6 +85,7 @@ public class ServiceInstrumento {
 
     }
 
+    // ------------ INSERTAR INSTRUMENTO ------------ //
     public void vInsertarNuevoInstrumento(Instrumento instrumento) {
         try {
             instrumentoCrud.insertar(instrumento);
@@ -90,6 +94,7 @@ public class ServiceInstrumento {
         }
     }
 
+    // ------------ MODIFICAR REGISTRO ------------ //
     public void vModificarRegistro(Instrumento instrumento) {
 
         try {
@@ -99,6 +104,7 @@ public class ServiceInstrumento {
         }
     }
 
+    // ------------ ELIMINAR INSTRUMENTO ------------ //
     public void vEliminarInstrumento(int id) {
         try {
             instrumentoCrud.eliminar(id);
@@ -150,6 +156,8 @@ public class ServiceInstrumento {
                     break;
 
                 case 6:
+                    System.out.println("Saliendo del menu instrumentos...");
+                    MenuInstrumentos.vEspera(sc);
                     return;
 
                 default:
