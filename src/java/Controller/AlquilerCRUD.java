@@ -224,23 +224,22 @@ public class AlquilerCRUD {
     }
 
     // ------------ MARCAR COMO PAGADO ------------ //
-    public void marcarComoPagado(Alquiler alquiler) throws SQLException {
+    public void marcarComoPagado(int id) throws SQLException {
         String sql = "UPDATE Alquileres SET estadopago=? WHERE id=?";
 
-        alquiler.setEstadoPago(EstadoPago.PAGADO);
 
         try (Connection con = ConexionBD.conexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, alquiler.getEstadoPagoBD());
-            ps.setInt(2, alquiler.getId());
+            ps.setBoolean(1, true);
+            ps.setInt(2, id);
 
             int filas = ps.executeUpdate();
 
             if (filas > 0) {
                 System.out.println("Alquiler marcado como pagado");
             } else {
-                System.out.println("No se encontro ningun alquiler con ID: " + alquiler.getId());
+                System.out.println("No se encontro ningun alquiler con ID: " + id);
             }
         }
     }

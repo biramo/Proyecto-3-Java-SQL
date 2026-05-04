@@ -1,29 +1,28 @@
 package Menu;
 
+import java.util.Scanner;
+
 public class MenuInstrumentos {
-    //Reset
+    // Reset
     private static final String RESET = "\u001B[0m";
 
     //Color
     private static final String CIAN_B = "\u001B[96m";
 
     //Color de fondo
-    private static final String FONDO_GRIS = "\u001B[48;5;236m";  // Un gris oscuro profundo
-
+    private static final String FONDO_GRIS = "\u001B[48;5;236m";
 
     public static void vOpciones() {
         String estilo = CIAN_B + FONDO_GRIS;
         System.out.println(estilo + "┌─────────────────────────────────────────────────────────┐" + RESET);
-        System.out.println(estilo + "│                GESTIÓN DE INSTRUMENTOS                  │" + RESET);
+        System.out.println(estilo + "│                GESTIÓN DE INSTRUMENTOS                     │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
         System.out.println(estilo + "│  1. Mostrar todos      |  4. Modificar registro         │" + RESET);
-        System.out.println(estilo + "│  2. Buscar por ID      |  5. Eliminar instrumento       │" + RESET);
+        System.out.println(estilo + "│  2. Buscar por id      |  5. Eliminar Instrumento       │" + RESET);
         System.out.println(estilo + "│  3. Insertar nuevo     |  6. Salir                      │" + RESET);
         System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
         System.out.print("Seleccione una opción: ");
-
     }
-
 
     public static void vLimpiarConsola() {
         // Código ANSI: \033[H (mueve el cursor al inicio) \033[2J (limpia la pantalla)
@@ -35,5 +34,13 @@ public class MenuInstrumentos {
         vLimpiarConsola();
         vOpciones();
 
+    }
+
+    public static void vEspera(Scanner sc) {
+        if (sc.hasNextLine()) {
+            sc.nextLine();
+        }
+        System.out.println("PRESIONA [ENTER] para continuar...");
+        sc.nextLine();
     }
 }

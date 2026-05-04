@@ -58,6 +58,16 @@ public class Instrumento implements InAlquilable {
         this.estado = estado;
     }
 
+    public Instrumento(String marca, String modelo, double precioDia, int stockTotal, int stockDisponible, CategoriaInstrumento categoria, EstadoInstrumento estado) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.precioDia = precioDia;
+        this.stockTotal = stockTotal;
+        this.stockDisponible = stockDisponible;
+        this.categoria = categoria;
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "Instrumento{" +
@@ -78,14 +88,10 @@ public class Instrumento implements InAlquilable {
     }
 
     @Override
-    public boolean estaDisponible(){
-        return (stockDisponible > 0) ? true : false;
-    }
+    public boolean estaDisponible(){ return (stockDisponible > 0) ? true : false; }
 
     @Override
-    public double calcularImporte(int dias) {
-        return precioDia * dias;
-    }
+    public double calcularImporte(int dias) { return precioDia * dias; }
 
     @Override
     public void registrarSalida() {
@@ -104,11 +110,7 @@ public class Instrumento implements InAlquilable {
             estado = EstadoInstrumento.DISPONIBLE;
     }
 
-    public void reducirStock(){
-        stockTotal--;
-    }
+    public void reducirStock(){ stockTotal--; }
 
-    public void aumentarStock(){
-        stockTotal++;
-    }
+    public void aumentarStock(){ stockTotal++; }
 }

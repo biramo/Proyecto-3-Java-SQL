@@ -239,7 +239,6 @@ public class ReservaCRUD {
         InstrumentoCRUD instrumentoCRUD = new InstrumentoCRUD();
 
         Cliente cliente = clienteCRUD.listarClientePorDni(rs.getString("dni_cliente"));
-        //este crud todavia no lo hice (mario)
         Instrumento instrumento = instrumentoCRUD.listarInstrumentoPorId(rs.getInt("id_instrumento"));
 
         Reserva reserva = new Reserva(

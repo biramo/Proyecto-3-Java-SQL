@@ -1,5 +1,7 @@
 package Menu;
 
+import java.util.Scanner;
+
 public class MenuAlquileres {
     //Reset
     private static final String RESET = "\u001B[0m";
@@ -10,18 +12,20 @@ public class MenuAlquileres {
     //Color de fondo
     private static final String FONDO_GRIS = "\u001B[48;5;236m";  // Un gris oscuro profundo
 
-
     public static void vOpciones() {
         String estilo = CIAN_B + FONDO_GRIS;
         System.out.println(estilo + "┌─────────────────────────────────────────────────────────┐" + RESET);
         System.out.println(estilo + "│                GESTIÓN DE ALQUILERES                    │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
-        System.out.println(estilo + "│  1. Mostrar todos      |  4. Modificar registro         │" + RESET);
-        System.out.println(estilo + "│  2. Buscar por ID      |  5. Eliminar alquiler          │" + RESET);
-        System.out.println(estilo + "│  3. Insertar nuevo     |  6. Salir                      │" + RESET);
+        System.out.println(estilo + "│  1. Mostrar todos        |  6. Modificar registro       │" + RESET);
+        System.out.println(estilo + "│  2. Buscar por ID        |  7. Eliminar alquiler        │" + RESET);
+        System.out.println(estilo + "│  3. Por Cliente          |  8. Activos (Sin devolver)   │" + RESET);
+        System.out.println(estilo + "│  4. Por Instrumento      |  9. Registrar Devolución     │" + RESET);
+        System.out.println(estilo + "│  5. Insertar nuevo       | 10. Marcar como pagado       │" + RESET);
+        System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
+        System.out.println(estilo + "│  11. Salir                                              │" + RESET);
         System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
         System.out.print("Seleccione una opción: ");
-
     }
 
 
@@ -35,5 +39,13 @@ public class MenuAlquileres {
         vLimpiarConsola();
         vOpciones();
 
+    }
+
+    public static void vEspera(Scanner sc) {
+        if (sc.hasNextLine()) {
+            sc.nextLine();
+        }
+        System.out.println("PRESIONA [ENTER] para continuar...");
+        sc.nextLine();
     }
 }

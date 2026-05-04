@@ -1,5 +1,6 @@
 package Menu;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuClientes {
@@ -36,7 +37,40 @@ public class MenuClientes {
     public static void vMostrarMenu() {
         vLimpiarConsola();
         vOpciones();
-
     }
 
+    public static void vEspera(Scanner sc) {
+        if (sc.hasNextLine()) {
+            sc.nextLine();
+        }
+        System.out.println("PRESIONA [ENTER] para continuar...");
+        sc.nextLine();
+    }
+
+    public void sCliente(Scanner sc){
+        int opC;
+
+        do{
+            vMostrarMenu();
+            opC = sc.nextInt();
+            try{
+
+                switch (opC){
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                        System.out.println("Volviendo al menú principal...");
+                        break;
+                    default:
+                        System.out.println("Valor Incorrecto.");
+                        sc.nextLine();
+                }
+            } catch (InputMismatchException e) {
+                 System.out.println("Inserte un número entero válido");
+            }
+        }while(opC != 6);
+    }
 }
