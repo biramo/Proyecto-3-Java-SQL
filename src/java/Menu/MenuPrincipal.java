@@ -9,7 +9,7 @@ import java.util.Scanner;
 import static java.lang.Thread.sleep;
 
 public class MenuPrincipal {
-    //Servicio que tendra dentro todos los servicios,cada uno con sus respectivos metodos para llamar a sus funciones y sus CRUDS
+    //Servicio que tendra dentro todos los servicios, cada uno con sus respectivos métodos para llamar a sus funciones y sus CRUDS
     private ServiceMenu serviceMenu;
     Scanner sc = new Scanner(System.in);
     // Reset
