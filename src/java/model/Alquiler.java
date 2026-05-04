@@ -12,14 +12,14 @@ import java.util.ArrayList;
 public class Alquiler {
 
     private int id;
-    private Cliente cliente; // Asociacion: el cliente existe aunque el alquiler desaparezca
-    private Instrumento instrumento; // Asociacion: el instrumento existe aunque el alquiler desaparezca
+    private Cliente cliente; // Asociación: el cliente existe aunque el alquiler desaparezca
+    private Instrumento instrumento; // Asociación: el instrumento existe aunque el alquiler desaparezca
     private LocalDate fechaInicio;
     private LocalDate fechaFinPrevista;
-    private LocalDate fechaFinReal; // Sera null mientras el alquiler no haya sido devuelto
+    private LocalDate fechaFinReal; // Será null mientras el alquiler no haya sido devuelto
     private double importeBase; // Precio sin penalizaciones
     private double importeFinal; // Precio final incluyendo penalizaciones
-    private ArrayList<Penalizacion> penalizaciones; // Composicion: penalizaciones propias del alquiler
+    private ArrayList<Penalizacion> penalizaciones; // Composición: penalizaciones propias del alquiler
     private String observaciones; //Comentarios del alquiler
     private EstadoPago estadoPago; // Enum: PENDIENTE = 0, PAGADO = 1 en la BD
 
@@ -33,7 +33,7 @@ public class Alquiler {
         this.fechaFinPrevista = fechaFinPrevista;
         this.fechaFinReal = null;
 
-        // Calculamos automaticamente el importe base segun los dias y el precio diario
+        // Calculamos automáticamente el importe base según los días y el precio diario
         this.importeBase = calcularDiasAlquiler() * instrumento.getPrecioDia();
 
         // Al crear un alquiler nuevo, el importe final empieza siendo igual al importe base
@@ -59,7 +59,7 @@ public class Alquiler {
         return id;
     }
 
-    // El id normalmente lo asigna la BD despues del INSERT
+    // La id normalmente lo asigna la BD después del INSERT
     public void setId(int id) {
         this.id = id;
     }
@@ -150,7 +150,7 @@ public class Alquiler {
         return estadoPago;
     }
 
-    // Devuelve el valor numerico que se guarda en la BD:
+    // Devuelve el valor numérico que se guarda en la BD:
     // PENDIENTE = 0, PAGADO = 1
     public int getEstadoPagoBD() {
         return estadoPago.ordinal();
@@ -165,11 +165,11 @@ public class Alquiler {
         }
     }
 
-    // Calcula cuantos dias dura el alquiler
+    // Calcula cuantos días dura el alquiler
     public int calcularDiasAlquiler() {
         long dias = ChronoUnit.DAYS.between(fechaInicio, fechaFinPrevista);
 
-        // Si alquila y devuelve el mismo dia, cobramos minimo 1 dia
+        // Si alquila y devuelve el mismo dia, cobramos mínimo 1 dia
         if (dias <= 0) {
             return 1;
         }
@@ -205,7 +205,7 @@ public class Alquiler {
         }
     }
 
-    // Registra la fecha real de devolucion
+    // Registra la fecha real de devolución
     public void registrarDevolucion(LocalDate fechaFinReal) {
         this.fechaFinReal = fechaFinReal;
     }

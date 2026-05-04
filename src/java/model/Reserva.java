@@ -72,10 +72,10 @@ public class Reserva {
         this.activa = activa;
     }
 
-    // METODOS
-    // Cambia la variable para determinar si esta cancelada o no; ademas de llamar al crud que se encargara del reordenamiento de la cola
+    // MÉTODOS
+    // Cambia la variable para determinar si está cancelada o no; además de llamar al crud que se encargara del reordenamiento de la cola
     public void cancelarReserva() throws SQLException {
-        if (this.activa == false) {
+        if (!this.activa) {
             System.out.println("La reserva ya estaba cancelada anteriormente");
         } else {
             this.activa = false;
@@ -86,7 +86,7 @@ public class Reserva {
         }
     }
 
-    // Devuelve un texto con la informacion de la reserva
+    // Devuelve un texto con la información de la reserva
     public String mostrarReserva() {
         // Para mejor gestion de memoria usamos StringBuilder
         StringBuilder sb = new StringBuilder();

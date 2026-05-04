@@ -22,7 +22,7 @@ public class Cliente extends Persona implements InCliente {
         return this.fechaNacimiento;
     }
 
-    //Metodo devuelve texto con los datos del cliente
+    //Método devuelve texto con los datos del cliente
     public String mostrarCliente() {
         //Para mejor gestion de memoria usamos StringBuilder
         StringBuilder sb = new StringBuilder();
@@ -44,7 +44,7 @@ public class Cliente extends Persona implements InCliente {
         return 0;
     }
 
-    //-------------------------Metodo en STANDBY-------------------------
+    //-------------------------Método en STANDBY-------------------------
     public int totalAlquileres() {
         return 0;
     }
