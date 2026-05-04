@@ -1,6 +1,7 @@
 package Menu;
 
 public class MenuAlquileres {
+    //Reset
     private static final String RESET = "\u001B[0m";
 
     //Color
