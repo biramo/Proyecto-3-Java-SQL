@@ -67,7 +67,7 @@ public class ServiceAlquiler {
         //Usamos un setter para añadir el importe base al objeto alquiler
         //Esto es porque el constructor de alquiler no incluye el parametro importeBase
         //Recomiendo añadirlo para simplificacion, si no abra que usar un setter para añadirlo
-        alq.setImporteBase(importeBase);
+        // alq.setImporteBase(importeBase); // en la funcion del constructor de la clase alquileres si nos fijamos, no se pide el dato puesto que se calcula solo al crear el objeto.
         return alq;
     }
 
@@ -191,10 +191,28 @@ public class ServiceAlquiler {
         }
     }
 
+    //------------- COMPROBACION PENALIZACIONES -------//
+
+    public void vComprobarPenalizaciones(Alquiler alquiler,  Scanner sc){
+        System.out.println("Quieres añadir alguna penalización?");
+        //scanner para preguntar
+        boolean continuar = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
+
+        while (continuar) {
+            //crear penalizacion , npreguntae cositas
+            // preguntar si hay mas penalizciones =  continuar = (sc.equals("s")) ? true : false;
+        };
+    }
+
     // ------------ REGISTRAR DEVOLUCION ------------ //
-    public void vRegistrarDevolucion(Alquiler alquiler) {
+    public void vRegistrarDevolucion(int id, Scanner sc) {
         try {
             LocalDate hoy = LocalDate.now();
+            Alquiler alquiler = alquilerCrud.listarAlquilerPorId(id);
+            // menu de penalizaciones
+            vComprobarPenalizaciones(alquiler, sc);
+
+
             alquilerCrud.registrarDevolucion(alquiler, hoy);
         } catch (SQLException e) {
             errorHandler(e);
@@ -221,7 +239,7 @@ public class ServiceAlquiler {
         }
     }
 
-    public int vIntroducirdni(Scanner sc) {
+    public int vIntroducirId(Scanner sc) {
         System.out.println("Introduce el id: ");
         return Validacion.validadorInt(sc);
     }
@@ -234,7 +252,7 @@ public class ServiceAlquiler {
 
     //Switch para llamar a las funciones, con los menus
     public void vLlamarFunciones(Scanner sc) {
-        Alquiler alquiler;
+        Alquiler alquiler =  null;
         String dni;
         while (true) {
             int opcion = intMostrarMenu(sc);
@@ -246,7 +264,7 @@ public class ServiceAlquiler {
                     break;
 
                 case 2:
-                    vMostrarPorId(vIntroducirdni(sc));
+                    vMostrarPorId(vIntroducirId(sc));
                     MenuAlquileres.vEspera(sc);
                     break;
 
@@ -282,7 +300,7 @@ public class ServiceAlquiler {
                     break;
 
                 case 7:
-                    vEliminarAlquiler(vIntroducirdni(sc));
+                    vEliminarAlquiler(vIntroducirId(sc));
                     MenuAlquileres.vEspera(sc);
                     break;
 
@@ -296,12 +314,15 @@ public class ServiceAlquiler {
                     //Esta parte no se como hacerla, ya que en el crud recibe un alquiler
                     //Pero no hay constructor con los parametros que pide el crud
                     //habria que crear un constructor diferente o cambiar los parametros que recibe en el CRUD Alquiler.registrarDevolucion
-                    vRegistrarDevolucion(alquiler);
+                    //En el constructor hay datos que se asignan por defecto y otros que se calculan al crear el objeto. por lo que todos los valores existen.
+                    //
+                    vRegistrarDevolucion(vIntroducirId(sc), sc);
+
                     MenuAlquileres.vEspera(sc);
                     break;
 
                 case 10:
-                    vMarcarComoPagado(vIntroducirdni(sc));
+                    vMarcarComoPagado(vIntroducirId(sc));
                     MenuAlquileres.vEspera(sc);
                     break;
 
