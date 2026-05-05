@@ -4,6 +4,16 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuClientes {
+    /*
+    MenuClientes
+    Opciones:
+    Dar de alta cliente
+    Modificar cliente
+    Eliminar cliente
+    Listar clientes
+    Buscar cliente por DNI
+    Buscar cliente por email
+    */
     // Reset
     private static final String RESET = "\u001B[0m";
 
@@ -47,15 +57,15 @@ public class MenuClientes {
         sc.nextLine();
     }
 
-    public void sCliente(Scanner sc){
+    public void sCliente(Scanner sc) {
         int opC;
 
-        do{
+        do {
             vMostrarMenu();
             opC = sc.nextInt();
-            try{
+            try {
 
-                switch (opC){
+                switch (opC) {
                     case 1:
                     case 2:
                     case 3:
@@ -69,8 +79,8 @@ public class MenuClientes {
                         sc.nextLine();
                 }
             } catch (InputMismatchException e) {
-                 System.out.println("Inserte un número entero válido");
+                System.out.println("Inserte un número entero válido");
             }
-        }while(opC != 6);
+        } while (opC != 6);
     }
 }

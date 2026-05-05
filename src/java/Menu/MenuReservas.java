@@ -1,4 +1,55 @@
 package Menu;
 
+import java.util.Scanner;
+
 public class MenuReservas {
+    /*
+    MenuReservas
+    Opciones:
+    Crear reserva si no hay stock
+    Ver lista de espera
+    Cancelar reserva
+    Confirmar reserva cuando vuelva a haber stock
+    */
+
+    // Reset
+    private static final String RESET = "\u001B[0m";
+
+    //Color
+    private static final String CIAN_B = "\u001B[96m";
+
+    //Color de fondo
+    private static final String FONDO_GRIS = "\u001B[48;5;236m";
+
+    public static void vOpciones() {
+        String estilo = CIAN_B + FONDO_GRIS;
+        System.out.println(estilo + "┌─────────────────────────────────────────────────────────┐" + RESET);
+        System.out.println(estilo + "│                GESTIÓN DE INSTRUMENTOS                  │" + RESET);
+        System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
+        System.out.println(estilo + "│  1. Crear Reserva            |  4. Confirmar Reserva    │" + RESET);
+        System.out.println(estilo + "│  2. Lista de Espera          |  5. Salir                │" + RESET);
+        System.out.println(estilo + "│  3. Cancelar Reserva         |                          │" + RESET);
+        System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
+        System.out.print("Seleccione una opción: ");
+    }
+
+    public static void vLimpiarConsola() {
+        // Código ANSI: \033[H (mueve el cursor al inicio) \033[2J (limpia la pantalla)
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    public static void vMostrarMenu() {
+        vLimpiarConsola();
+        vOpciones();
+
+    }
+
+    public static void vEspera(Scanner sc) {
+        if (sc.hasNextLine()) {
+            sc.nextLine();
+        }
+        System.out.println("PRESIONA [ENTER] para continuar...");
+        sc.nextLine();
+    }
 }

@@ -3,6 +3,19 @@ package Menu;
 import java.util.Scanner;
 
 public class MenuInstrumentos {
+    /*
+    MenuInstrumentos
+    Opciones:
+    Dar de alta instrumento
+    Modificar instrumento
+    Eliminar instrumento
+    Listar instrumentos
+    Buscar instrumento por categoría
+    Buscar instrumento por marca
+    Buscar instrumento por estado
+    Consultar stock
+    Ver detalle de instrumento
+    */
     // Reset
     private static final String RESET = "\u001B[0m";
 
@@ -15,7 +28,7 @@ public class MenuInstrumentos {
     public static void vOpciones() {
         String estilo = CIAN_B + FONDO_GRIS;
         System.out.println(estilo + "┌─────────────────────────────────────────────────────────┐" + RESET);
-        System.out.println(estilo + "│                GESTIÓN DE INSTRUMENTOS                     │" + RESET);
+        System.out.println(estilo + "│                GESTIÓN DE INSTRUMENTOS                  │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
         System.out.println(estilo + "│  1. Mostrar todos      |  4. Modificar registro         │" + RESET);
         System.out.println(estilo + "│  2. Buscar por id      |  5. Eliminar Instrumento       │" + RESET);

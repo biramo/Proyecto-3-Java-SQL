@@ -3,6 +3,15 @@ package Menu;
 import java.util.Scanner;
 
 public class MenuAlquileres {
+    /*
+    MenuAlquileres
+    Opciones:
+    Registrar nuevo alquiler
+    Listar alquileres
+    Buscar alquiler por cliente
+    Buscar alquiler por instrumento
+    Ver alquileres activos
+    */
     //Reset
     private static final String RESET = "\u001B[0m";
 

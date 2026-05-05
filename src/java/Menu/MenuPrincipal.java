@@ -1,14 +1,24 @@
 package Menu;
 
-import java.util.InputMismatchException;
-
 import Services.ServiceMenu;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
 public class MenuPrincipal {
+    /*
+    MenuPrincipal
+    Opciones:
+    Gestión de clientes
+    Gestión de instrumentos
+    Gestión de alquileres
+    Gestión de devoluciones
+    Gestión de reservas
+    Gestión de penalizaciones
+    Salir
+    */
     //Servicio que tendra dentro todos los servicios, cada uno con sus respectivos métodos para llamar a sus funciones y sus CRUDS
     private ServiceMenu serviceMenu;
     Scanner sc = new Scanner(System.in);
@@ -77,11 +87,12 @@ public class MenuPrincipal {
         System.out.println("Iniciando Menú...");
         sleep(500);
 
-        do{ //Bucle DTCW(do-try-catch-while) para que el usuario pueda volver a introducir un valor, esta vez correcto, en vez de cerrarse el programa.
+        do
+        { //Bucle DTCW(do-try-catch-while) para que el usuario pueda volver a introducir un valor, esta vez correcto, en vez de cerrarse el programa.
             vMostrarMenu(sc);
             opcion = sc.nextInt();
-            try{
-                switch (opcion){
+            try {
+                switch (opcion) {
                     case 1:
                     case 2:
                     case 3:
@@ -97,6 +108,6 @@ public class MenuPrincipal {
             } catch (InputMismatchException e) {
                 System.out.println("Inserte un número entero válido");
             }
-        }while(opcion != 7);
+        } while (opcion != 7);
     }
 }
