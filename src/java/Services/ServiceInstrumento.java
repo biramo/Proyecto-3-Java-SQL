@@ -25,7 +25,7 @@ public class ServiceInstrumento {
         return Validacion.validadorInt(sc);
     }
 
-    //Metodo para entrar datos y devolver objeto creado, usado en insert y update
+    //Método para entrar datos y devolver objeto creado, usado en insert y update
     public Instrumento crearInstrumento(Scanner sc) {
         String marca = "", modelo = "";
         double precioDia;
@@ -50,7 +50,7 @@ public class ServiceInstrumento {
         return new Instrumento(marca, modelo, precioDia, stockTotal, stockDisponible, categoria, estado);
     }
 
-    // ------------METODOS CRUD ------------ //
+    // ------------MÉTODOS CRUD ------------ //
 
     // ------------ MOSTRAR TODOS ------------ //
     public void vMostrarTodos() {
@@ -60,7 +60,7 @@ public class ServiceInstrumento {
             Iterator<Instrumento> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Instrumento i = it.next();
-                i.mostrarInformación();
+                i.mostrarInformacion();
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -75,7 +75,7 @@ public class ServiceInstrumento {
         try {
             instrumento = instrumentoCrud.listarInstrumentoPorId(id);
             if (instrumento != null) {
-                instrumento.mostrarInformación();
+                instrumento.mostrarInformacion();
 
             }
         } catch (SQLException e) {
@@ -160,7 +160,7 @@ public class ServiceInstrumento {
                     return;
 
                 default:
-                    System.out.println("Opcion no valida");
+                    System.out.println("Opción no valida");
                     MenuClientes.vEspera(sc);
                     break;
             }
