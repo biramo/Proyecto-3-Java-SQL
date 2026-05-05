@@ -6,15 +6,16 @@ public class MenuInstrumentos {
     /*
     MenuInstrumentos
     Opciones:
-    Dar de alta instrumento
-    Modificar instrumento
-    Eliminar instrumento
-    Listar instrumentos
-    Buscar instrumento por categoría
-    Buscar instrumento por marca
-    Buscar instrumento por estado
-    Consultar stock
-    Ver detalle de instrumento
+    1- Dar de alta instrumento
+    2- Modificar instrumento
+    3- Eliminar instrumento
+    4- Listar instrumentos
+    5- Buscar instrumento por categoría
+    6- Buscar instrumento por marca
+    7- Buscar instrumento por estado
+    8- Consultar stock
+    9- Ver detalle de instrumento
+    0- Salir
     */
     // Reset
     private static final String RESET = "\u001B[0m";
@@ -32,7 +33,7 @@ public class MenuInstrumentos {
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
         System.out.println(estilo + "│  1. Mostrar todos      |  4. Modificar registro         │" + RESET);
         System.out.println(estilo + "│  2. Buscar por id      |  5. Eliminar Instrumento       │" + RESET);
-        System.out.println(estilo + "│  3. Insertar nuevo     |  6. Salir                      │" + RESET);
+        System.out.println(estilo + "│  3. Insertar nuevo     |  0. Salir                      │" + RESET);
         System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
         System.out.print("Seleccione una opción: ");
     }

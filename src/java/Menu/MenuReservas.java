@@ -6,10 +6,11 @@ public class MenuReservas {
     /*
     MenuReservas
     Opciones:
-    Crear reserva si no hay stock
-    Ver lista de espera
-    Cancelar reserva
-    Confirmar reserva cuando vuelva a haber stock
+    1- Crear reserva si no hay stock
+    2- Ver lista de espera
+    3- Cancelar reserva
+    4- Confirmar reserva cuando vuelva a haber stock
+    0- Salir
     */
 
     // Reset
@@ -27,7 +28,7 @@ public class MenuReservas {
         System.out.println(estilo + "│                GESTIÓN DE INSTRUMENTOS                  │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
         System.out.println(estilo + "│  1. Crear Reserva            |  4. Confirmar Reserva    │" + RESET);
-        System.out.println(estilo + "│  2. Lista de Espera          |  5. Salir                │" + RESET);
+        System.out.println(estilo + "│  2. Lista de Espera          |  0. Salir                │" + RESET);
         System.out.println(estilo + "│  3. Cancelar Reserva         |                          │" + RESET);
         System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
         System.out.print("Seleccione una opción: ");
@@ -52,4 +53,34 @@ public class MenuReservas {
         System.out.println("PRESIONA [ENTER] para continuar...");
         sc.nextLine();
     }
+
+    /*Hay que decidir si menu ... llama a menus o si El servicio de menu .. llama a los servicios y cada servicio llama a su menu para mostrar las opciones */
+    /*
+    public void sReserva(Scanner sc) {
+        int opC;
+
+        do {
+            vMostrarMenu();
+            opC = sc.nextInt();
+            try {
+
+                switch (opC) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 0:
+                        System.out.println("Volviendo al menú principal...");
+                        break;
+                    default:
+                        System.out.println("Valor Incorrecto.");
+                        sc.nextLine();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Inserte un número entero válido");
+            }
+        } while (opC != 0);
+    }
+    */
+
 }

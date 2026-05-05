@@ -1,18 +1,18 @@
 package Menu;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuClientes {
     /*
     MenuClientes
     Opciones:
-    Dar de alta cliente
-    Modificar cliente
-    Eliminar cliente
-    Listar clientes
-    Buscar cliente por DNI
-    Buscar cliente por email
+    1- Dar de alta cliente
+    2- Modificar cliente
+    3- Eliminar cliente
+    4- Listar clientes
+    5- Buscar cliente por DNI
+    6- Buscar cliente por email
+    0- Salir
     */
     // Reset
     private static final String RESET = "\u001B[0m";
@@ -56,7 +56,8 @@ public class MenuClientes {
         System.out.println("PRESIONA [ENTER] para continuar...");
         sc.nextLine();
     }
-
+    /*Hay que decidir si menu ... llama a menus o si El servicio de menu .. llama a los servicios y cada servicio llama a su menu para mostrar las opciones */
+    /*
     public void sCliente(Scanner sc) {
         int opC;
 
@@ -71,7 +72,7 @@ public class MenuClientes {
                     case 3:
                     case 4:
                     case 5:
-                    case 6:
+                    case 0:
                         System.out.println("Volviendo al menú principal...");
                         break;
                     default:
@@ -81,6 +82,7 @@ public class MenuClientes {
             } catch (InputMismatchException e) {
                 System.out.println("Inserte un número entero válido");
             }
-        } while (opC != 6);
+        } while (opC != 0);
     }
+    */
 }

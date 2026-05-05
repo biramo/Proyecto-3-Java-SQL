@@ -6,11 +6,12 @@ public class MenuAlquileres {
     /*
     MenuAlquileres
     Opciones:
-    Registrar nuevo alquiler
-    Listar alquileres
-    Buscar alquiler por cliente
-    Buscar alquiler por instrumento
-    Ver alquileres activos
+    1- Registrar nuevo alquiler
+    2- Listar alquileres
+    3- Buscar alquiler por cliente
+    4- Buscar alquiler por instrumento
+    5- Ver alquileres activos
+    0- Salir
     */
     //Reset
     private static final String RESET = "\u001B[0m";
@@ -32,7 +33,7 @@ public class MenuAlquileres {
         System.out.println(estilo + "│  4. Por Instrumento      |  9. Registrar Devolución     │" + RESET);
         System.out.println(estilo + "│  5. Insertar nuevo       | 10. Marcar como pagado       │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
-        System.out.println(estilo + "│  11. Salir                                              │" + RESET);
+        System.out.println(estilo + "│  0. Salir                                              │" + RESET);
         System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
         System.out.print("Seleccione una opción: ");
     }

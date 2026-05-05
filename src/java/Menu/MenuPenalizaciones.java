@@ -4,7 +4,8 @@ public class MenuPenalizaciones {
     /*
     MenuPenalizaciones
     Opciones:
-    Listar penalizaciones
-    Buscar penalización por cliente
+    1- Listar penalizaciones
+    2- Buscar penalización por cliente
+    0- Salir
     */
 }

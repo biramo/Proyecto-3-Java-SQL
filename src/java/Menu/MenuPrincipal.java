@@ -11,13 +11,13 @@ public class MenuPrincipal {
     /*
     MenuPrincipal
     Opciones:
-    Gestión de clientes
-    Gestión de instrumentos
-    Gestión de alquileres
-    Gestión de devoluciones
-    Gestión de reservas
-    Gestión de penalizaciones
-    Salir
+    1- Gestión de clientes
+    2- Gestión de instrumentos
+    3- Gestión de alquileres
+    4- Gestión de devoluciones
+    5- Gestión de reservas
+    6- Gestión de penalizaciones
+    0- Salir
     */
     //Servicio que tendra dentro todos los servicios, cada uno con sus respectivos métodos para llamar a sus funciones y sus CRUDS
     private ServiceMenu serviceMenu;
@@ -99,7 +99,7 @@ public class MenuPrincipal {
                     case 4:
                     case 5:
                     case 6:
-                    case 7:
+                    case 0:
                         System.out.println("Gracias por usar el programa!");
                         System.exit(0);
                     default:
@@ -108,6 +108,6 @@ public class MenuPrincipal {
             } catch (InputMismatchException e) {
                 System.out.println("Inserte un número entero válido");
             }
-        } while (opcion != 7);
+        } while (opcion != 0);
     }
 }

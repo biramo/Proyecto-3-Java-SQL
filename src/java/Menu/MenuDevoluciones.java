@@ -4,10 +4,11 @@ public class MenuDevoluciones {
     /*
     MenuDevoluciones
     Opciones:
-    Registrar devolución
-    Revisar desperfectos
-    Registrar observaciones
-    Calcular penalización por retraso
-    Enviar instrumento a mantenimiento
+    1- Registrar devolución
+    2- Revisar desperfectos
+    3- Registrar observaciones
+    4- Calcular penalización por retraso
+    5- Enviar instrumento a mantenimiento
+    0- Salir
     */
 }
