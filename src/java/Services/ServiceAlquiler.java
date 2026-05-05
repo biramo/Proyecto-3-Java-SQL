@@ -42,7 +42,7 @@ public class ServiceAlquiler {
         String observaciones, dni;
 
         System.out.print("DNI del cliente: ");
-        dni = Validacion.validadorString(sc);
+        dni = Validacion.validadorDni(sc);
         System.out.print("ID del instrumento: ");
         idInstrumento = Validacion.validadorInt(sc);
         System.out.print("Fecha inicio (yyyy-mm-dd): ");
@@ -264,7 +264,7 @@ public class ServiceAlquiler {
 
                 case 3:
                     System.out.println("Introduce el dni del cliente");
-                    dni = Validacion.validadorString(sc);
+                    dni = Validacion.validadorDni(sc);
                     vMostrarPorCliente(dni);
                     MenuAlquileres.vEspera(sc);
                     break;
