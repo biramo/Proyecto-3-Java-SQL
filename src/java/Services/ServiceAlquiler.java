@@ -315,7 +315,7 @@ public class ServiceAlquiler {
                     break;
 
 
-                case 11:
+                case 0:
                     System.out.println("Saliendo del menu alquiler...");
                     MenuAlquileres.vEspera(sc);
                     return;
