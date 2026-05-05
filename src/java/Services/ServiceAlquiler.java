@@ -200,6 +200,7 @@ public class ServiceAlquiler {
 
         while (continuar) {
             Penalizacion penalizacion = servicePenalizaciones.pedirDatosPenalizacion(sc);
+            servicePenalizaciones.vInsertarPenalizacion(alquiler.getId(), penalizacion);
             alquiler.anadirPenalizacion(penalizacion);
             System.out.println("Quieres añadir otra penalización?");
             continuar = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
