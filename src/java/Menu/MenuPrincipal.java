@@ -1,11 +1,6 @@
 package Menu;
 
-import Services.ServiceMenu;
-
-import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import static java.lang.Thread.sleep;
 
 public class MenuPrincipal {
     /*
@@ -20,8 +15,7 @@ public class MenuPrincipal {
     0- Salir
     */
     //Servicio que tendra dentro todos los servicios, cada uno con sus respectivos métodos para llamar a sus funciones y sus CRUDS
-    private ServiceMenu serviceMenu;
-    Scanner sc = new Scanner(System.in);
+
     // Reset
     private static final String RESET = "\u001B[0m";
 
@@ -45,18 +39,15 @@ public class MenuPrincipal {
     public static void vOpciones() {
         // Definición de colores para mantener consistencia
         String estilo = FONDO_GRIS + CIAN_B;
-
-        System.out.println(estilo + "===========================================================" + RESET);
-        System.out.println(estilo + "              🎼 SELECCIONE UNA OPCIÓN 🎼                  " + RESET);
-        System.out.println(estilo + "===========================================================" + RESET);
-        System.out.println(estilo + "  1. 🎸 Menú Instrumentos                                  " + RESET);
-        System.out.println(estilo + "  2. 👥 Menú Clientes                                      " + RESET);
-        System.out.println(estilo + "  3. 📝 Menú Reservas                                      " + RESET);
-        System.out.println(estilo + "  4. 🤝 Menú Alquiler                                      " + RESET);
-        System.out.println(estilo + "  5. 🔄 Menú Devolución                                    " + RESET);
-        System.out.println(estilo + "  6. ⚠️ Menú Penalización                                  " + RESET);
-        System.out.println(estilo + "  0. ❌ Salir del Sistema                                  " + RESET);
-        System.out.println(estilo + "-----------------------------------------------------------" + RESET);
+        System.out.println(estilo + "┌─🎸───────────────────────────────────────────────────────┐" + RESET);
+        System.out.println(estilo + "│                 SELECCIONE UNA OPCIÓN  🎼                │" + RESET);
+        System.out.println(estilo + "├────────────────────────────────────────────────────🎻────┤" + RESET);
+        System.out.println(estilo + "│  1. 🎸 Menú Instrumentos  |  2. 👥 Menú Clientes         │" + RESET);
+        System.out.println(estilo + "│  3. 📝 Menú Reservas      |  4. 🤝 Menú Alquiler         │" + RESET);
+        System.out.println(estilo + "│  5. 🔄 Menú Devolución    |  6. ⚠️ Menú Penalización     │" + RESET);
+        System.out.println(estilo + "├─🎸───────────────────────────────────────────────────────┤" + RESET);
+        System.out.println(estilo + "│  0. ❌ Salir del Sistema                                 │" + RESET);
+        System.out.println(estilo + "└────────────────────────────────────────────────────🎻────┘" + RESET);
         System.out.print("Seleccione una opción: "); // Sin estilo de fondo para la entrada del usuario
     }
 
@@ -81,6 +72,7 @@ public class MenuPrincipal {
         vOpciones();
     }
 
+    /*
     public static void sPrincipal(Scanner sc) throws InterruptedException {
         int opcion;
 
@@ -110,4 +102,5 @@ public class MenuPrincipal {
             }
         } while (opcion != 0);
     }
+     */
 }

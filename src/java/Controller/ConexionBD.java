@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static Funciones.ControlErrores.ErrorHandler;
+import static Funciones.ControlErrores.errorHandler;
 
 public class ConexionBD {
     private static final String URL = "jdbc:mysql://localhost:3306/dbAlquilerInstrumentos";
@@ -16,7 +16,7 @@ public class ConexionBD {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            ErrorHandler(e);
+            errorHandler(e);
             return null;
         }
     }

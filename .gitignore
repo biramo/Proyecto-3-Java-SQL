@@ -2,6 +2,8 @@
 /.idea/
 *.iml
 out/
+*.class
+sources.txt
 
 # Permitir código fuente
 !src/
