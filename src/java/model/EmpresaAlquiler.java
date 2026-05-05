@@ -70,7 +70,7 @@ public class EmpresaAlquiler {
         while (it.hasNext()) {
             Instrumento i = it.next();
 
-            i.mostrarInformación();
+            i.mostrarInformacion();
         }
     }
 
