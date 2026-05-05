@@ -26,7 +26,7 @@ public class ServicePenalizaciones {
     }
 
     // Pide los datos necesarios para construir una penalización: motivo, importe y tipo de desperfecto
-    private Penalizacion pedirDatosPenalizacion(Scanner sc) {
+    public Penalizacion pedirDatosPenalizacion(Scanner sc) {
         System.out.print("Motivo de la penalización: ");
         String motivo = Validacion.validadorString(sc);
 

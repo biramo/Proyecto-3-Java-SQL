@@ -9,7 +9,6 @@ import model.Enum.EstadoInstrumento;
 import model.Instrumento;
 
 import java.sql.SQLException;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -155,7 +154,7 @@ public class ServiceInstrumento {
                     MenuInstrumentos.vEspera(sc);
                     break;
 
-                case 6:
+                case 0:
                     System.out.println("Saliendo del menu instrumentos...");
                     MenuInstrumentos.vEspera(sc);
                     return;
