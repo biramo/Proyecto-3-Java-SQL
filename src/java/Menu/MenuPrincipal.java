@@ -28,11 +28,11 @@ public class MenuPrincipal {
 
     public static void vTitulo() {
         String estilo = ROJO_B + FONDO_GRIS;
-        System.out.println(estilo + "===========================================================" + RESET);
-        System.out.println(estilo + "   🎸 SYSTEM: GESTIÓN DE INVENTARIO - EN LAS CUERDAS 🎻    " + RESET);
-        System.out.println(estilo + "===========================================================" + RESET);
-        System.out.println(estilo + " [ JDBC Connection: ACTIVE ]          [ Database: MySQL ]  " + RESET);
-        System.out.println(estilo + "-----------------------------------------------------------" + RESET);
+        System.out.println(estilo + "┌─🎸───────────────────────────────────────────────────────┐" + RESET);
+        System.out.println(estilo + "│  SYSTEM: GESTIÓN DE INVENTARIO - EN LAS CUERDAS 🎼       │" + RESET);
+        System.out.println(estilo + "├──────────────────────────────────────────────────────────┤" + RESET);
+        System.out.println(estilo + "│  [ JDBC Connection: ACTIVE ]  [ Database: MySQL ]        │" + RESET);
+        System.out.println(estilo + "└────────────────────────────────────────────────────🎻────┘" + RESET);
     }
 
 
