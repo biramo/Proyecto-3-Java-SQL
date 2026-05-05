@@ -123,6 +123,7 @@ public class ServiceInstrumento {
 
                 case 1:
                     vMostrarTodos();
+                    MenuInstrumentos.vEspera(sc);
                     break;
 
                 case 2:
