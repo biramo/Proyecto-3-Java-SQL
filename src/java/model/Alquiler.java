@@ -221,6 +221,11 @@ public class Alquiler {
         recalcularImporteFinal();
     }
 
+    // metodo añadir penalizacion
+    public void anadirPenalizacion(Penalizacion p){
+        this.penalizaciones.add(p);
+    }
+
     public void mostrarResumen() {
         System.out.println(this.toString());
     }

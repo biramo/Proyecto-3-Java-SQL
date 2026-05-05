@@ -9,6 +9,7 @@ import model.Alquiler;
 import model.Cliente;
 import model.Enum.EstadoPago;
 import model.Instrumento;
+import model.Penalizacion;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -22,6 +23,8 @@ public class ServiceAlquiler {
     private static final AlquilerCRUD alquilerCrud = new AlquilerCRUD();
     private static final ClienteCRUD clienteCrud = new ClienteCRUD();
     private static final InstrumentoCRUD instrumentoCRUD = new InstrumentoCRUD();
+    private final ServicePenalizaciones servicePenalizaciones = new ServicePenalizaciones();
+
 
     //Menus del servicio
     public int intMostrarMenu(Scanner sc) {
@@ -196,10 +199,11 @@ public class ServiceAlquiler {
         boolean continuar = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
 
         while (continuar) {
-            //crear penalizacion , npreguntae cositas
-            // preguntar si hay mas penalizciones =  continuar = (sc.equals("s")) ? true : false;
+            Penalizacion penalizacion = servicePenalizaciones.pedirDatosPenalizacion(sc);
+            alquiler.anadirPenalizacion(penalizacion);
+            System.out.println("Quieres añadir otra penalización?");
+            continuar = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
         }
-        ;
     }
 
     // ------------ REGISTRAR DEVOLUCION ------------ //
@@ -207,10 +211,7 @@ public class ServiceAlquiler {
         try {
             LocalDate hoy = LocalDate.now();
             Alquiler alquiler = alquilerCrud.listarAlquilerPorId(id);
-            // menu de penalizaciones
             vComprobarPenalizaciones(alquiler, sc);
-
-
             alquilerCrud.registrarDevolucion(alquiler, hoy);
         } catch (SQLException e) {
             errorHandler(e);
@@ -304,14 +305,7 @@ public class ServiceAlquiler {
 
 
                 case 9:
-                    //Esta parte no se como hacerla, ya que en el crud recibe un alquiler
-                    //Pero no hay constructor con los parametros que pide el crud
-                    //habria que crear un constructor diferente o cambiar los parametros que recibe en el CRUD Alquiler.registrarDevolucion
-                    //En el constructor hay datos que se asignan por defecto y otros que se calculan al crear el objeto. por lo que todos los valores existen.
-                    //
-
                     vRegistrarDevolucion(vIntroducirId(sc), sc);
-
                     MenuAlquileres.vEspera(sc);
                     break;
 
