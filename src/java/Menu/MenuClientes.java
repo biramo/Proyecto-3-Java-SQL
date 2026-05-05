@@ -52,9 +52,6 @@ public class MenuClientes {
     }
 
     public static void vEspera(Scanner sc) {
-        if (sc.hasNextLine()) {
-            sc.nextLine();
-        }
         System.out.println("PRESIONA [ENTER] para continuar...");
         sc.nextLine();
     }
