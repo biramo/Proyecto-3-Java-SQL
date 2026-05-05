@@ -53,6 +53,17 @@ public class Validacion {
 
     }
 
+    public static String validadorDni(Scanner entrada) {
+        String regexDni = "^[0-9]{8}[a-zA-Z]$";
+        String comprobador = entrada.nextLine();
+        while (!(comprobador.matches(regexDni))) {
+            mostrarError(" [!] '" + comprobador + "' no es una opción válida solo (a-z/A-Z): ");
+            comprobador = entrada.nextLine();
+        }
+
+        return comprobador;
+    }
+
     public static LocalDate validadorFechaDefault(Scanner sc) {
         LocalDate fechaValida = null;
         boolean esValida = false;
