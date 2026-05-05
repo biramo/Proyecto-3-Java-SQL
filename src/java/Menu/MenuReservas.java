@@ -25,11 +25,12 @@ public class MenuReservas {
     public static void vOpciones() {
         String estilo = CIAN_B + FONDO_GRIS;
         System.out.println(estilo + "┌─────────────────────────────────────────────────────────┐" + RESET);
-        System.out.println(estilo + "│                GESTIÓN DE INSTRUMENTOS                  │" + RESET);
+        System.out.println(estilo + "│                GESTIÓN DE RESERVAS                      │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
-        System.out.println(estilo + "│  1. Crear Reserva            |  4. Confirmar Reserva    │" + RESET);
-        System.out.println(estilo + "│  2. Lista de Espera          |  0. Salir                │" + RESET);
-        System.out.println(estilo + "│  3. Cancelar Reserva         |                          │" + RESET);
+        System.out.println(estilo + "│  1. Crear Reserva            |  3. Cancelar Reserva     │" + RESET);
+        System.out.println(estilo + "│  2. Lista de Espera          |  4. Confirmar Reserva    │" + RESET);
+        System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
+        System.out.println(estilo + "│  0. Salir                                               │" + RESET);
         System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
         System.out.print("Seleccione una opción: ");
     }

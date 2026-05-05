@@ -11,4 +11,5 @@ public class MenuDevoluciones {
     5- Enviar instrumento a mantenimiento
     0- Salir
     */
+    /*Se realizara como parte de alquiler al final */
 }

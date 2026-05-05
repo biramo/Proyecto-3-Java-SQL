@@ -64,10 +64,7 @@ public class ServiceAlquiler {
         }
 
         Alquiler alq = new Alquiler(cliente, instrumento, fechaInicio, fechaFinPrevista, observaciones, EstadoPago.PENDIENTE);
-        //Usamos un setter para añadir el importe base al objeto alquiler
-        //Esto es porque el constructor de alquiler no incluye el parametro importeBase
-        //Recomiendo añadirlo para simplificacion, si no abra que usar un setter para añadirlo
-        // alq.setImporteBase(importeBase); // en la funcion del constructor de la clase alquileres si nos fijamos, no se pide el dato puesto que se calcula solo al crear el objeto.
+
         return alq;
     }
 
@@ -193,7 +190,7 @@ public class ServiceAlquiler {
 
     //------------- COMPROBACION PENALIZACIONES -------//
 
-    public void vComprobarPenalizaciones(Alquiler alquiler,  Scanner sc){
+    public void vComprobarPenalizaciones(Alquiler alquiler, Scanner sc) {
         System.out.println("Quieres añadir alguna penalización?");
         //scanner para preguntar
         boolean continuar = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
@@ -201,7 +198,8 @@ public class ServiceAlquiler {
         while (continuar) {
             //crear penalizacion , npreguntae cositas
             // preguntar si hay mas penalizciones =  continuar = (sc.equals("s")) ? true : false;
-        };
+        }
+        ;
     }
 
     // ------------ REGISTRAR DEVOLUCION ------------ //
@@ -244,15 +242,10 @@ public class ServiceAlquiler {
         return Validacion.validadorInt(sc);
     }
     //-------------------------------------------¡IMPORTANTE!--------------------------------------------------- //
-    //La parte de crear penalizaciones no estoy seguro de como estaba pensada asi que no la he hecho
-    //Revisar comentarios de la funcion PedirDatosComunes de este mismo service
-    //Revisar case 9 de la funcion vLlamarFunciones he añadido comentarios explicando el porque
-    //Dejo acabar las cosas que quedan al que hizo la clase Alquiler y sus CRUDS
-
 
     //Switch para llamar a las funciones, con los menus
     public void vLlamarFunciones(Scanner sc) {
-        Alquiler alquiler =  null;
+        Alquiler alquiler = null;
         String dni;
         while (true) {
             int opcion = intMostrarMenu(sc);
@@ -316,6 +309,7 @@ public class ServiceAlquiler {
                     //habria que crear un constructor diferente o cambiar los parametros que recibe en el CRUD Alquiler.registrarDevolucion
                     //En el constructor hay datos que se asignan por defecto y otros que se calculan al crear el objeto. por lo que todos los valores existen.
                     //
+
                     vRegistrarDevolucion(vIntroducirId(sc), sc);
 
                     MenuAlquileres.vEspera(sc);

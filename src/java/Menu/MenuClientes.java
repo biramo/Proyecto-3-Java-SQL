@@ -6,12 +6,12 @@ public class MenuClientes {
     /*
     MenuClientes
     Opciones:
-    1- Dar de alta cliente
-    2- Modificar cliente
-    3- Eliminar cliente
-    4- Listar clientes
-    5- Buscar cliente por DNI
-    6- Buscar cliente por email
+    1- Listar clientes
+    2- Buscar cliente por DNI
+    3- Buscar cliente por email
+    4- Dar de alta cliente
+    5- Modificar cliente
+    6- Eliminar cliente
     0- Salir
     */
     // Reset
@@ -29,9 +29,11 @@ public class MenuClientes {
         System.out.println(estilo + "┌─────────────────────────────────────────────────────────┐" + RESET);
         System.out.println(estilo + "│                GESTIÓN DE CLIENTES                      │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
-        System.out.println(estilo + "│  1. Mostrar todos      |  4. Modificar registro         │" + RESET);
-        System.out.println(estilo + "│  2. Buscar por DNI     |  5. Eliminar cliente           │" + RESET);
-        System.out.println(estilo + "│  3. Insertar nuevo     |  6. Salir                      │" + RESET);
+        System.out.println(estilo + "│  1. Mostrar todos      |  4. Insertar nuevo             │" + RESET);
+        System.out.println(estilo + "│  2. Buscar por DNI     |  5. Modificar registro         │" + RESET);
+        System.out.println(estilo + "│  3. Buscar por Email   |  6. Eliminar cliente           │" + RESET);
+        System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
+        System.out.println(estilo + "│  0. Salir                                               │" + RESET);
         System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
         System.out.print("Seleccione una opción: ");
 

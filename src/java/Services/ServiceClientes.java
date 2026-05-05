@@ -5,7 +5,6 @@ import Funciones.Validacion;
 import Menu.MenuClientes;
 import model.Cliente;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -82,6 +81,22 @@ public class ServiceClientes {
 
     }
 
+    // ------------ MOSTRAR POR EL EMAIL ------------ //
+    public void vMostrarPorEmail(String email) {
+        Cliente cliente = null;
+
+        try {
+            cliente = clienteCrud.listarClientePorEmail(email);
+            if (cliente != null) {
+                System.out.println(cliente.mostrarCliente());
+
+            }
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+
+    }
+
     // ------------ INSERTAR EL CLIENTE EN LA BD ------------ //
     public void vInsertarNuevoCliente(Cliente cliente) {
         try {
@@ -120,11 +135,13 @@ public class ServiceClientes {
             switch (opcion) {
 
                 case 1:
+                    /* 1- Listar clientes */
                     vMostrarTodos();
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 2:
+                    /* 2- Buscar cliente por DNI */
                     System.out.println("Introduce el dni: ");
                     dni = Validacion.validadorString(sc);
                     vMostrarPorDni(dni);
@@ -132,25 +149,37 @@ public class ServiceClientes {
                     break;
 
                 case 3:
+                    /* 3- Buscar cliente por email */
+                    System.out.println("Introduce el email: ");
+                    dni = Validacion.validadorString(sc);
+                    vMostrarPorDni(dni);
+                    MenuClientes.vEspera(sc);
+                    break;
+
+                case 4:
+                    /* 4- Dar de alta cliente */
                     cliente = crearNuevoCliente(sc);
                     vInsertarNuevoCliente(cliente);
                     MenuClientes.vEspera(sc);
                     break;
 
-                case 4:
+                case 5:
+                    /* 5- Modificar cliente */
                     cliente = crearNuevoCliente(sc);
                     vModificarRegistro(cliente);
                     MenuClientes.vEspera(sc);
                     break;
 
-                case 5:
+                case 6:
+                    /* 6- Eliminar cliente */
                     System.out.println("Introduce el dni: ");
                     dni = Validacion.validadorString(sc);
                     vEliminarCliente(dni);
                     MenuClientes.vEspera(sc);
                     break;
 
-                case 6:
+                case 0:
+                    /* 0- Salir */
                     System.out.println("Saliendo del menu de clientes...");
                     MenuClientes.vEspera(sc);
                     return;

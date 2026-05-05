@@ -67,62 +67,77 @@ public class ClienteCRUD {
 
         try (Connection con = ConexionBD.conexion()) {
             assert con != null;
-            try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+
+            try (Statement st = con.createStatement();
+                 ResultSet rs = st.executeQuery(sql)) {
 
                 while (rs.next()) {
-                    Cliente cliente = new Cliente(rs.getString("dni"),
-                            rs.getString("nombre"),
-                            rs.getString("telefono"),
-                            rs.getString("apellidos"),
-                            rs.getString("email"),
-                            rs.getObject("fecha_nacimiento", LocalDate.class));//Formateo para que el constructor acepte el valor
-
+                    Cliente cliente = crearClienteDesdeResultSet(rs);
                     listaClientes.add(cliente);
                 }
-                if (listaClientes.isEmpty()) {
-
-                    System.out.println("No hay entradas de clientes en la base de datos");
-                }
-
-                return listaClientes;
             }
         }
+
+        if (listaClientes.isEmpty()) {
+            System.out.println("No hay entradas de clientes en la base de datos");
+        }
+
+        return listaClientes;
     }
 
-    //Devuelve null si no hay coincidencias, después, tratamos ese null en el programa
+    // ------------ LISTAR CLIENTE POR DNI ------------ //
+    // Devuelve null si no hay coincidencias
     public Cliente listarClientePorDni(String dni) throws SQLException {
         String sql = "SELECT * FROM clientes WHERE dni=?";
         Cliente cliente = null;
 
         try (Connection con = ConexionBD.conexion()) {
             assert con != null;
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
 
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setString(1, dni);
 
                 try (ResultSet rs = ps.executeQuery()) {
-
                     if (rs.next()) {
-                        cliente = new Cliente(rs.getString("dni"),
-                                rs.getString("nombre"),
-                                rs.getString("telefono"),
-                                rs.getString("apellidos"),
-                                rs.getString("email"),
-                                rs.getObject("fecha_nacimiento", LocalDate.class));//Formateo para que el constructor acepte el valor
+                        cliente = crearClienteDesdeResultSet(rs);
                     }
-
                 }
-
-
             }
         }
-        if (cliente == null) {
 
+        if (cliente == null) {
             System.out.println("No hay coincidencias de clientes con el dni: " + dni);
         }
+
         return cliente;
     }
 
+    // ------------ LISTAR CLIENTE POR EMAIL ------------ //
+    // Devuelve null si no hay coincidencias
+    public Cliente listarClientePorEmail(String email) throws SQLException {
+        String sql = "SELECT * FROM clientes WHERE email=?";
+        Cliente cliente = null;
+
+        try (Connection con = ConexionBD.conexion()) {
+            assert con != null;
+
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, email);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        cliente = crearClienteDesdeResultSet(rs);
+                    }
+                }
+            }
+        }
+
+        if (cliente == null) {
+            System.out.println("No hay coincidencias de clientes con el email: " + email);
+        }
+
+        return cliente;
+    }
 
     public void deleteCliente(String dni) throws SQLException {
         String sql = "DELETE FROM clientes WHERE dni=?";
@@ -145,5 +160,17 @@ public class ClienteCRUD {
             }
         }
 
+    }
+
+    // Método privado para no repetir código al crear objetos Cliente desde la base de datos
+    private Cliente crearClienteDesdeResultSet(ResultSet rs) throws SQLException {
+        return new Cliente(
+                rs.getString("dni"),
+                rs.getString("nombre"),
+                rs.getString("telefono"),
+                rs.getString("apellidos"),
+                rs.getString("email"),
+                rs.getObject("fecha_nacimiento", LocalDate.class)
+        );
     }
 }
