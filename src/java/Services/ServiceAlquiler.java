@@ -28,7 +28,7 @@ public class ServiceAlquiler {
     private static final InstrumentoCRUD instrumentoCRUD = new InstrumentoCRUD();
     private final ServicePenalizaciones servicePenalizaciones = new ServicePenalizaciones();
 
-    private static final double PORCENTAJE_PENALIZACION_RETRASO = 0.25;
+    private final double PORCENTAJE_PENALIZACION_RETRASO = 0.25;
 
 
     //Menus del servicio
@@ -45,15 +45,17 @@ public class ServiceAlquiler {
         LocalDate fechaInicio, fechaFinPrevista;
         String observaciones, dni;
 
-        System.out.print("DNI del cliente: ");
+        System.out.print("Introduce el dni o 0 para salir del proceso: ");
         dni = Validacion.validadorDni(sc);
+        if (dni.equals("0")) {
+            return null;
+        }
         System.out.print("ID del instrumento: ");
         idInstrumento = Validacion.validadorInt(sc);
         System.out.print("Fecha inicio (yyyy-mm-dd): ");
         fechaInicio = Validacion.validadorFechaDefault(sc);
         System.out.print("Fecha fin prevista (yyyy-mm-dd): ");
         fechaFinPrevista = Validacion.validadorFechaDefault(sc);
-        System.out.print("Introduce el importe Base: ");
         System.out.print("Introduce alguna observacion si es necesario: ");
         observaciones = Validacion.validadorString(sc);
 
@@ -81,8 +83,11 @@ public class ServiceAlquiler {
 
     //Crea nuevo cliente con id, usado en el update
     public Alquiler crearNuevoAlquilerConID(Scanner sc) {
-        System.out.println("Introduce el id del alquiler existente: ");
+        System.out.print("Introduce el id del alquiler existente o 0 para salir del proceso: ");
         int id = Validacion.validadorInt(sc);
+        if (id == 0) {
+            return null;
+        }
 
         Alquiler alquiler = pedirDatosComunes(sc);
 
