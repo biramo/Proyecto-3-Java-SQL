@@ -4,6 +4,7 @@
 out/
 *.class
 sources.txt
+AGENT.md
 
 # Permitir código fuente
 !src/

@@ -7,11 +7,16 @@ import Funciones.Validacion;
 import Menu.MenuAlquileres;
 import model.Alquiler;
 import model.Cliente;
+import model.Enum.EstadoInstrumento;
 import model.Enum.EstadoPago;
+import model.Enum.TipoDesperfecto;
 import model.Instrumento;
+import model.Penalizacion;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -22,6 +27,10 @@ public class ServiceAlquiler {
     private static final AlquilerCRUD alquilerCrud = new AlquilerCRUD();
     private static final ClienteCRUD clienteCrud = new ClienteCRUD();
     private static final InstrumentoCRUD instrumentoCRUD = new InstrumentoCRUD();
+    private final ServicePenalizaciones servicePenalizaciones = new ServicePenalizaciones();
+
+    private static final double PORCENTAJE_PENALIZACION_RETRASO = 0.25;
+
 
     //Menus del servicio
     public int intMostrarMenu(Scanner sc) {
@@ -39,7 +48,7 @@ public class ServiceAlquiler {
         String observaciones, dni;
 
         System.out.print("DNI del cliente: ");
-        dni = Validacion.validadorString(sc);
+        dni = Validacion.validadorDni(sc);
         System.out.print("ID del instrumento: ");
         idInstrumento = Validacion.validadorInt(sc);
         System.out.print("Fecha inicio (yyyy-mm-dd): ");
@@ -196,22 +205,105 @@ public class ServiceAlquiler {
         boolean continuar = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
 
         while (continuar) {
-            //crear penalizacion , npreguntae cositas
-            // preguntar si hay mas penalizciones =  continuar = (sc.equals("s")) ? true : false;
+            Penalizacion penalizacion = servicePenalizaciones.pedirDatosPenalizacion(sc);
+            alquiler.anadirPenalizacion(penalizacion);
+            System.out.println("Quieres añadir otra penalización?");
+            continuar = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
         }
-        ;
+    }
+
+    private boolean leerSiNo(Scanner sc, String pregunta) {
+        while (true) {
+            System.out.print(pregunta + " (S/N): ");
+            String r = sc.nextLine().trim().toUpperCase();
+            if (r.equals("S")) return true;
+            if (r.equals("N")) return false;
+            System.out.println("Respuesta no vÃ¡lida. Usa S o N.");
+        }
+    }
+
+    private LocalDate leerFechaConDefaultHoy(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String entrada = sc.nextLine().trim();
+            if (entrada.isEmpty()) {
+                return LocalDate.now();
+            }
+            try {
+                return LocalDate.parse(entrada);
+            } catch (DateTimeParseException e) {
+                System.out.println("Formato incorrecto. Usa AAAA-MM-DD (ej: 2026-12-31).");
+            }
+        }
     }
 
     // ------------ REGISTRAR DEVOLUCION ------------ //
     public void vRegistrarDevolucion(int id, Scanner sc) {
         try {
-            LocalDate hoy = LocalDate.now();
             Alquiler alquiler = alquilerCrud.listarAlquilerPorId(id);
-            // menu de penalizaciones
-            vComprobarPenalizaciones(alquiler, sc);
+            if (alquiler == null) {
+                System.out.println("No se encontró ningún alquiler con ID: " + id);
+                return;
+            }
 
+            LocalDate fechaReal = leerFechaConDefaultHoy(sc, "Fecha real de devolución (AAAA-MM-DD) o [ENTER] para hoy: ");
 
-            alquilerCrud.registrarDevolucion(alquiler, hoy);
+            long diasRetraso = ChronoUnit.DAYS.between(alquiler.getFechaFinPrevista(), fechaReal);
+            if (diasRetraso < 0) diasRetraso = 0;
+
+            double penalizacionRetraso = 0;
+            if (diasRetraso > 0) {
+                penalizacionRetraso = diasRetraso * alquiler.getInstrumento().getPrecioDia() * PORCENTAJE_PENALIZACION_RETRASO;
+                Penalizacion pRetraso = new Penalizacion(
+                        "Retraso en la devolución (" + diasRetraso + " días)",
+                        "Penalización fija: " + (PORCENTAJE_PENALIZACION_RETRASO * 100) + "% del precio/día por cada día de retraso.",
+                        penalizacionRetraso,
+                        TipoDesperfecto.NINGUNO
+                );
+                servicePenalizaciones.vInsertarPenalizacion(alquiler.getId(), pRetraso);
+                alquiler.anadirPenalizacion(pRetraso);
+            }
+
+            boolean tieneDesperfectos = leerSiNo(sc, " ¿Tiene desperfectos?");
+            String descripcionDesperfectos = null;
+            double penalizacionDesperfecto = 0;
+
+            if (tieneDesperfectos) {
+                System.out.print("Descripción de desperfectos: ");
+                descripcionDesperfectos = sc.nextLine().trim();
+
+                TipoDesperfecto tipo = Validacion.validadorGenericoEnum(sc, TipoDesperfecto.class);
+
+                System.out.print("Importe de penalización por desperfecto ( ‚¬): ");
+                penalizacionDesperfecto = Validacion.validadorDouble(sc);
+
+                Penalizacion pDesperfecto = new Penalizacion(
+                        "Penalización por desperfecto",
+                        descripcionDesperfectos,
+                        penalizacionDesperfecto,
+                        tipo
+                );
+                servicePenalizaciones.vInsertarPenalizacion(alquiler.getId(), pDesperfecto);
+                alquiler.anadirPenalizacion(pDesperfecto);
+            }
+
+            System.out.print("Observaciones finales: ");
+            String observacionesFinales = sc.nextLine().trim();
+
+            boolean entraMantenimiento = leerSiNo(sc, " ¿Entra en mantenimiento?");
+            if (entraMantenimiento) {
+                instrumentoCRUD.updateEstado(alquiler.getInstrumento().getId(), EstadoInstrumento.MANTENIMIENTO);
+            }
+
+            alquiler.setObservaciones(
+                    (alquiler.getObservaciones() == null ? "" : alquiler.getObservaciones() + " | ") +
+                            "Observaciones devolución: " + observacionesFinales +
+                            (entraMantenimiento ? " | Entra en mantenimiento" : "") +
+                            (tieneDesperfectos ? " | Desperfectos: " + descripcionDesperfectos : "")
+            );
+
+            alquiler.recalcularImporteFinal();
+            alquilerCrud.registrarDevolucion(alquiler, fechaReal);
         } catch (SQLException e) {
             errorHandler(e);
         }
@@ -263,7 +355,7 @@ public class ServiceAlquiler {
 
                 case 3:
                     System.out.println("Introduce el dni del cliente");
-                    dni = Validacion.validadorString(sc);
+                    dni = Validacion.validadorDni(sc);
                     vMostrarPorCliente(dni);
                     MenuAlquileres.vEspera(sc);
                     break;
@@ -304,14 +396,7 @@ public class ServiceAlquiler {
 
 
                 case 9:
-                    //Esta parte no se como hacerla, ya que en el crud recibe un alquiler
-                    //Pero no hay constructor con los parametros que pide el crud
-                    //habria que crear un constructor diferente o cambiar los parametros que recibe en el CRUD Alquiler.registrarDevolucion
-                    //En el constructor hay datos que se asignan por defecto y otros que se calculan al crear el objeto. por lo que todos los valores existen.
-                    //
-
                     vRegistrarDevolucion(vIntroducirId(sc), sc);
-
                     MenuAlquileres.vEspera(sc);
                     break;
 
@@ -321,7 +406,7 @@ public class ServiceAlquiler {
                     break;
 
 
-                case 11:
+                case 0:
                     System.out.println("Saliendo del menu alquiler...");
                     MenuAlquileres.vEspera(sc);
                     return;

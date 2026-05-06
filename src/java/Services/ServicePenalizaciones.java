@@ -193,7 +193,7 @@ public class ServicePenalizaciones {
                     // Como las penalizaciones pertenecen a los alquileres,
                     // primero buscamos los alquileres del cliente y luego recorremos sus penalizaciones.
                     System.out.print("DNI del cliente: ");
-                    String dniCliente = Validacion.validadorString(sc);
+                    String dniCliente = Validacion.validadorDni(sc);
                     vMostrarPorCliente(dniCliente);
                     MenuPenalizaciones.vEspera(sc);
                     break;

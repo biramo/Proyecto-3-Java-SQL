@@ -195,3 +195,6 @@ COLUMN deuda_pendiente;
 
 ALTER TABLE Alquileres
     CHANGE COLUMN penalizacion importe_final double;
+
+ALTER TABLE Penalizaciones
+    ADD COLUMN descripcion TEXT NULL;

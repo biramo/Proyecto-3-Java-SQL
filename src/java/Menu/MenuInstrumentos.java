@@ -3,20 +3,6 @@ package Menu;
 import java.util.Scanner;
 
 public class MenuInstrumentos {
-    /*
-    MenuInstrumentos
-    Opciones:
-    1- Dar de alta instrumento
-    2- Modificar instrumento
-    3- Eliminar instrumento
-    4- Listar instrumentos
-    5- Buscar instrumento por categoría
-    6- Buscar instrumento por marca
-    7- Buscar instrumento por estado
-    8- Consultar stock
-    9- Ver detalle de instrumento
-    0- Salir
-    */
     // Reset
     private static final String RESET = "\u001B[0m";
 
@@ -31,9 +17,11 @@ public class MenuInstrumentos {
         System.out.println(estilo + "┌─────────────────────────────────────────────────────────┐" + RESET);
         System.out.println(estilo + "│                GESTIÓN DE INSTRUMENTOS                  │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
-        System.out.println(estilo + "│  1. Mostrar todos      |  4. Modificar registro         │" + RESET);
-        System.out.println(estilo + "│  2. Buscar por id      |  5. Eliminar Instrumento       │" + RESET);
-        System.out.println(estilo + "│  3. Insertar nuevo     |                                │" + RESET);
+        System.out.println(estilo + "│  1. Mostrar todos        |  6. Agregar un Instrumento   │" + RESET);
+        System.out.println(estilo + "│  2. Buscar por id        |  7. Modificar registro       │" + RESET);
+        System.out.println(estilo + "│  3. Buscar por Categoria |  8. Eliminar Instrumento     │" + RESET);
+        System.out.println(estilo + "│  4. Buscar por marca     |  9. Cambiar estado           │" + RESET);
+        System.out.println(estilo + "│  5. Buscar por estado    |                              │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
         System.out.println(estilo + "│  0. Salir                                               │" + RESET);
         System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
@@ -53,9 +41,6 @@ public class MenuInstrumentos {
     }
 
     public static void vEspera(Scanner sc) {
-        if (sc.hasNextLine()) {
-            sc.nextLine();
-        }
         System.out.println("PRESIONA [ENTER] para continuar...");
         sc.nextLine();
     }

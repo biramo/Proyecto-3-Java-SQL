@@ -167,5 +167,58 @@ public class InstrumentoCRUD {
             }
         }
     }
+
+    public List<Instrumento> listarInstrumentoPorMarca(String marca) throws SQLException {
+        String sql = "SELECT * FROM Instrumentos WHERE marca LIKE ?";
+        List<Instrumento> listaMarca = new ArrayList<>();
+
+        try (Connection conn = ConexionBD.conexion()) {
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, "%" + marca + "%");
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        listaMarca.add(crearInstrumentoDesdeResultSet(rs));
+                    }
+                }
+            }
+        }
+
+        return listaMarca;
+    }
+
+    public List<Instrumento> listarInstrumentoPorEstado(EstadoInstrumento estado) throws SQLException {
+        String sql = "SELECT * FROM Instrumentos WHERE estado = ?";
+        List<Instrumento> listaEstado = new ArrayList<>();
+
+        try (Connection conn = ConexionBD.conexion()) {
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, estado.name());
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        listaEstado.add(crearInstrumentoDesdeResultSet(rs));
+                    }
+                }
+            }
+        }
+
+        return listaEstado;
+    }
+
+    public void updateEstado(int idInstrumento, EstadoInstrumento estado) throws SQLException {
+        String sql = "UPDATE Instrumentos SET estado=? WHERE id=?";
+
+        try (Connection conn = ConexionBD.conexion()) {
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, estado.name());
+                ps.setInt(2, idInstrumento);
+                ps.executeUpdate();
+            }
+        }
+    }
 }
 

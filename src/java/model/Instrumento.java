@@ -15,37 +15,69 @@ public class Instrumento implements InAlquilable {
     private EstadoInstrumento estado;
 
     //Getters y Setters
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getMarca() { return marca; }
+    public String getMarca() {
+        return marca;
+    }
 
-    public void setMarca(String marca){ this.marca = marca; }
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
 
-    public String getModelo() { return modelo; }
+    public String getModelo() {
+        return modelo;
+    }
 
-    public void setModelo(String modelo) { this.modelo = modelo; }
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
 
-    public double getPrecioDia() { return precioDia; }
+    public double getPrecioDia() {
+        return precioDia;
+    }
 
-    public void setPrecioDia(double precioDia) { this.precioDia = precioDia; }
+    public void setPrecioDia(double precioDia) {
+        this.precioDia = precioDia;
+    }
 
-    public int getStockTotal() { return stockTotal; }
+    public int getStockTotal() {
+        return stockTotal;
+    }
 
-    public void setStockTotal(int stockTotal) { this.stockTotal = stockTotal; }
+    public void setStockTotal(int stockTotal) {
+        this.stockTotal = stockTotal;
+    }
 
-    public int getStockDisponible() { return stockDisponible; }
+    public int getStockDisponible() {
+        return stockDisponible;
+    }
 
-    public void setStockDisponible(int stockDisponible) { this.stockDisponible = stockDisponible; }
+    public void setStockDisponible(int stockDisponible) {
+        this.stockDisponible = stockDisponible;
+    }
 
-    public CategoriaInstrumento getCategoria() { return categoria; }
+    public CategoriaInstrumento getCategoria() {
+        return categoria;
+    }
 
-    public void setCategoria(CategoriaInstrumento categoria) { this.categoria = categoria; }
+    public void setCategoria(CategoriaInstrumento categoria) {
+        this.categoria = categoria;
+    }
 
-    public EstadoInstrumento getEstado() { return estado; }
+    public EstadoInstrumento getEstado() {
+        return estado;
+    }
 
-    public void setEstado(EstadoInstrumento estado) { this.estado = estado; }
+    public void setEstado(EstadoInstrumento estado) {
+        this.estado = estado;
+    }
 
     public Instrumento(int id, String marca, String modelo, double precioDia, int stockTotal, int stockDisponible, CategoriaInstrumento categoria, EstadoInstrumento estado) {
         this.id = id;
@@ -83,34 +115,43 @@ public class Instrumento implements InAlquilable {
     }
 
     //Métodos de la clase
-    public void mostrarInformación() {
-        System.out.println("id: " + id + "marca: " + marca + "modelo: " + modelo + "Precio por Dia: " + precioDia + "Stock Total: " + stockTotal + "Stock Disponible" + stockDisponible + "Categoria: " + categoria + "Estado: " + estado);
+    public void mostrarInformacion() {
+        System.out.println("id: " + id + " marca: " + marca + " modelo: " + modelo + " Precio por Dia: " + precioDia + " Stock Total: " + stockTotal + " Stock Disponible" + stockDisponible + " Categoria: " + categoria + " Estado: " + estado);
     }
 
     @Override
-    public boolean estaDisponible(){ return (stockDisponible > 0) ? true : false; }
+    public boolean estaDisponible() {
+        return (stockDisponible > 0) ? true : false;
+    }
 
     @Override
-    public double calcularImporte(int dias) { return precioDia * dias; }
+    public double calcularImporte(int dias) {
+        return precioDia * dias;
+    }
 
     @Override
     public void registrarSalida() {
-        if(stockDisponible > 0){
+        if (stockDisponible > 0) {
             stockDisponible--;
         }
-        if(stockDisponible == 0){
-            estado = EstadoInstrumento.SIN_STOCK;}
+        if (stockDisponible == 0) {
+            estado = EstadoInstrumento.SIN_STOCK;
+        }
     }
 
     @Override
     public void registrarEntrada() {
-        if(stockDisponible < stockTotal){
+        if (stockDisponible < stockTotal) {
             stockDisponible++;
         }
-            estado = EstadoInstrumento.DISPONIBLE;
+        estado = EstadoInstrumento.DISPONIBLE;
     }
 
-    public void reducirStock(){ stockTotal--; }
+    public void reducirStock() {
+        stockTotal--;
+    }
 
-    public void aumentarStock(){ stockTotal++; }
+    public void aumentarStock() {
+        stockTotal++;
+    }
 }

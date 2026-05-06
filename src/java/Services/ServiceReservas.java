@@ -38,7 +38,7 @@ public class ServiceReservas {
         Instrumento instrumento = null;
 
         System.out.print("DNI del cliente: ");
-        String dni = Validacion.validadorString(sc);
+        String dni = Validacion.validadorDni(sc);
         System.out.print("ID del instrumento: ");
         int idInstrumento = Validacion.validadorInt(sc);
         System.out.print("Fecha de reserva (yyyy-mm-dd) o [ENTER] para usar la fecha de hoy: ");
@@ -188,7 +188,7 @@ public class ServiceReservas {
                     MenuReservas.vEspera(sc);
                     break;
 
-                case 5:
+                case 0:
                     // Sale del menú de reservas y vuelve al menú principal.
                     System.out.println("Saliendo del menú de reservas...");
                     MenuReservas.vEspera(sc);

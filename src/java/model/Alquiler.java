@@ -1,10 +1,7 @@
 package model;
 
-import Controller.PenalizacionCRUD;
 import model.Enum.EstadoPago;
-import model.Enum.TipoDesperfecto;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -211,14 +208,11 @@ public class Alquiler {
     }
 
     // Crea una penalizacion, la guarda en BD y la agrega a la lista del objeto
-    public void crearPenalizacion(String motivo, double importe, TipoDesperfecto desperfecto) throws SQLException {
-        Penalizacion p = new Penalizacion(motivo, importe, desperfecto);
 
-        PenalizacionCRUD penalizacionCRUD = new PenalizacionCRUD();
-        penalizacionCRUD.insertarPenalizacion(this.id, p);
 
+    // metodo añadir penalizacion
+    public void anadirPenalizacion(Penalizacion p){
         this.penalizaciones.add(p);
-        recalcularImporteFinal();
     }
 
     public void mostrarResumen() {
