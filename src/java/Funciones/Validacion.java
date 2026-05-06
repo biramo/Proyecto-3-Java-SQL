@@ -120,6 +120,23 @@ public class Validacion {
         return fechaValida;
     }
 
+    public static LocalDate validadorFecha(Scanner sc, String prompt, boolean permitirVacioUsarHoy) {
+        while (true) {
+            System.out.print(prompt);
+            String entrada = sc.nextLine().trim();
+
+            if (permitirVacioUsarHoy && entrada.isEmpty()) {
+                return LocalDate.now();
+            }
+
+            try {
+                return LocalDate.parse(entrada);
+            } catch (DateTimeParseException e) {
+                System.out.println("Error: Formato incorrecto. Use AAAA-MM-DD (ej: 2026-12-31).");
+            }
+        }
+    }
+
     public static <T extends Enum<T>> T validadorGenericoEnum(Scanner entrada, Class<T> enumClass) {
         T resultado = null;
         boolean valido = false;

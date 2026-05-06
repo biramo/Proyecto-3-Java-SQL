@@ -15,7 +15,6 @@ import model.Penalizacion;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -220,21 +219,6 @@ public class ServiceAlquiler {
         }
     }
 
-    private LocalDate leerFechaConDefaultHoy(Scanner sc, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String entrada = sc.nextLine().trim();
-            if (entrada.isEmpty()) {
-                return LocalDate.now();
-            }
-            try {
-                return LocalDate.parse(entrada);
-            } catch (DateTimeParseException e) {
-                System.out.println("Formato incorrecto. Usa AAAA-MM-DD (ej: 2026-12-31).");
-            }
-        }
-    }
-
     // ------------ REGISTRAR DEVOLUCION ------------ //
     public void vRegistrarDevolucion(int id, Scanner sc) {
         try {
@@ -244,7 +228,7 @@ public class ServiceAlquiler {
                 return;
             }
 
-            LocalDate fechaReal = leerFechaConDefaultHoy(sc, "Fecha real de devolución (AAAA-MM-DD) o [ENTER] para hoy: ");
+            LocalDate fechaReal = Validacion.validadorFecha(sc, "Fecha real de devolución (AAAA-MM-DD) o [ENTER] para hoy: ", true);
 
             long diasRetraso = ChronoUnit.DAYS.between(alquiler.getFechaFinPrevista(), fechaReal);
             if (diasRetraso < 0) diasRetraso = 0;
@@ -268,7 +252,7 @@ public class ServiceAlquiler {
 
             if (tieneDesperfectos) {
                 System.out.print("Descripción de desperfectos: ");
-                descripcionDesperfectos = sc.nextLine().trim();
+                descripcionDesperfectos = Validacion.validadorString(sc);
 
                 TipoDesperfecto tipo = Validacion.validadorGenericoEnum(sc, TipoDesperfecto.class);
 
@@ -286,7 +270,7 @@ public class ServiceAlquiler {
             }
 
             System.out.print("Observaciones finales: ");
-            String observacionesFinales = sc.nextLine().trim();
+            String observacionesFinales = Validacion.validadorString(sc);
 
             boolean entraMantenimiento = leerSiNo(sc, " ¿Entra en mantenimiento?");
             if (entraMantenimiento) {
@@ -308,7 +292,7 @@ public class ServiceAlquiler {
 
     }
 
-    // ------------ DELETE ALQUILER ------------ //
+    // ------------ DELETE ALQUILER (NO USAR: preferir cancelacion) ------------ //
     public void vEliminarAlquiler(int id) {
         try {
             alquilerCrud.deleteAlquiler(id);
@@ -316,6 +300,14 @@ public class ServiceAlquiler {
             errorHandler(e);
         }
 
+    }
+
+    public void vCancelarAlquiler(int id, String motivo) {
+        try {
+            alquilerCrud.cancelarAlquiler(id, motivo, LocalDate.now());
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
     }
 
     // ------------ MARCAR COMO PAGADO ------------ //
@@ -342,16 +334,19 @@ public class ServiceAlquiler {
             switch (opcion) {
 
                 case 1:
+                    /* 1- Mostrar todos los alquileres */
                     vMostrarTodos();
                     MenuAlquileres.vEspera(sc);
                     break;
 
                 case 2:
+                    /* 2- Buscar alquiler por ID */
                     vMostrarPorId(vIntroducirId(sc));
                     MenuAlquileres.vEspera(sc);
                     break;
 
                 case 3:
+                    /* 3- Buscar alquileres por cliente (DNI) */
                     System.out.println("Introduce el dni del cliente");
                     dni = Validacion.validadorDni(sc);
                     vMostrarPorCliente(dni);
@@ -359,6 +354,7 @@ public class ServiceAlquiler {
                     break;
 
                 case 4:
+                    /* 4- Buscar alquileres por instrumento (ID) */
                     System.out.println("Introduce el id del instrumento: ");
                     int idInstrumento = Validacion.validadorInt(sc);
                     vMostrarPorInstrumento(idInstrumento);
@@ -367,6 +363,7 @@ public class ServiceAlquiler {
 
 
                 case 5:
+                    /* 5- Insertar nuevo alquiler */
                     alquiler = crearNuevoAlquilerSinId(sc);
                     if (alquiler != null) {
                         vInsertarAlquiler(alquiler);
@@ -375,6 +372,7 @@ public class ServiceAlquiler {
                     break;
 
                 case 6:
+                    /* 6- Modificar alquiler existente */
                     alquiler = crearNuevoAlquilerConID(sc);
                     if (alquiler != null) {
                         vUpdateAlquiler(alquiler);
@@ -383,28 +381,36 @@ public class ServiceAlquiler {
                     break;
 
                 case 7:
-                    vEliminarAlquiler(vIntroducirId(sc));
+                    /* 7- Cancelar alquiler (soft delete) */
+                    int idCancelar = vIntroducirId(sc);
+                    System.out.print("Motivo de la cancelacion: ");
+                    String motivo = Validacion.validadorString(sc);
+                    vCancelarAlquiler(idCancelar, motivo);
                     MenuAlquileres.vEspera(sc);
                     break;
 
                 case 8:
+                    /* 8- Ver alquileres activos (sin devolver) */
                     vMostrarPorAlquileresActivos();
                     MenuAlquileres.vEspera(sc);
                     break;
 
 
                 case 9:
+                    /* 9- Registrar devolucion */
                     vRegistrarDevolucion(vIntroducirId(sc), sc);
                     MenuAlquileres.vEspera(sc);
                     break;
 
                 case 10:
+                    /* 10- Marcar alquiler como pagado */
                     vMarcarComoPagado(vIntroducirId(sc));
                     MenuAlquileres.vEspera(sc);
                     break;
 
 
                 case 0:
+                    /* 0- Salir */
                     System.out.println("Saliendo del menu alquiler...");
                     MenuAlquileres.vEspera(sc);
                     return;

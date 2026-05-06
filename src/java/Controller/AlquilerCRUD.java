@@ -107,6 +107,28 @@ public class AlquilerCRUD {
         }
     }
 
+    // ------------ CANCELAR ALQUILER (SOFT DELETE) ------------ //
+    public void cancelarAlquiler(int id, String motivo, LocalDate fechaCancelacion) throws SQLException {
+        String sql = "UPDATE Alquileres SET cancelado=true, fecha_cancelacion=?, motivo_cancelacion=? WHERE id=?";
+
+        try (Connection con = ConexionBD.conexion()) {
+            assert con != null;
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setObject(1, fechaCancelacion);
+                ps.setString(2, motivo);
+                ps.setInt(3, id);
+
+                int filas = ps.executeUpdate();
+
+                if (filas > 0) {
+                    System.out.println("Alquiler con ID: " + id + ", cancelado correctamente");
+                } else {
+                    System.out.println("No existe ningun alquiler con ID: " + id);
+                }
+            }
+        }
+    }
+
     // ------------ LISTAR ALQUILER POR ID ------------ //
     public Alquiler listarAlquilerPorId(int id) throws SQLException {
         String sql = "SELECT * FROM Alquileres WHERE id=?";
@@ -283,6 +305,14 @@ public class AlquilerCRUD {
         alquiler.setFechaFinReal(rs.getObject("fecha_fin_real", LocalDate.class));
         alquiler.setImporteBase(rs.getDouble("importe_base"));
         alquiler.setImporteFinal(rs.getDouble("importe_final"));
+
+        try {
+            alquiler.setCancelado(rs.getBoolean("cancelado"));
+            alquiler.setFechaCancelacion(rs.getObject("fecha_cancelacion", LocalDate.class));
+            alquiler.setMotivoCancelacion(rs.getString("motivo_cancelacion"));
+        } catch (SQLException ignored) {
+            // Columnas opcionales si la BD aun no fue migrada
+        }
 
         //Listamos las penalizacion y las agregamos al objeto de cliente
         ArrayList<Penalizacion> penalizaciones =

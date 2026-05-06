@@ -19,6 +19,9 @@ public class Alquiler {
     private ArrayList<Penalizacion> penalizaciones; // Composición: penalizaciones propias del alquiler
     private String observaciones; //Comentarios del alquiler
     private EstadoPago estadoPago; // Enum: PENDIENTE = 0, PAGADO = 1 en la BD
+    private boolean cancelado;
+    private LocalDate fechaCancelacion;
+    private String motivoCancelacion;
 
     // Constructor principal
     public Alquiler(Cliente cliente, Instrumento instrumento, LocalDate fechaInicio,
@@ -43,6 +46,10 @@ public class Alquiler {
 
         // Si no se indica estado de pago, por defecto queda pendiente
         this.estadoPago = estadoPago == null ? EstadoPago.PENDIENTE : estadoPago;
+
+        this.cancelado = false;
+        this.fechaCancelacion = null;
+        this.motivoCancelacion = null;
     }
 
     // Constructor opcional mas comodo: si no pasas estadoPago, queda PENDIENTE
@@ -162,6 +169,30 @@ public class Alquiler {
         }
     }
 
+    public boolean isCancelado() {
+        return cancelado;
+    }
+
+    public void setCancelado(boolean cancelado) {
+        this.cancelado = cancelado;
+    }
+
+    public LocalDate getFechaCancelacion() {
+        return fechaCancelacion;
+    }
+
+    public void setFechaCancelacion(LocalDate fechaCancelacion) {
+        this.fechaCancelacion = fechaCancelacion;
+    }
+
+    public String getMotivoCancelacion() {
+        return motivoCancelacion;
+    }
+
+    public void setMotivoCancelacion(String motivoCancelacion) {
+        this.motivoCancelacion = motivoCancelacion;
+    }
+
     // Calcula cuantos días dura el alquiler
     public int calcularDiasAlquiler() {
         long dias = ChronoUnit.DAYS.between(fechaInicio, fechaFinPrevista);
@@ -233,6 +264,9 @@ public class Alquiler {
                 ", penalizaciones=" + penalizaciones +
                 ", observaciones='" + observaciones + '\'' +
                 ", estadoPago=" + estadoPago +
+                ", cancelado=" + cancelado +
+                ", fechaCancelacion=" + fechaCancelacion +
+                ", motivoCancelacion='" + motivoCancelacion + '\'' +
                 '}';
     }
 }
