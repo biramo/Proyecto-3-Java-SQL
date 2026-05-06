@@ -7,12 +7,16 @@ import Funciones.Validacion;
 import Menu.MenuAlquileres;
 import model.Alquiler;
 import model.Cliente;
+import model.Enum.EstadoInstrumento;
 import model.Enum.EstadoPago;
+import model.Enum.TipoDesperfecto;
 import model.Instrumento;
 import model.Penalizacion;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -24,6 +28,8 @@ public class ServiceAlquiler {
     private static final ClienteCRUD clienteCrud = new ClienteCRUD();
     private static final InstrumentoCRUD instrumentoCRUD = new InstrumentoCRUD();
     private final ServicePenalizaciones servicePenalizaciones = new ServicePenalizaciones();
+
+    private static final double PORCENTAJE_PENALIZACION_RETRASO = 0.25;
 
 
     //Menus del servicio
@@ -206,13 +212,98 @@ public class ServiceAlquiler {
         }
     }
 
+    private boolean leerSiNo(Scanner sc, String pregunta) {
+        while (true) {
+            System.out.print(pregunta + " (S/N): ");
+            String r = sc.nextLine().trim().toUpperCase();
+            if (r.equals("S")) return true;
+            if (r.equals("N")) return false;
+            System.out.println("Respuesta no vÃ¡lida. Usa S o N.");
+        }
+    }
+
+    private LocalDate leerFechaConDefaultHoy(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String entrada = sc.nextLine().trim();
+            if (entrada.isEmpty()) {
+                return LocalDate.now();
+            }
+            try {
+                return LocalDate.parse(entrada);
+            } catch (DateTimeParseException e) {
+                System.out.println("Formato incorrecto. Usa AAAA-MM-DD (ej: 2026-12-31).");
+            }
+        }
+    }
+
     // ------------ REGISTRAR DEVOLUCION ------------ //
     public void vRegistrarDevolucion(int id, Scanner sc) {
         try {
-            LocalDate hoy = LocalDate.now();
             Alquiler alquiler = alquilerCrud.listarAlquilerPorId(id);
-            vComprobarPenalizaciones(alquiler, sc);
-            alquilerCrud.registrarDevolucion(alquiler, hoy);
+            if (alquiler == null) {
+                System.out.println("No se encontró ningún alquiler con ID: " + id);
+                return;
+            }
+
+            LocalDate fechaReal = leerFechaConDefaultHoy(sc, "Fecha real de devolución (AAAA-MM-DD) o [ENTER] para hoy: ");
+
+            long diasRetraso = ChronoUnit.DAYS.between(alquiler.getFechaFinPrevista(), fechaReal);
+            if (diasRetraso < 0) diasRetraso = 0;
+
+            double penalizacionRetraso = 0;
+            if (diasRetraso > 0) {
+                penalizacionRetraso = diasRetraso * alquiler.getInstrumento().getPrecioDia() * PORCENTAJE_PENALIZACION_RETRASO;
+                Penalizacion pRetraso = new Penalizacion(
+                        "Retraso en la devolución (" + diasRetraso + " días)",
+                        "Penalización fija: " + (PORCENTAJE_PENALIZACION_RETRASO * 100) + "% del precio/día por cada día de retraso.",
+                        penalizacionRetraso,
+                        TipoDesperfecto.NINGUNO
+                );
+                servicePenalizaciones.vInsertarPenalizacion(alquiler.getId(), pRetraso);
+                alquiler.anadirPenalizacion(pRetraso);
+            }
+
+            boolean tieneDesperfectos = leerSiNo(sc, " ¿Tiene desperfectos?");
+            String descripcionDesperfectos = null;
+            double penalizacionDesperfecto = 0;
+
+            if (tieneDesperfectos) {
+                System.out.print("Descripción de desperfectos: ");
+                descripcionDesperfectos = sc.nextLine().trim();
+
+                TipoDesperfecto tipo = Validacion.validadorGenericoEnum(sc, TipoDesperfecto.class);
+
+                System.out.print("Importe de penalización por desperfecto ( ‚¬): ");
+                penalizacionDesperfecto = Validacion.validadorDouble(sc);
+
+                Penalizacion pDesperfecto = new Penalizacion(
+                        "Penalización por desperfecto",
+                        descripcionDesperfectos,
+                        penalizacionDesperfecto,
+                        tipo
+                );
+                servicePenalizaciones.vInsertarPenalizacion(alquiler.getId(), pDesperfecto);
+                alquiler.anadirPenalizacion(pDesperfecto);
+            }
+
+            System.out.print("Observaciones finales: ");
+            String observacionesFinales = sc.nextLine().trim();
+
+            boolean entraMantenimiento = leerSiNo(sc, " ¿Entra en mantenimiento?");
+            if (entraMantenimiento) {
+                instrumentoCRUD.updateEstado(alquiler.getInstrumento().getId(), EstadoInstrumento.MANTENIMIENTO);
+            }
+
+            alquiler.setObservaciones(
+                    (alquiler.getObservaciones() == null ? "" : alquiler.getObservaciones() + " | ") +
+                            "Observaciones devolución: " + observacionesFinales +
+                            (entraMantenimiento ? " | Entra en mantenimiento" : "") +
+                            (tieneDesperfectos ? " | Desperfectos: " + descripcionDesperfectos : "")
+            );
+
+            alquiler.recalcularImporteFinal();
+            alquilerCrud.registrarDevolucion(alquiler, fechaReal);
         } catch (SQLException e) {
             errorHandler(e);
         }
