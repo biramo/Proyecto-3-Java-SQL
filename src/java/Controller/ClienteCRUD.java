@@ -27,7 +27,7 @@ public class ClienteCRUD {
                 ps.setString(6, cliente.getTelefono());
 
 
-                int fA = ps.executeUpdate();
+                ps.executeUpdate();
 
                 System.out.println("Cliente: " + cliente.getNombre() + " " + cliente.getApellidos() + ", insertado correctamente");
 
