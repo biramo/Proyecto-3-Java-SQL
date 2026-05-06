@@ -40,7 +40,7 @@ public class ServiceClientes {
         telefono = Validacion.validadorTelefono(sc);
         System.out.print("Introduce el email: ");
         email = Validacion.validadorEmail(sc);
-        System.out.print("Introduce la fecha de nacimiento: ");
+        System.out.print("Introduce la fecha de nacimiento usa el formato(YYYY-MM-DD): ");
         fechaNacimiento = Validacion.validadorFechaDefault(sc);
 
 

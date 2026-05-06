@@ -33,7 +33,7 @@ public class MenuAlquileres {
         System.out.println(estilo + "│                GESTIÓN DE ALQUILERES                    │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
         System.out.println(estilo + "│  1. Mostrar todos        |  6. Modificar registro       │" + RESET);
-        System.out.println(estilo + "│  2. Buscar por ID        |  7. Cancelar alquiler       │" + RESET);
+        System.out.println(estilo + "│  2. Buscar por ID        |  7. Cancelar alquiler        │" + RESET);
         System.out.println(estilo + "│  3. Por Cliente          |  8. Activos (Sin devolver)   │" + RESET);
         System.out.println(estilo + "│  4. Por Instrumento      |  9. Registrar Devolución     │" + RESET);
         System.out.println(estilo + "│  5. Insertar nuevo       | 10. Marcar como pagado       │" + RESET);

@@ -49,8 +49,10 @@ public class ServiceAlquiler {
         dni = Validacion.validadorDni(sc);
         System.out.print("ID del instrumento: ");
         idInstrumento = Validacion.validadorInt(sc);
-        fechaInicio = Validacion.validadorFecha(sc, "Fecha inicio (yyyy-mm-dd) o [ENTER] para hoy: ", true);
-        fechaFinPrevista = Validacion.validadorFecha(sc, "Fecha fin prevista (yyyy-mm-dd) o [ENTER] para hoy: ", true);
+        System.out.print("Fecha inicio (yyyy-mm-dd): ");
+        fechaInicio = Validacion.validadorFechaDefault(sc);
+        System.out.print("Fecha fin prevista (yyyy-mm-dd): ");
+        fechaFinPrevista = Validacion.validadorFechaDefault(sc);
         System.out.print("Introduce el importe Base: ");
         System.out.print("Introduce alguna observacion si es necesario: ");
         observaciones = Validacion.validadorString(sc);
