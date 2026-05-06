@@ -1,5 +1,11 @@
 package Menu;
 
+import Funciones.Validacion;
+import Services.ServiceClientes;
+import model.Cliente;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class MenuClientes {
@@ -17,11 +23,17 @@ public class MenuClientes {
     // Reset
     private static final String RESET = "\u001B[0m";
 
-    //Color
+    //Color del menu
     private static final String CIAN_B = "\u001B[96m";
 
     //Color de fondo
     private static final String FONDO_GRIS = "\u001B[48;5;236m";  // Un gris oscuro profundo
+
+    //Color de los textos
+    private static final String TEXTO_BLANCO = "\u001B[97m";
+
+    //Color errores
+    private static final String ROJO = "\u001B[31m";
 
 
     public static void vOpciones() {
@@ -40,7 +52,7 @@ public class MenuClientes {
     }
 
 
-    public static void vLimpiarConsola() {
+    private static void vLimpiarConsola() {
         // Código ANSI: \033[H (mueve el cursor al inicio) \033[2J (limpia la pantalla)
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -55,33 +67,58 @@ public class MenuClientes {
         System.out.println("PRESIONA [ENTER] para continuar...");
         sc.nextLine();
     }
-    /*Hay que decidir si menu ... llama a menus o si El servicio de menu .. llama a los servicios y cada servicio llama a su menu para mostrar las opciones */
-    /*
-    public void sCliente(Scanner sc) {
-        int opC;
 
-        do {
-            vMostrarMenu();
-            opC = sc.nextInt();
-            try {
-
-                switch (opC) {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 0:
-                        System.out.println("Volviendo al menú principal...");
-                        break;
-                    default:
-                        System.out.println("Valor Incorrecto.");
-                        sc.nextLine();
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Inserte un número entero válido");
-            }
-        } while (opC != 0);
+    private static void vMostrarTexto(String texto) {
+        System.out.println(TEXTO_BLANCO + texto + RESET);
     }
-    */
+
+
+    public static void vMostrarTodosCliente() {
+        ServiceClientes serviceClientes = new ServiceClientes();
+
+        ArrayList<Cliente> listaClientes = serviceClientes.vMostrarTodos();
+
+        if (listaClientes == null || listaClientes.isEmpty()) {
+            return;
+        }
+
+        Iterator<Cliente> it = listaClientes.iterator();
+
+        while (it.hasNext()) {
+            Cliente c = it.next();
+            vMostrarTexto(c.mostrarCliente());
+        }
+    }
+
+    public static void vMostrarClientePorEmail(Scanner sc) {
+        ServiceClientes serviceClientes = new ServiceClientes();
+        String email, resultadoQuery;
+
+        System.out.println("Introduce el email: ");
+        email = Validacion.validadorEmail(sc);
+
+        resultadoQuery = serviceClientes.vMostrarPorEmail(email);
+
+        if (resultadoQuery == null) {
+            return;
+        }
+
+        vMostrarTexto(resultadoQuery);
+    }
+
+    public static void vMostrarClientePorDni(Scanner sc) {
+        ServiceClientes serviceClientes = new ServiceClientes();
+        String dni, resultadoQuery;
+
+        System.out.println("Introduce el dni: ");
+        dni = Validacion.validadorDni(sc);
+        resultadoQuery = serviceClientes.vMostrarPorDni(dni);
+
+        if (resultadoQuery == null) {
+            return;
+        }
+        vMostrarTexto(resultadoQuery);
+
+    }
+
 }

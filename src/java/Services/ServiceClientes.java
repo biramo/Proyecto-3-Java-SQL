@@ -36,9 +36,9 @@ public class ServiceClientes {
         System.out.print("Introduce el apellido: ");
         apellidos = Validacion.validadorString(sc);
         System.out.print("Introduce el telefono: ");
-        telefono = Validacion.validadorString(sc);
+        telefono = Validacion.validadorTelefono(sc);
         System.out.print("Introduce el email: ");
-        email = Validacion.validadorString(sc);
+        email = Validacion.validadorEmail(sc);
         System.out.print("Introduce la fecha de nacimiento: ");
         fechaNacimiento = Validacion.validadorFechaDefault(sc);
 
@@ -50,51 +50,44 @@ public class ServiceClientes {
     // ------------ METODOS CRUD ------------ //
 
     // ------------ MOSTRAR TODOS LOS CLIENTES ------------ //
-    public void vMostrarTodos() {
-        ArrayList<Cliente> resultadoQuery;
+    public ArrayList<Cliente> vMostrarTodos() {
         try {
-            resultadoQuery = clienteCrud.listarTodosClientes();
-            Iterator<Cliente> it = resultadoQuery.iterator();
-            while (it.hasNext()) {
-                Cliente c = it.next();
-                System.out.println(c.mostrarCliente());
-            }
+            return clienteCrud.listarTodosClientes();
         } catch (SQLException e) {
             errorHandler(e);
         }
-
+        return new ArrayList<>();
     }
 
     // ------------ MOSTRAR POR EL DNI ------------ //
-    public void vMostrarPorDni(String dni) {
+    public String vMostrarPorDni(String dni) {
         Cliente cliente = null;
 
         try {
             cliente = clienteCrud.listarClientePorDni(dni);
             if (cliente != null) {
-                System.out.println(cliente.mostrarCliente());
+                return cliente.mostrarCliente();
 
             }
         } catch (SQLException e) {
             errorHandler(e);
         }
-
+        return null;
     }
 
     // ------------ MOSTRAR POR EL EMAIL ------------ //
-    public void vMostrarPorEmail(String email) {
+    public String vMostrarPorEmail(String email) {
         Cliente cliente = null;
 
         try {
             cliente = clienteCrud.listarClientePorEmail(email);
             if (cliente != null) {
-                System.out.println(cliente.mostrarCliente());
-
+                return cliente.mostrarCliente();
             }
         } catch (SQLException e) {
             errorHandler(e);
         }
-
+        return null;
     }
 
     // ------------ INSERTAR EL CLIENTE EN LA BD ------------ //
@@ -128,31 +121,26 @@ public class ServiceClientes {
 
     //Switch para llamar a las funciones
     public void vLlamarFunciones(Scanner sc) {
-        String dni;
+        String dni, email;
         Cliente cliente;
         while (true) {
             int opcion = intMostrarMenu(sc);
             switch (opcion) {
-
                 case 1:
                     /* 1- Listar clientes */
-                    vMostrarTodos();
+                    MenuClientes.vMostrarTodosCliente();
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 2:
                     /* 2- Buscar cliente por DNI */
-                    System.out.println("Introduce el dni: ");
-                    dni = Validacion.validadorDni(sc);
-                    vMostrarPorDni(dni);
+                    MenuClientes.vMostrarClientePorDni(sc);
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 3:
                     /* 3- Buscar cliente por email */
-                    System.out.println("Introduce el email: ");
-                    String email = Validacion.validadorString(sc);
-                    vMostrarPorEmail(email);
+                    MenuClientes.vMostrarClientePorEmail(sc);
                     MenuClientes.vEspera(sc);
                     break;
 

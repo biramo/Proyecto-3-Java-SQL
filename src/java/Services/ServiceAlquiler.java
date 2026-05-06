@@ -43,7 +43,6 @@ public class ServiceAlquiler {
         Instrumento instrumento = null;
         int idInstrumento;
         LocalDate fechaInicio, fechaFinPrevista;
-        double importeBase;
         String observaciones, dni;
 
         System.out.print("DNI del cliente: ");
@@ -55,7 +54,6 @@ public class ServiceAlquiler {
         System.out.print("Fecha fin prevista (yyyy-mm-dd): ");
         fechaFinPrevista = Validacion.validadorFechaDefault(sc);
         System.out.print("Introduce el importe Base: ");
-        importeBase = Validacion.validadorDouble(sc);
         System.out.print("Introduce alguna observacion si es necesario: ");
         observaciones = Validacion.validadorString(sc);
 
