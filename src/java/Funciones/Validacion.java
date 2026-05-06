@@ -1,8 +1,5 @@
 package Funciones;
 
-import model.Enum.CategoriaInstrumento;
-import model.Enum.EstadoInstrumento;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -14,8 +11,8 @@ public class Validacion {
 
 
     //Validador int
-    public static int validadorInt(Scanner entrada){
-        while(true){
+    public static int validadorInt(Scanner entrada) {
+        while (true) {
             String entradaUsuario = entrada.nextLine().trim();
 
             try {
@@ -28,9 +25,9 @@ public class Validacion {
     }
 
     //Validador double
-    public static double validadorDouble(Scanner entrada){
-        while(true){
-            String entradaUsuario =entrada.nextLine().trim();
+    public static double validadorDouble(Scanner entrada) {
+        while (true) {
+            String entradaUsuario = entrada.nextLine().trim();
             try {
 
                 return Double.parseDouble(entradaUsuario);
@@ -41,15 +38,15 @@ public class Validacion {
     }
 
     //Validador String
-    public static String validadorString(Scanner entrada){
+    public static String validadorString(Scanner entrada) {
 
-        String comprobador=entrada.nextLine();
-        while(!(comprobador.matches("[a-zA-Z\\s]+"))){
+        String comprobador = entrada.nextLine().trim();
+        while (!(comprobador.matches("[a-zA-Z\\s]+"))) {
             mostrarError(" [!] '" + comprobador + "' no es una opción válida solo (a-z/A-Z): ");
-            comprobador=entrada.nextLine();
+            comprobador = entrada.nextLine().trim();
         }
 
-        return comprobador;
+        return comprobador.toUpperCase();
 
     }
 
@@ -57,11 +54,48 @@ public class Validacion {
         String regexDni = "^[0-9]{8}[a-zA-Z]$";
         String comprobador = entrada.nextLine();
         while (!(comprobador.matches(regexDni))) {
-            mostrarError(" [!] '" + comprobador + "' no es una opción válida solo (a-z/A-Z): ");
+            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el dni (8 numeros y una letra): ");
             comprobador = entrada.nextLine();
         }
 
         return comprobador;
+    }
+
+    public static String validadorTelefono(Scanner entrada) {
+        String regexTelefono = "^(\\+|00)?([0-9]{9,15})$";
+        String comprobador = entrada.nextLine().trim();
+
+        //Seguro contra el "Enter" fantasma del Scanner
+        if (comprobador.isEmpty()) {
+            comprobador = entrada.nextLine().trim();
+        }
+
+        while (!(comprobador.matches(regexTelefono))) {
+            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el email ej: usuario@correo.com): ");
+            comprobador = entrada.nextLine().trim();
+        }
+
+        return comprobador.toLowerCase();
+
+    }
+
+
+    public static String validadorEmail(Scanner entrada) {
+        String regexEmail = "^[^@]+@[^@]+\\.[^@]+$";
+        String comprobador = entrada.nextLine().trim();
+
+        //Seguro contra el "Enter" fantasma del Scanner
+        if (comprobador.isEmpty()) {
+            comprobador = entrada.nextLine().trim();
+        }
+
+        while (!(comprobador.matches(regexEmail))) {
+            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el email ej: usuario@correo.com): ");
+            comprobador = entrada.nextLine().trim();
+        }
+
+        return comprobador.toLowerCase();
+
     }
 
     public static LocalDate validadorFechaDefault(Scanner sc) {

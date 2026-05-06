@@ -14,7 +14,7 @@ public class ClienteCRUD {
     }
 
     public void insertarCliente(Cliente cliente) throws SQLException {
-        String sql = "INSERT INTO clientes(dni,nombre,apellidos,fecha_nacimiento,email,telefono) VALUES(?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Clientes(dni,nombre,apellidos,fecha_nacimiento,email,telefono) VALUES(?, ?, ?, ?, ?, ?)";
         try (Connection con = ConexionBD.conexion()) {
             assert con != null;
             try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -36,7 +36,7 @@ public class ClienteCRUD {
     }
 
     public void updateCliente(Cliente cliente) throws SQLException {
-        String sql = "UPDATE clientes set nombre=?,apellidos=?,fecha_nacimiento=?,email=?,telefono=? WHERE dni=? ";
+        String sql = "UPDATE Clientes set nombre=?,apellidos=?,fecha_nacimiento=?,email=?,telefono=? WHERE dni=? ";
 
         try (Connection con = ConexionBD.conexion()) {
             assert con != null;
@@ -62,7 +62,7 @@ public class ClienteCRUD {
     }
 
     public ArrayList<Cliente> listarTodosClientes() throws SQLException {
-        String sql = "SELECT * FROM clientes";
+        String sql = "SELECT * FROM Clientes";
         ArrayList<Cliente> listaClientes = new ArrayList<>();
 
         try (Connection con = ConexionBD.conexion()) {
@@ -88,7 +88,7 @@ public class ClienteCRUD {
     // ------------ LISTAR CLIENTE POR DNI ------------ //
     // Devuelve null si no hay coincidencias
     public Cliente listarClientePorDni(String dni) throws SQLException {
-        String sql = "SELECT * FROM clientes WHERE dni=?";
+        String sql = "SELECT * FROM Clientes WHERE dni=?";
         Cliente cliente = null;
 
         try (Connection con = ConexionBD.conexion()) {
@@ -115,7 +115,7 @@ public class ClienteCRUD {
     // ------------ LISTAR CLIENTE POR EMAIL ------------ //
     // Devuelve null si no hay coincidencias
     public Cliente listarClientePorEmail(String email) throws SQLException {
-        String sql = "SELECT * FROM clientes WHERE email=?";
+        String sql = "SELECT * FROM Clientes WHERE email = ?";
         Cliente cliente = null;
 
         try (Connection con = ConexionBD.conexion()) {
@@ -140,26 +140,54 @@ public class ClienteCRUD {
     }
 
     public void deleteCliente(String dni) throws SQLException {
-        String sql = "DELETE FROM clientes WHERE dni=?";
+        String sqlPenalizaciones = "DELETE FROM Penalizaciones WHERE id_alquiler IN (SELECT id FROM Alquileres WHERE dni_cliente = ?)";
+        String sqlReservas = "DELETE FROM Reservas WHERE dni_cliente = ?";
+        String sqlAlquileres = "DELETE FROM Alquileres WHERE dni_cliente = ?";
+        String sqlCliente = "DELETE FROM Clientes WHERE dni = ?";
 
         try (Connection con = ConexionBD.conexion()) {
-            assert con != null;
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
+            if (con == null) return;
 
-                ps.setString(1, dni);
+            // --- PASO 1: Iniciar Transacción ---
+            con.setAutoCommit(false);
 
-                int filas = ps.executeUpdate();
+            try (PreparedStatement psPen = con.prepareStatement(sqlPenalizaciones);
+                 PreparedStatement psRes = con.prepareStatement(sqlReservas);
+                 PreparedStatement psAlq = con.prepareStatement(sqlAlquileres);
+                 PreparedStatement psCli = con.prepareStatement(sqlCliente)) {
+
+                psPen.setString(1, dni);
+                psRes.setString(1, dni);
+                psAlq.setString(1, dni);
+                psCli.setString(1, dni);
+
+                // --- PASO 2: Ejecutar borrados ---
+                psPen.executeUpdate();
+                psRes.executeUpdate();
+                psAlq.executeUpdate();
+
+                int filas = psCli.executeUpdate();
 
                 if (filas <= 0) {
                     System.out.println("Cliente con dni: " + dni + ", no existe.");
-
+                    // Si no existe el cliente, no hay nada que guardar
+                    con.rollback();
                 } else {
-                    System.out.println("Cliente con dni: " + dni + "eliminado");
+                    // --- PASO 3: Confirmar cambios ---
+                    con.commit();
+                    System.out.println("Cliente y datos relacionados eliminados correctamente");
                 }
 
+            } catch (SQLException e) {
+                // --- PASO 4: Deshacer en caso de error ---
+                con.rollback();
+                System.err.println("Error en la eliminación. Se han deshecho los cambios: " + e.getMessage());
+                throw e;
+            } finally {
+                // Restaurar el comportamiento normal de la conexión
+                con.setAutoCommit(true);
             }
         }
-
     }
 
     // Método privado para no repetir código al crear objetos Cliente desde la base de datos

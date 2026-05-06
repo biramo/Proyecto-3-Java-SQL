@@ -30,7 +30,8 @@ public class Cliente extends Persona implements InCliente {
         sb.append("Cliente: DNI: ").append(getDni())
                 .append(", Nombre: ").append(getNombre())
                 .append(", Apellidos: ").append(getApellidos())
-                .append(", Edad: ").append(calcularEdad());
+                .append(", Edad: ").append(calcularEdad()).append(", Email: ")
+                .append(getEmail()).append(", Telefono: ").append(getTelefono());
 
         return sb.toString();
     }
