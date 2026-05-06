@@ -41,8 +41,7 @@ public class ServiceReservas {
         String dni = Validacion.validadorDni(sc);
         System.out.print("ID del instrumento: ");
         int idInstrumento = Validacion.validadorInt(sc);
-        System.out.print("Fecha de reserva (yyyy-mm-dd) o [ENTER] para usar la fecha de hoy: ");
-        LocalDate fechaReserva = Validacion.validadorFechaDefault(sc);
+        LocalDate fechaReserva = Validacion.validadorFecha(sc, "Fecha de reserva (yyyy-mm-dd) o [ENTER] para usar la fecha de hoy: ", true);
 
         try {
             cliente = clienteCrud.listarClientePorDni(dni);
