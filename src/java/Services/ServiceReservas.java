@@ -188,7 +188,7 @@ public class ServiceReservas {
                     MenuReservas.vEspera(sc);
                     break;
 
-                case 5:
+                case 0:
                     // Sale del menú de reservas y vuelve al menú principal.
                     System.out.println("Saliendo del menú de reservas...");
                     MenuReservas.vEspera(sc);

@@ -30,7 +30,7 @@ public class ServiceClientes {
 
 
         System.out.print("Introduce el dni: ");
-        dni = Validacion.validadorString(sc);
+        dni = Validacion.validadorDni(sc);
         System.out.print("Introduce el nombre: ");
         nombre = Validacion.validadorString(sc);
         System.out.print("Introduce el apellido: ");
@@ -143,7 +143,7 @@ public class ServiceClientes {
                 case 2:
                     /* 2- Buscar cliente por DNI */
                     System.out.println("Introduce el dni: ");
-                    dni = Validacion.validadorString(sc);
+                    dni = Validacion.validadorDni(sc);
                     vMostrarPorDni(dni);
                     MenuClientes.vEspera(sc);
                     break;
@@ -151,8 +151,8 @@ public class ServiceClientes {
                 case 3:
                     /* 3- Buscar cliente por email */
                     System.out.println("Introduce el email: ");
-                    dni = Validacion.validadorString(sc);
-                    vMostrarPorDni(dni);
+                    String email = Validacion.validadorString(sc);
+                    vMostrarPorEmail(email);
                     MenuClientes.vEspera(sc);
                     break;
 
@@ -173,7 +173,7 @@ public class ServiceClientes {
                 case 6:
                     /* 6- Eliminar cliente */
                     System.out.println("Introduce el dni: ");
-                    dni = Validacion.validadorString(sc);
+                    dni = Validacion.validadorDni(sc);
                     vEliminarCliente(dni);
                     MenuClientes.vEspera(sc);
                     break;
