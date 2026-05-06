@@ -7,6 +7,16 @@ import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * Servicio "orquestador" del sistema.
+ * <p>
+ * Responsabilidad:
+ * <ul>
+ *   <li>Muestra el {@link MenuPrincipal}.</li>
+ *   <li>Segun la opcion elegida, delega en el service correspondiente.</li>
+ *   <li>Al salir de un sub-menu, vuelve al menu principal.</li>
+ * </ul>
+ */
 public class ServiceMenu {
     // Servicio "orquestador" del sistema:
     // - Muestra el MenuPrincipal
@@ -20,8 +30,15 @@ public class ServiceMenu {
     // ------------ MENÚ PRINCIPAL ------------ //
     // Muestra el menú principal en bucle y redirige al "submenú" (service) seleccionado.
     // Al volver del submenú, se vuelve a mostrar el menú principal.
+
+    /**
+     * Inicia el menu principal y mantiene el bucle de navegacion.
+     *
+     * @param sc Scanner compartido por toda la aplicacion.
+     * @throws InterruptedException por el uso de {@link Thread#sleep(long)} al iniciar.
+     */
     public void initService(Scanner sc) throws InterruptedException {
-        System.out.println("Iniciando Menú...");
+        System.out.println("Iniciando menu...");
         sleep(500);
 
         while (true) {
