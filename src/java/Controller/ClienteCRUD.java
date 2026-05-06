@@ -159,7 +159,6 @@ public class ClienteCRUD {
                 if (filas <= 0) {
                     System.out.println("Cliente con dni: " + dni + ", no existe.");
                     // Si no existe el cliente, no hay nada que guardar
-                    con.rollback();
                 } else {
                     // --- PASO 3: Confirmar cambios ---
                     System.out.println("Cliente y datos relacionados eliminados correctamente");
