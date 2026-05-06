@@ -140,31 +140,19 @@ public class ClienteCRUD {
     }
 
     public void deleteCliente(String dni) throws SQLException {
-        String sqlPenalizaciones = "DELETE FROM Penalizaciones WHERE id_alquiler IN (SELECT id FROM Alquileres WHERE dni_cliente = ?)";
-        String sqlReservas = "DELETE FROM Reservas WHERE dni_cliente = ?";
-        String sqlAlquileres = "DELETE FROM Alquileres WHERE dni_cliente = ?";
         String sqlCliente = "DELETE FROM Clientes WHERE dni = ?";
 
         try (Connection con = ConexionBD.conexion()) {
             if (con == null) return;
 
             // --- PASO 1: Iniciar Transacción ---
-            con.setAutoCommit(false);
 
-            try (PreparedStatement psPen = con.prepareStatement(sqlPenalizaciones);
-                 PreparedStatement psRes = con.prepareStatement(sqlReservas);
-                 PreparedStatement psAlq = con.prepareStatement(sqlAlquileres);
-                 PreparedStatement psCli = con.prepareStatement(sqlCliente)) {
+            try (PreparedStatement psCli = con.prepareStatement(sqlCliente)) {
 
-                psPen.setString(1, dni);
-                psRes.setString(1, dni);
-                psAlq.setString(1, dni);
+
                 psCli.setString(1, dni);
 
-                // --- PASO 2: Ejecutar borrados ---
-                psPen.executeUpdate();
-                psRes.executeUpdate();
-                psAlq.executeUpdate();
+                // --- PASO 2: Ejecutar borrados -
 
                 int filas = psCli.executeUpdate();
 
@@ -174,18 +162,9 @@ public class ClienteCRUD {
                     con.rollback();
                 } else {
                     // --- PASO 3: Confirmar cambios ---
-                    con.commit();
                     System.out.println("Cliente y datos relacionados eliminados correctamente");
                 }
 
-            } catch (SQLException e) {
-                // --- PASO 4: Deshacer en caso de error ---
-                con.rollback();
-                System.err.println("Error en la eliminación. Se han deshecho los cambios: " + e.getMessage());
-                throw e;
-            } finally {
-                // Restaurar el comportamiento normal de la conexión
-                con.setAutoCommit(true);
             }
         }
     }
