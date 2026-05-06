@@ -196,5 +196,14 @@ COLUMN deuda_pendiente;
 ALTER TABLE Alquileres
     CHANGE COLUMN penalizacion importe_final double;
 
+-- =========================
+-- EXTENSION: CANCELACION DE ALQUILERES (SOFT DELETE)
+-- =========================
+-- En vez de borrar un alquiler (DELETE), se marca como cancelado.
+ALTER TABLE Alquileres
+    ADD COLUMN cancelado BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN fecha_cancelacion DATE NULL,
+    ADD COLUMN motivo_cancelacion VARCHAR(255) NULL;
+
 ALTER TABLE Penalizaciones
     ADD COLUMN descripcion TEXT NULL;
