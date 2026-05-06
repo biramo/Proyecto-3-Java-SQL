@@ -46,13 +46,16 @@ public class Validacion {
             comprobador = entrada.nextLine().trim();
         }
 
-        return comprobador.toUpperCase();
+        return comprobador;
 
     }
 
     public static String validadorDni(Scanner entrada) {
         String regexDni = "^[0-9]{8}[a-zA-Z]$";
         String comprobador = entrada.nextLine();
+        if (comprobador.equals("0")) {
+            return "0";
+        }
         while (!(comprobador.matches(regexDni))) {
             mostrarError(" [!] '" + comprobador + "' no es una opción válida para el dni (8 numeros y una letra): ");
             comprobador = entrada.nextLine();
@@ -103,8 +106,7 @@ public class Validacion {
         boolean esValida = false;
 
         while (!esValida) {
-            System.out.print("Introduce fecha de nacimiento (AAAA-MM-DD): ");
-            String entrada = sc.nextLine();
+            String entrada = sc.nextLine().trim();
 
             try {
                 // Al no pasarle un Formatter, usa el formato ISO-8601 por defecto

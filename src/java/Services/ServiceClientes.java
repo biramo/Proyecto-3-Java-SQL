@@ -8,7 +8,6 @@ import model.Cliente;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 
 import static Funciones.ControlErrores.errorHandler;
@@ -24,13 +23,15 @@ public class ServiceClientes {
     }
 
     //Metodo para crear nuevo cliente usado en insert y update
-    public Cliente crearNuevoCliente(Scanner sc) {
+    public Cliente pedirDatosCliente(Scanner sc) {
         String dni = "", nombre = "", telefono = "", apellidos = "", email = "";
         LocalDate fechaNacimiento = null;
 
-
-        System.out.print("Introduce el dni: ");
+        System.out.print("Introduce el dni o 0 para salir del proceso: ");
         dni = Validacion.validadorDni(sc);
+        if (dni.toUpperCase().equals("0")) {
+            return null;
+        }
         System.out.print("Introduce el nombre: ");
         nombre = Validacion.validadorString(sc);
         System.out.print("Introduce el apellido: ");
@@ -41,6 +42,7 @@ public class ServiceClientes {
         email = Validacion.validadorEmail(sc);
         System.out.print("Introduce la fecha de nacimiento: ");
         fechaNacimiento = Validacion.validadorFechaDefault(sc);
+
 
         return new Cliente(dni, nombre, telefono, apellidos, email, fechaNacimiento);
 
@@ -146,14 +148,20 @@ public class ServiceClientes {
 
                 case 4:
                     /* 4- Dar de alta cliente */
-                    cliente = crearNuevoCliente(sc);
+                    cliente = pedirDatosCliente(sc);
+                    if (cliente == null) {
+                        break;
+                    }
                     vInsertarNuevoCliente(cliente);
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 5:
                     /* 5- Modificar cliente */
-                    cliente = crearNuevoCliente(sc);
+                    cliente = pedirDatosCliente(sc);
+                    if (cliente == null) {
+                        break;
+                    }
                     vModificarRegistro(cliente);
                     MenuClientes.vEspera(sc);
                     break;
