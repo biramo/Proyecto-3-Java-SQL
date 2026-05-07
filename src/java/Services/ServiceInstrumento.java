@@ -34,7 +34,7 @@ public class ServiceInstrumento {
         EstadoInstrumento estado;
 
 
-        System.out.print("Introduce la marca: ");
+        System.out.print("Introduce la marca o 0 para terminar el proceso: ");
         marca = Validacion.validadorString(sc);
         if (marca.equals("0")) {
             return null;
