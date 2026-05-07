@@ -45,8 +45,11 @@ public class ServiceAlquiler {
         LocalDate fechaInicio, fechaFinPrevista;
         String observaciones, dni;
 
-        System.out.print("DNI del cliente: ");
+        System.out.print("DNI del cliente o 0 para salir del proceso: ");
         dni = Validacion.validadorDni(sc);
+        if (dni.equals("0")) {
+            return null;
+        }
         System.out.print("ID del instrumento: ");
         idInstrumento = Validacion.validadorInt(sc);
         fechaInicio = Validacion.validadorFecha(sc, "Fecha inicio (yyyy-mm-dd) o [ENTER] para hoy: ", true);
@@ -78,14 +81,14 @@ public class ServiceAlquiler {
     }
 
     //Crea nuevo cliente con id, usado en el update
-    public Alquiler crearNuevoAlquilerConID(Scanner sc) {
+    public Alquiler actualizarAlquilerConID(Scanner sc) {
         System.out.println("Introduce el id del alquiler existente: ");
         int id = Validacion.validadorInt(sc);
 
         Alquiler alquiler = pedirDatosComunes(sc);
-
-        alquiler.setId(id);
-
+        if (alquiler != null) {
+            alquiler.setId(id);
+        }
         return alquiler;
     }
 
@@ -371,7 +374,7 @@ public class ServiceAlquiler {
 
                 case 6:
                     /* 6- Modificar alquiler existente */
-                    alquiler = crearNuevoAlquilerConID(sc);
+                    alquiler = actualizarAlquilerConID(sc);
                     if (alquiler != null) {
                         vUpdateAlquiler(alquiler);
                     }
