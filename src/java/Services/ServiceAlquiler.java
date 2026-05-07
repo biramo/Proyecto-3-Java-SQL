@@ -13,6 +13,7 @@ import model.Enum.TipoDesperfecto;
 import model.Instrumento;
 import model.Penalizacion;
 
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -27,6 +28,7 @@ public class ServiceAlquiler {
     private static final ClienteCRUD clienteCrud = new ClienteCRUD();
     private static final InstrumentoCRUD instrumentoCRUD = new InstrumentoCRUD();
     private final ServicePenalizaciones servicePenalizaciones = new ServicePenalizaciones();
+    private final ServiceClientes serviceClientes = new ServiceClientes();
 
     private static final double PORCENTAJE_PENALIZACION_RETRASO = 0.25;
 
@@ -189,6 +191,17 @@ public class ServiceAlquiler {
 
         } catch (SQLException e) {
             errorHandler(e);
+        }
+    }
+
+    // ------------ ALQUILER CON NUEVO CLIENTE -------- //
+
+    public void vNuevoCliente(Scanner sc){
+        System.out.println("El cliente es nuevo? ");
+        boolean nuevo = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
+        if (nuevo){
+            Cliente cliente = serviceClientes.pedirDatosCliente(sc);
+            serviceClientes.vInsertarNuevoCliente(cliente);
         }
     }
 
@@ -363,6 +376,7 @@ public class ServiceAlquiler {
 
                 case 5:
                     /* 5- Insertar nuevo alquiler */
+                    vNuevoCliente(sc);
                     alquiler = crearNuevoAlquilerSinId(sc);
                     if (alquiler != null) {
                         vInsertarAlquiler(alquiler);
