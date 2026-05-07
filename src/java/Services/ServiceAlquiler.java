@@ -13,6 +13,7 @@ import model.Enum.TipoDesperfecto;
 import model.Instrumento;
 import model.Penalizacion;
 
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -27,6 +28,7 @@ public class ServiceAlquiler {
     private static final ClienteCRUD clienteCrud = new ClienteCRUD();
     private static final InstrumentoCRUD instrumentoCRUD = new InstrumentoCRUD();
     private final ServicePenalizaciones servicePenalizaciones = new ServicePenalizaciones();
+    private final ServiceClientes serviceClientes = new ServiceClientes();
 
     private static final double PORCENTAJE_PENALIZACION_RETRASO = 0.25;
 
@@ -45,8 +47,11 @@ public class ServiceAlquiler {
         LocalDate fechaInicio, fechaFinPrevista;
         String observaciones, dni;
 
-        System.out.print("DNI del cliente: ");
+        System.out.print("DNI del cliente o 0 para salir del proceso: ");
         dni = Validacion.validadorDni(sc);
+        if (dni.equals("0")) {
+            return null;
+        }
         System.out.print("ID del instrumento: ");
         idInstrumento = Validacion.validadorInt(sc);
         fechaInicio = Validacion.validadorFecha(sc, "Fecha inicio (yyyy-mm-dd) o [ENTER] para hoy: ", true);
@@ -78,14 +83,14 @@ public class ServiceAlquiler {
     }
 
     //Crea nuevo cliente con id, usado en el update
-    public Alquiler crearNuevoAlquilerConID(Scanner sc) {
+    public Alquiler actualizarAlquilerConID(Scanner sc) {
         System.out.println("Introduce el id del alquiler existente: ");
         int id = Validacion.validadorInt(sc);
 
         Alquiler alquiler = pedirDatosComunes(sc);
-
-        alquiler.setId(id);
-
+        if (alquiler != null) {
+            alquiler.setId(id);
+        }
         return alquiler;
     }
 
@@ -192,6 +197,18 @@ public class ServiceAlquiler {
         }
     }
 
+    // ------------ ALQUILER CON NUEVO CLIENTE -------- //
+
+    public void vNuevoCliente(Scanner sc){
+        System.out.println("El cliente es nuevo? ");
+        boolean nuevo = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
+        if (nuevo){
+            Cliente cliente = serviceClientes.pedirDatosCliente(sc);
+            serviceClientes.vInsertarNuevoCliente(cliente);
+        }
+    }
+
+
     //------------- COMPROBACION PENALIZACIONES -------//
 
     public void vComprobarPenalizaciones(Alquiler alquiler, Scanner sc) {
@@ -201,6 +218,7 @@ public class ServiceAlquiler {
 
         while (continuar) {
             Penalizacion penalizacion = servicePenalizaciones.pedirDatosPenalizacion(sc);
+            servicePenalizaciones.vInsertarPenalizacion(alquiler.getId(), penalizacion);
             alquiler.anadirPenalizacion(penalizacion);
             System.out.println("Quieres añadir otra penalización?");
             continuar = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
@@ -362,6 +380,7 @@ public class ServiceAlquiler {
 
                 case 5:
                     /* 5- Insertar nuevo alquiler */
+                    vNuevoCliente(sc);
                     alquiler = crearNuevoAlquilerSinId(sc);
                     if (alquiler != null) {
                         vInsertarAlquiler(alquiler);
@@ -371,7 +390,7 @@ public class ServiceAlquiler {
 
                 case 6:
                     /* 6- Modificar alquiler existente */
-                    alquiler = crearNuevoAlquilerConID(sc);
+                    alquiler = actualizarAlquilerConID(sc);
                     if (alquiler != null) {
                         vUpdateAlquiler(alquiler);
                     }
