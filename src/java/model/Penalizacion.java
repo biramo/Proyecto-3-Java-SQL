@@ -5,11 +5,20 @@ import model.Enum.TipoDesperfecto;
 public class Penalizacion {
     private int id;
     private String motivo;
+    private String descripcion;
     private double importe;
     private TipoDesperfecto desperfecto;
 
     public Penalizacion(String motivo, double importe, TipoDesperfecto desperfecto) {
         this.motivo = motivo;
+        this.descripcion = null;
+        this.importe = importe;
+        this.desperfecto = desperfecto;
+    }
+
+    public Penalizacion(String motivo, String descripcion, double importe, TipoDesperfecto desperfecto) {
+        this.motivo = motivo;
+        this.descripcion = descripcion;
         this.importe = importe;
         this.desperfecto = desperfecto;
     }
@@ -28,6 +37,14 @@ public class Penalizacion {
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public double getImporte() {
@@ -52,6 +69,9 @@ public class Penalizacion {
         sb.append("Penalización: \n");
         sb.append("Motivo: \n");
         sb.append(motivo);
+        if (descripcion != null && !descripcion.isBlank()) {
+            sb.append("\nDescripcion:\n").append(descripcion);
+        }
         //un ternario por si no hay desperfecto y solo es por retraso la penalización
         sb.append(
                 desperfecto != TipoDesperfecto.NINGUNO
@@ -68,6 +88,7 @@ public class Penalizacion {
         return "Penalización{" +
                 "id=" + id +
                 ", motivo='" + motivo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
                 ", importe=" + importe +
                 ", desperfecto=" + desperfecto +
                 '}';

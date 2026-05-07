@@ -1,8 +1,5 @@
 package Funciones;
 
-import model.Enum.CategoriaInstrumento;
-import model.Enum.EstadoInstrumento;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -14,8 +11,8 @@ public class Validacion {
 
 
     //Validador int
-    public static int validadorInt(Scanner entrada){
-        while(true){
+    public static int validadorInt(Scanner entrada) {
+        while (true) {
             String entradaUsuario = entrada.nextLine().trim();
 
             try {
@@ -28,9 +25,9 @@ public class Validacion {
     }
 
     //Validador double
-    public static double validadorDouble(Scanner entrada){
-        while(true){
-            String entradaUsuario =entrada.nextLine().trim();
+    public static double validadorDouble(Scanner entrada) {
+        while (true) {
+            String entradaUsuario = entrada.nextLine().trim();
             try {
 
                 return Double.parseDouble(entradaUsuario);
@@ -41,12 +38,12 @@ public class Validacion {
     }
 
     //Validador String
-    public static String validadorString(Scanner entrada){
+    public static String validadorString(Scanner entrada) {
 
-        String comprobador=entrada.nextLine();
-        while(!(comprobador.matches("[a-zA-Z\\s]+"))){
+        String comprobador = entrada.nextLine().trim();
+        while (!(comprobador.matches("[a-zA-Z\\s]+"))) {
             mostrarError(" [!] '" + comprobador + "' no es una opción válida solo (a-z/A-Z): ");
-            comprobador=entrada.nextLine();
+            comprobador = entrada.nextLine().trim();
         }
 
         return comprobador;
@@ -56,12 +53,52 @@ public class Validacion {
     public static String validadorDni(Scanner entrada) {
         String regexDni = "^[0-9]{8}[a-zA-Z]$";
         String comprobador = entrada.nextLine();
+        if (comprobador.equals("0")) {
+            return "0";
+        }
         while (!(comprobador.matches(regexDni))) {
-            mostrarError(" [!] '" + comprobador + "' no es una opción válida solo (a-z/A-Z): ");
+            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el dni (8 numeros y una letra): ");
             comprobador = entrada.nextLine();
         }
 
         return comprobador;
+    }
+
+    public static String validadorTelefono(Scanner entrada) {
+        String regexTelefono = "^(\\+|00)?([0-9]{9,15})$";
+        String comprobador = entrada.nextLine().trim();
+
+        //Seguro contra el "Enter" fantasma del Scanner
+        if (comprobador.isEmpty()) {
+            comprobador = entrada.nextLine().trim();
+        }
+
+        while (!(comprobador.matches(regexTelefono))) {
+            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el email ej: +34123456789: ");
+            comprobador = entrada.nextLine().trim();
+        }
+
+        return comprobador.toLowerCase();
+
+    }
+
+
+    public static String validadorEmail(Scanner entrada) {
+        String regexEmail = "^[^@]+@[^@]+\\.[^@]+$";
+        String comprobador = entrada.nextLine().trim();
+
+        //Seguro contra el "Enter" fantasma del Scanner
+        if (comprobador.isEmpty()) {
+            comprobador = entrada.nextLine().trim();
+        }
+
+        while (!(comprobador.matches(regexEmail))) {
+            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el email ej: usuario@correo.com): ");
+            comprobador = entrada.nextLine().trim();
+        }
+
+        return comprobador.toLowerCase();
+
     }
 
     public static LocalDate validadorFechaDefault(Scanner sc) {
@@ -69,8 +106,7 @@ public class Validacion {
         boolean esValida = false;
 
         while (!esValida) {
-            System.out.print("Introduce fecha de nacimiento (AAAA-MM-DD): ");
-            String entrada = sc.nextLine();
+            String entrada = sc.nextLine().trim();
 
             try {
                 // Al no pasarle un Formatter, usa el formato ISO-8601 por defecto
@@ -82,6 +118,23 @@ public class Validacion {
         }
 
         return fechaValida;
+    }
+
+    public static LocalDate validadorFecha(Scanner sc, String prompt, boolean permitirVacioUsarHoy) {
+        while (true) {
+            System.out.print(prompt);
+            String entrada = sc.nextLine().trim();
+
+            if (permitirVacioUsarHoy && entrada.isEmpty()) {
+                return LocalDate.now();
+            }
+
+            try {
+                return LocalDate.parse(entrada);
+            } catch (DateTimeParseException e) {
+                System.out.println("Error: Formato incorrecto. Use AAAA-MM-DD (ej: 2026-12-31).");
+            }
+        }
     }
 
     public static <T extends Enum<T>> T validadorGenericoEnum(Scanner entrada, Class<T> enumClass) {

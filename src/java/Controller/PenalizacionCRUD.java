@@ -13,7 +13,7 @@ public class PenalizacionCRUD {
     }
 
     public void insertarPenalizacion(int idAlquiler, Penalizacion penalizacion) throws SQLException {
-        String sql = "INSERT INTO Penalizaciones (id_alquiler, motivo, importe, desperfecto) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Penalizaciones (id_alquiler, motivo, descripcion, importe, desperfecto) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection con = ConexionBD.conexion()) {
             assert con != null;
@@ -22,8 +22,9 @@ public class PenalizacionCRUD {
 
                 ps.setInt(1, idAlquiler);
                 ps.setString(2, penalizacion.getMotivo());
-                ps.setDouble(3, penalizacion.getImporte());
-                ps.setString(4, penalizacion.getDesperfecto().name());
+                ps.setString(3, penalizacion.getDescripcion());
+                ps.setDouble(4, penalizacion.getImporte());
+                ps.setString(5, penalizacion.getDesperfecto().name());
 
                 int filas = ps.executeUpdate();
 
@@ -149,6 +150,7 @@ public class PenalizacionCRUD {
     private Penalizacion crearPenalizacionDesdeResultSet(ResultSet rs) throws SQLException {
         Penalizacion penalizacion = new Penalizacion(
                 rs.getString("motivo"),
+                rs.getString("descripcion"),
                 rs.getDouble("importe"),
                 TipoDesperfecto.valueOf(rs.getString("desperfecto"))
         );
