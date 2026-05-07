@@ -28,7 +28,7 @@ public class ServiceAlquiler {
     private static final InstrumentoCRUD instrumentoCRUD = new InstrumentoCRUD();
     private final ServicePenalizaciones servicePenalizaciones = new ServicePenalizaciones();
 
-    private final double PORCENTAJE_PENALIZACION_RETRASO = 0.25;
+    private static final double PORCENTAJE_PENALIZACION_RETRASO = 0.25;
 
 
     //Menus del servicio
