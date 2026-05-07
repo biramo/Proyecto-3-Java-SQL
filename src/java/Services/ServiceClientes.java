@@ -8,6 +8,7 @@ import model.Cliente;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import static Funciones.ControlErrores.errorHandler;
@@ -121,6 +122,54 @@ public class ServiceClientes {
 
     }
 
+    public static void vMostrarTodosCliente() {
+        ServiceClientes serviceClientes = new ServiceClientes();
+
+        ArrayList<Cliente> listaClientes = serviceClientes.vMostrarTodos();
+
+        if (listaClientes == null || listaClientes.isEmpty()) {
+            return;
+        }
+
+        Iterator<Cliente> it = listaClientes.iterator();
+
+        while (it.hasNext()) {
+            Cliente c = it.next();
+            MenuClientes.vMostrarTexto(c.mostrarCliente());
+        }
+    }
+
+    public static void vMostrarClientePorEmail(Scanner sc) {
+        ServiceClientes serviceClientes = new ServiceClientes();
+        String email, resultadoQuery;
+
+        System.out.println("Introduce el email: ");
+        email = Validacion.validadorEmail(sc);
+
+        resultadoQuery = serviceClientes.vMostrarPorEmail(email);
+
+        if (resultadoQuery == null) {
+            return;
+        }
+
+        MenuClientes.vMostrarTexto(resultadoQuery);
+    }
+
+    public static void vMostrarClientePorDni(Scanner sc) {
+        ServiceClientes serviceClientes = new ServiceClientes();
+        String dni, resultadoQuery;
+
+        System.out.println("Introduce el dni: ");
+        dni = Validacion.validadorDni(sc);
+        resultadoQuery = serviceClientes.vMostrarPorDni(dni);
+
+        if (resultadoQuery == null) {
+            return;
+        }
+        MenuClientes.vMostrarTexto(resultadoQuery);
+
+    }
+
     //Switch para llamar a las funciones
     public void vLlamarFunciones(Scanner sc) {
         String dni, email;
@@ -130,19 +179,19 @@ public class ServiceClientes {
             switch (opcion) {
                 case 1:
                     /* 1- Listar clientes */
-                    MenuClientes.vMostrarTodosCliente();
+                    vMostrarTodosCliente();
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 2:
                     /* 2- Buscar cliente por DNI */
-                    MenuClientes.vMostrarClientePorDni(sc);
+                    vMostrarClientePorDni(sc);
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 3:
                     /* 3- Buscar cliente por email */
-                    MenuClientes.vMostrarClientePorEmail(sc);
+                    vMostrarClientePorEmail(sc);
                     MenuClientes.vEspera(sc);
                     break;
 

@@ -47,11 +47,19 @@ public class ServiceAlquiler {
         LocalDate fechaInicio, fechaFinPrevista;
         String observaciones, dni;
 
-        System.out.print("DNI del cliente o 0 para salir del proceso: ");
-        dni = Validacion.validadorDni(sc);
+        System.out.println("El cliente es nuevo?(s/n): ");
+        boolean nuevo = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
+        if (nuevo) {
+            cliente = nuevoCliente(sc);
+            dni = cliente != null ? cliente.getDni() : "0";
+        } else {
+            System.out.print("DNI del cliente o 0 para salir del proceso: ");
+            dni = Validacion.validadorDni(sc);
+        }
         if (dni.equals("0")) {
             return null;
         }
+
         System.out.print("ID del instrumento: ");
         idInstrumento = Validacion.validadorInt(sc);
         fechaInicio = Validacion.validadorFecha(sc, "Fecha inicio (yyyy-mm-dd) o [ENTER] para hoy: ", true);
@@ -199,13 +207,13 @@ public class ServiceAlquiler {
 
     // ------------ ALQUILER CON NUEVO CLIENTE -------- //
 
-    public void vNuevoCliente(Scanner sc){
-        System.out.println("El cliente es nuevo? ");
-        boolean nuevo = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
-        if (nuevo){
+    public Cliente nuevoCliente(Scanner sc) {
             Cliente cliente = serviceClientes.pedirDatosCliente(sc);
+        if (cliente != null) {
             serviceClientes.vInsertarNuevoCliente(cliente);
         }
+
+        return cliente;
     }
 
 
@@ -380,7 +388,6 @@ public class ServiceAlquiler {
 
                 case 5:
                     /* 5- Insertar nuevo alquiler */
-                    vNuevoCliente(sc);
                     alquiler = crearNuevoAlquilerSinId(sc);
                     if (alquiler != null) {
                         vInsertarAlquiler(alquiler);

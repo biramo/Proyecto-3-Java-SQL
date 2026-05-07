@@ -68,57 +68,9 @@ public class MenuClientes {
         sc.nextLine();
     }
 
-    private static void vMostrarTexto(String texto) {
+    public static void vMostrarTexto(String texto) {
         System.out.println(TEXTO_BLANCO + texto + RESET);
     }
 
-
-    public static void vMostrarTodosCliente() {
-        ServiceClientes serviceClientes = new ServiceClientes();
-
-        ArrayList<Cliente> listaClientes = serviceClientes.vMostrarTodos();
-
-        if (listaClientes == null || listaClientes.isEmpty()) {
-            return;
-        }
-
-        Iterator<Cliente> it = listaClientes.iterator();
-
-        while (it.hasNext()) {
-            Cliente c = it.next();
-            vMostrarTexto(c.mostrarCliente());
-        }
-    }
-
-    public static void vMostrarClientePorEmail(Scanner sc) {
-        ServiceClientes serviceClientes = new ServiceClientes();
-        String email, resultadoQuery;
-
-        System.out.println("Introduce el email: ");
-        email = Validacion.validadorEmail(sc);
-
-        resultadoQuery = serviceClientes.vMostrarPorEmail(email);
-
-        if (resultadoQuery == null) {
-            return;
-        }
-
-        vMostrarTexto(resultadoQuery);
-    }
-
-    public static void vMostrarClientePorDni(Scanner sc) {
-        ServiceClientes serviceClientes = new ServiceClientes();
-        String dni, resultadoQuery;
-
-        System.out.println("Introduce el dni: ");
-        dni = Validacion.validadorDni(sc);
-        resultadoQuery = serviceClientes.vMostrarPorDni(dni);
-
-        if (resultadoQuery == null) {
-            return;
-        }
-        vMostrarTexto(resultadoQuery);
-
-    }
 
 }
