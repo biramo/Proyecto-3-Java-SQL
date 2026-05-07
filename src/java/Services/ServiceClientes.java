@@ -149,28 +149,28 @@ public class ServiceClientes {
                 case 4:
                     /* 4- Dar de alta cliente */
                     cliente = pedirDatosCliente(sc);
-                    if (cliente == null) {
-                        break;
+                    if (cliente != null) {
+                        vInsertarNuevoCliente(cliente);
                     }
-                    vInsertarNuevoCliente(cliente);
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 5:
                     /* 5- Modificar cliente */
                     cliente = pedirDatosCliente(sc);
-                    if (cliente == null) {
-                        break;
+                    if (cliente != null) {
+                        vModificarRegistro(cliente);
                     }
-                    vModificarRegistro(cliente);
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 6:
                     /* 6- Eliminar cliente */
-                    System.out.println("Introduce el dni: ");
+                    System.out.println("Introduce el dni o 0 para salir del proceso: ");
                     dni = Validacion.validadorDni(sc);
-                    vEliminarCliente(dni);
+                    if (!dni.equals("0")) {
+                        vEliminarCliente(dni);
+                    }
                     MenuClientes.vEspera(sc);
                     break;
 
