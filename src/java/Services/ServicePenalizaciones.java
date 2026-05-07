@@ -182,9 +182,11 @@ public class ServicePenalizaciones {
 
                 case 2:
                     // Muestra las penalizaciones asociadas a un alquiler concreto.
-                    System.out.print("ID del alquiler: ");
+                    System.out.print("ID del alquiler o 0 para salir del proceso: ");
                     int idAlquiler = Validacion.validadorInt(sc);
-                    vMostrarPorAlquiler(idAlquiler);
+                    if (idAlquiler != 0) {
+                        vMostrarPorAlquiler(idAlquiler);
+                    }
                     MenuPenalizaciones.vEspera(sc);
                     break;
 
@@ -192,9 +194,11 @@ public class ServicePenalizaciones {
                     // Muestra las penalizaciones asociadas a un cliente concreto.
                     // Como las penalizaciones pertenecen a los alquileres,
                     // primero buscamos los alquileres del cliente y luego recorremos sus penalizaciones.
-                    System.out.print("DNI del cliente: ");
+                    System.out.print("DNI del cliente o 0 para salir del proceso: ");
                     String dniCliente = Validacion.validadorDni(sc);
-                    vMostrarPorCliente(dniCliente);
+                    if (!dniCliente.equals("0")) {
+                        vMostrarPorCliente(dniCliente);
+                    }
                     MenuPenalizaciones.vEspera(sc);
                     break;
 

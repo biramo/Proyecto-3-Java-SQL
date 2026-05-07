@@ -37,8 +37,12 @@ public class ServiceReservas {
         Cliente cliente = null;
         Instrumento instrumento = null;
 
-        System.out.print("DNI del cliente: ");
+        System.out.print("DNI del cliente o 0 para salir del proceso: ");
         String dni = Validacion.validadorDni(sc);
+        if (dni.equals("0")) {
+            return null;
+        }
+
         System.out.print("ID del instrumento: ");
         int idInstrumento = Validacion.validadorInt(sc);
         LocalDate fechaReserva = Validacion.validadorFecha(sc, "Fecha de reserva (yyyy-mm-dd) o [ENTER] para usar la fecha de hoy: ", true);
@@ -56,12 +60,6 @@ public class ServiceReservas {
         }
 
         return new Reserva(cliente, instrumento, fechaReserva);
-    }
-
-    // Auxiliar: pide un ID numérico por consola
-    public int vIntroducirId(Scanner sc) {
-        System.out.print("Introduce el ID: ");
-        return Validacion.validadorInt(sc);
     }
 
     // ------------ MÉTODOS CRUD ------------ //
@@ -164,16 +162,22 @@ public class ServiceReservas {
                 case 2:
                     // Muestra todas las reservas activas de un instrumento ordenadas por posición,
                     // es decir, la lista de espera completa de ese instrumento.
-                    System.out.print("ID del instrumento: ");
+                    System.out.print("ID del instrumento (0 para salir del proceso): ");
                     int idInstr = Validacion.validadorInt(sc);
-                    vMostrarListaEspera(idInstr);
+                    if (idInstr != 0) {
+                        vMostrarListaEspera(idInstr);
+                    }
                     MenuReservas.vEspera(sc);
                     break;
 
                 case 3:
                     // Cancela una reserva existente por su ID.
                     // Las posiciones de los que estaban por detrás en la cola se reajustan automáticamente.
-                    vCancelarReserva(vIntroducirId(sc));
+                    System.out.print("Introduce el ID (0 para salir del proceso): ");
+                    int idReserva = Validacion.validadorInt(sc);
+                    if (idReserva != 0) {
+                        vCancelarReserva(idReserva);
+                    }
                     MenuReservas.vEspera(sc);
                     break;
 
@@ -181,9 +185,11 @@ public class ServiceReservas {
                     // Confirma la primera reserva de la lista de espera de un instrumento
                     // creando el alquiler correspondiente y eliminando la reserva de la cola.
                     // Se usa cuando el instrumento vuelve a estar disponible.
-                    System.out.print("ID del instrumento disponible: ");
+                    System.out.print("ID del instrumento disponible (0 para salir del proceso): ");
                     int idInstrConf = Validacion.validadorInt(sc);
-                    vConfirmarReserva(idInstrConf, sc);
+                    if (idInstrConf != 0) {
+                        vConfirmarReserva(idInstrConf, sc);
+                    }
                     MenuReservas.vEspera(sc);
                     break;
 
