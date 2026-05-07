@@ -41,6 +41,9 @@ public class Validacion {
     public static String validadorString(Scanner entrada) {
 
         String comprobador = entrada.nextLine().trim();
+        if (comprobador.equals(0)) {
+            return "0";
+        }
         while (!(comprobador.matches("[a-zA-Z\\s]+"))) {
             mostrarError(" [!] '" + comprobador + "' no es una opción válida solo (a-z/A-Z): ");
             comprobador = entrada.nextLine().trim();
