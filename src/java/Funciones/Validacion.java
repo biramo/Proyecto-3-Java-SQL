@@ -41,7 +41,7 @@ public class Validacion {
     public static String validadorString(Scanner entrada) {
 
         String comprobador = entrada.nextLine().trim();
-        if (comprobador.equals(0)) {
+        if (comprobador.equals("0")) {
             return "0";
         }
         while (!(comprobador.matches("[a-zA-Z\\s]+"))) {
