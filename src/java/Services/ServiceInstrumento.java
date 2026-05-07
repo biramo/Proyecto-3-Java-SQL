@@ -36,13 +36,16 @@ public class ServiceInstrumento {
 
         System.out.print("Introduce la marca: ");
         marca = Validacion.validadorString(sc);
+        if (marca.equals("0")) {
+            return null;
+        }
         System.out.print("Introduce modelo: ");
         modelo = Validacion.validadorString(sc);
         System.out.print("Introduce el precio por dia: ");
         precioDia = Validacion.validadorDouble(sc);
         System.out.print("Introduce el stock total: ");
         stockTotal = Validacion.validadorInt(sc);
-        System.out.print("Introduce el stock actual ");
+        System.out.print("Introduce el stock actual: ");
         stockDisponible = Validacion.validadorInt(sc);
         categoria = Validacion.validadorGenericoEnum(sc, CategoriaInstrumento.class);
         estado = Validacion.validadorGenericoEnum(sc, EstadoInstrumento.class);
@@ -218,7 +221,9 @@ public class ServiceInstrumento {
                 case 6:
                     // 6 - Insertar un instrumento nuevo
                     instrumento = crearInstrumento(sc);
-                    vInsertarNuevoInstrumento(instrumento);
+                    if (instrumento != null) {
+                        vInsertarNuevoInstrumento(instrumento);
+                    }
                     MenuInstrumentos.vEspera(sc);
                     break;
 
@@ -227,8 +232,10 @@ public class ServiceInstrumento {
                     System.out.print("Introduce el id del instrumento: ");
                     id = Validacion.validadorInt(sc);
                     instrumento = crearInstrumento(sc);
-                    instrumento.setId(id);
-                    vModificarRegistro(instrumento);
+                    if (instrumento != null) {
+                        instrumento.setId(id);
+                        vModificarRegistro(instrumento);
+                    }
                     MenuInstrumentos.vEspera(sc);
                     break;
 
