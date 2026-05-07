@@ -208,6 +208,7 @@ public class ServiceAlquiler {
         }
     }
 
+
     //------------- COMPROBACION PENALIZACIONES -------//
 
     public void vComprobarPenalizaciones(Alquiler alquiler, Scanner sc) {
