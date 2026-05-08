@@ -27,6 +27,9 @@ public class MenuAlquileres {
     //Color de fondo
     private static final String FONDO_GRIS = "\u001B[48;5;236m";  // Un gris oscuro profundo
 
+    //Color de los textos
+    private static final String TEXTO_BLANCO = "\u001B[97m";
+
     public static void vOpciones() {
         String estilo = CIAN_B + FONDO_GRIS;
         System.out.println(estilo + "┌─────────────────────────────────────────────────────────┐" + RESET);
@@ -60,4 +63,9 @@ public class MenuAlquileres {
         System.out.println("PRESIONA [ENTER] para continuar...");
         sc.nextLine();
     }
+
+    public static void vMostrarTexto(String texto) {
+        System.out.println(TEXTO_BLANCO + texto + RESET);
+    }
+
 }
