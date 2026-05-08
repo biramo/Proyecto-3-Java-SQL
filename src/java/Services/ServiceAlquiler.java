@@ -132,7 +132,7 @@ public class ServiceAlquiler {
             Iterator<Alquiler> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Alquiler a = it.next();
-                a.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(a.mostrarAlquiler());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -147,7 +147,7 @@ public class ServiceAlquiler {
         try {
             alquiler = alquilerCrud.listarAlquilerPorId(id);
             if (alquiler != null) {
-                alquiler.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(alquiler.mostrarAlquiler());
 
             }
         } catch (SQLException e) {
@@ -165,7 +165,7 @@ public class ServiceAlquiler {
             Iterator<Alquiler> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Alquiler a = it.next();
-                a.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(a.mostrarAlquiler());
             }
 
         } catch (SQLException e) {
@@ -181,7 +181,7 @@ public class ServiceAlquiler {
             Iterator<Alquiler> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Alquiler a = it.next();
-                a.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(a.mostrarAlquiler());
             }
 
         } catch (SQLException e) {
@@ -197,7 +197,7 @@ public class ServiceAlquiler {
             Iterator<Alquiler> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Alquiler a = it.next();
-                a.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(a.mostrarAlquiler());
             }
 
         } catch (SQLException e) {
