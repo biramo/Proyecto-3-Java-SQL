@@ -241,8 +241,8 @@ Ubicacion: `src/java/model/Interfaces`
 
 Operaciones clave:
 
-- Crear/modificar alquiler: pide `dni`, `idInstrumento`, fechas y observaciones; valida que cliente e instrumento
-  existan.
+- Crear/modificar alquiler: pide `dni`, `idInstrumento`, duracion en dias (se calcula `fechaFinPrevista` desde hoy) y
+  observaciones (opcional). Valida que cliente e instrumento existan y que haya stock.
 - **Cancelacion (soft delete)**: marca el alquiler como cancelado y guarda motivo/fecha.
 - **Devolucion**:
     - Calcula retraso (`fechaFinPrevista` -> `fechaReal`) y aplica una penalizacion fija:
