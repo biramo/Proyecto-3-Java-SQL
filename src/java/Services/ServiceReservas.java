@@ -84,7 +84,9 @@ public class ServiceReservas {
             }
             Iterator<Reserva> it = lista.iterator();
             while (it.hasNext()) {
-                System.out.println(it.next().mostrarReserva());
+                MenuReservas.vMostrarTexto(it.next().mostrarReserva());
+                //PTE BORRAR
+                //System.out.println(it.next().mostrarReserva());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -118,7 +120,9 @@ public class ServiceReservas {
             }
 
             Reserva reserva = lista.get(0); // El primero lleva más tiempo esperando
-            System.out.println("Confirmando reserva para: " + reserva.mostrarReserva());
+            MenuReservas.vMostrarTexto("Confirmando reserva para: " + reserva.mostrarReserva());
+            //pa borrar
+            //System.out.println("Confirmando reserva para: " + reserva.mostrarReserva());
 
             System.out.print("Fecha fin prevista del alquiler (yyyy-mm-dd): ");
             LocalDate fechaFinPrevista = Validacion.validadorFechaDefault(sc);

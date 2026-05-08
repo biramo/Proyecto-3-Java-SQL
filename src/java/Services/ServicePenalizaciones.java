@@ -86,7 +86,9 @@ public class ServicePenalizaciones {
             }
             Iterator<Penalizacion> it = lista.iterator();
             while (it.hasNext()) {
-                System.out.println(it.next().mostrarPenalizacion());
+                MenuPenalizaciones.vMostrarTexto(it.next().mostrarPenalizacion());
+                //Pa Borrar
+                //System.out.println(it.next().mostrarPenalizacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -103,7 +105,9 @@ public class ServicePenalizaciones {
             }
             Iterator<Penalizacion> it = lista.iterator();
             while (it.hasNext()) {
-                System.out.println(it.next().mostrarPenalizacion());
+                MenuPenalizaciones.vMostrarTexto(it.next().mostrarPenalizacion());
+                //pa borrar
+                //System.out.println(it.next().mostrarPenalizacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -118,7 +122,9 @@ public class ServicePenalizaciones {
                 System.out.println("No se encontró ninguna penalización con ID: " + id);
                 return;
             }
-            System.out.println(penalizacion.mostrarPenalizacion());
+            MenuPenalizaciones.vMostrarTexto(penalizacion.mostrarPenalizacion());
+            //pa borrar
+            //System.out.println(penalizacion.mostrarPenalizacion());
         } catch (SQLException e) {
             errorHandler(e);
         }
@@ -154,7 +160,9 @@ public class ServicePenalizaciones {
 
                     while (itPenalizaciones.hasNext()) {
                         Penalizacion penalizacion = itPenalizaciones.next();
-                        System.out.println(penalizacion.mostrarPenalizacion());
+                        MenuPenalizaciones.vMostrarTexto(penalizacion.mostrarPenalizacion());
+                        //pa borrar
+                        //System.out.println(penalizacion.mostrarPenalizacion());
                     }
                 }
             }
