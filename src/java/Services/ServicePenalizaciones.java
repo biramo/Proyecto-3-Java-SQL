@@ -87,8 +87,6 @@ public class ServicePenalizaciones {
             Iterator<Penalizacion> it = lista.iterator();
             while (it.hasNext()) {
                 MenuPenalizaciones.vMostrarTexto(it.next().mostrarPenalizacion());
-                //Pa Borrar
-                //System.out.println(it.next().mostrarPenalizacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -106,8 +104,6 @@ public class ServicePenalizaciones {
             Iterator<Penalizacion> it = lista.iterator();
             while (it.hasNext()) {
                 MenuPenalizaciones.vMostrarTexto(it.next().mostrarPenalizacion());
-                //pa borrar
-                //System.out.println(it.next().mostrarPenalizacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -123,8 +119,6 @@ public class ServicePenalizaciones {
                 return;
             }
             MenuPenalizaciones.vMostrarTexto(penalizacion.mostrarPenalizacion());
-            //pa borrar
-            //System.out.println(penalizacion.mostrarPenalizacion());
         } catch (SQLException e) {
             errorHandler(e);
         }
@@ -161,8 +155,6 @@ public class ServicePenalizaciones {
                     while (itPenalizaciones.hasNext()) {
                         Penalizacion penalizacion = itPenalizaciones.next();
                         MenuPenalizaciones.vMostrarTexto(penalizacion.mostrarPenalizacion());
-                        //pa borrar
-                        //System.out.println(penalizacion.mostrarPenalizacion());
                     }
                 }
             }

@@ -239,7 +239,7 @@ public class ServiceAlquiler {
             String r = sc.nextLine().trim().toUpperCase();
             if (r.equals("S")) return true;
             if (r.equals("N")) return false;
-            System.out.println("Respuesta no vÃ¡lida. Usa S o N.");
+            System.out.println("Respuesta no valida. Usa S o N.");
         }
     }
 
