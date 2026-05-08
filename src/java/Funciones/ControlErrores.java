@@ -9,7 +9,7 @@ public class ControlErrores {
     private static final String ROJO = "\u001B[31m";
 
     public static void mostrarError(String texto) {
-        System.out.print(ROJO + texto + RESET);
+        System.out.println(ROJO + texto + RESET);
     }
 
     public static void errorHandler(SQLException e) {
@@ -17,8 +17,6 @@ public class ControlErrores {
         if (e instanceof SQLIntegrityConstraintViolationException) {
             // El SQLState 23000 es el estándar para violaciones de integridad
             // Pero podemos ser más específicos con el mensaje o códigos de error de MySQL
-            String sqlState = e.getSQLState();
-
             // Código de error 1451 es el estándar en MySQL para:
             // "Cannot delete or update a parent row: a foreign key constraint fails"
             if (e.getErrorCode() == 1451) {

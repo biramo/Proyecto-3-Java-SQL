@@ -63,7 +63,7 @@ public class ServiceInstrumento {
             Iterator<Instrumento> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Instrumento i = it.next();
-                i.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(i.mostrarInformacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -78,7 +78,7 @@ public class ServiceInstrumento {
         try {
             instrumento = instrumentoCrud.listarInstrumentoPorId(id);
             if (instrumento != null) {
-                instrumento.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(instrumento.mostrarInformacion());
 
             }
         } catch (SQLException e) {
@@ -124,7 +124,7 @@ public class ServiceInstrumento {
                 return;
             }
             for (Instrumento i : resultado) {
-                i.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(i.mostrarInformacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -139,7 +139,7 @@ public class ServiceInstrumento {
                 return;
             }
             for (Instrumento i : resultado) {
-                i.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(i.mostrarInformacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -154,7 +154,7 @@ public class ServiceInstrumento {
                 return;
             }
             for (Instrumento i : resultado) {
-                i.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(i.mostrarInformacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -180,12 +180,14 @@ public class ServiceInstrumento {
 
                 case 1:
                     // 1 - Listar todos los instrumentos
+                    System.out.println("|| --- TODOS LOS INSTRUMENTOS --- ||");
                     vMostrarTodos();
                     MenuInstrumentos.vEspera(sc);
                     break;
 
                 case 2:
                     // 2 - Buscar instrumento por ID
+                    System.out.println("|| --- BUSCAR INSTRUMENTOS POR ID --- ||");
                     System.out.println("Introduce el id: ");
                     id = Validacion.validadorInt(sc);
                     vMostrarPorId(id);
@@ -194,6 +196,7 @@ public class ServiceInstrumento {
 
                 case 3:
                     // 3 - Buscar instrumentos por categoria
+                    System.out.println("|| --- BUSCAR INSTRUMENTOS POR CATEGORIA --- ||");
                     CategoriaInstrumento categoria = Validacion.validadorGenericoEnum(sc, CategoriaInstrumento.class);
                     vMostrarPorCategoria(categoria);
                     MenuInstrumentos.vEspera(sc);
@@ -201,6 +204,7 @@ public class ServiceInstrumento {
 
                 case 4:
                     // 4 - Buscar instrumentos por marca
+                    System.out.println("|| --- BUSCAR INSTRUMENTOS POR MARCA --- ||");
                     System.out.print("Introduce la marca: ");
                     String marca = sc.nextLine().trim();
                     while (marca.isEmpty()) {
@@ -213,6 +217,7 @@ public class ServiceInstrumento {
 
                 case 5:
                     // 5 - Buscar instrumentos por estado
+                    System.out.println("|| --- BUSCAR INSTRUMENTOS POR ESTADO --- ||");
                     EstadoInstrumento estado = Validacion.validadorGenericoEnum(sc, EstadoInstrumento.class);
                     vMostrarPorEstado(estado);
                     MenuInstrumentos.vEspera(sc);
@@ -220,6 +225,7 @@ public class ServiceInstrumento {
 
                 case 6:
                     // 6 - Insertar un instrumento nuevo
+                    System.out.println("|| --- REGISTRO DE NUEVO INSTRUMENTOS --- ||");
                     instrumento = crearInstrumento(sc);
                     if (instrumento != null) {
                         vInsertarNuevoInstrumento(instrumento);
@@ -229,6 +235,7 @@ public class ServiceInstrumento {
 
                 case 7:
                     // 7 - Modificar un instrumento existente
+                    System.out.println("|| --- MODIFICACIÓN DE INSTRUMENTOS EXISTENTE --- ||");
                     System.out.print("Introduce el id del instrumento: ");
                     id = Validacion.validadorInt(sc);
                     instrumento = crearInstrumento(sc);
@@ -241,6 +248,8 @@ public class ServiceInstrumento {
 
                 case 8:
                     // 8 - Eliminar instrumento
+                    System.out.println("|| --- ELIMINACIÓN DE INSTRUMENTO --- ||");
+                    System.out.println("⚠️⚠️ ATENCIÓN - EL INSTRUMENTO SE ELIMINARÁ DE FORMA PERMANENTE ⚠️⚠️");
                     System.out.println("Introduce el id: ");
                     id = Validacion.validadorInt(sc);
                     vEliminarInstrumento(id);
@@ -249,6 +258,7 @@ public class ServiceInstrumento {
 
                 case 9:
                     // 9 - Cambiar estado del instrumento (DISPONIBLE / SIN_STOCK / MANTENIMIENTO)
+                    System.out.println("|| --- CAMBIO DE ESTADO DE INSTRUMENTO --- ||");
                     System.out.print("Introduce el id del instrumento: ");
                     id = Validacion.validadorInt(sc);
                     EstadoInstrumento nuevoEstado = Validacion.validadorGenericoEnum(sc, EstadoInstrumento.class);

@@ -115,8 +115,16 @@ public class Instrumento implements InAlquilable {
     }
 
     //Métodos de la clase
-    public void mostrarInformacion() {
-        System.out.println("id: " + id + " marca: " + marca + " modelo: " + modelo + " Precio por Dia: " + precioDia + " Stock Total: " + stockTotal + " Stock Disponible" + stockDisponible + " Categoria: " + categoria + " Estado: " + estado);
+    public String mostrarInformacion() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Instrumento id: ").append(getId())
+                .append(", Marca: ").append(getMarca())
+                .append(", Modelo: ").append(getModelo())
+                .append(", Precio por dia: ").append(getPrecioDia()).append(", Stock total: ")
+                .append(getStockTotal()).append(", Stock disponible: ").append(getStockDisponible())
+                .append(", Categoria").append(getCategoria()).append(", Estado: ").append(getEstado());
+
+        return sb.toString();
     }
 
     @Override

@@ -132,7 +132,7 @@ public class ServiceAlquiler {
             Iterator<Alquiler> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Alquiler a = it.next();
-                a.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(a.mostrarAlquiler());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -147,7 +147,7 @@ public class ServiceAlquiler {
         try {
             alquiler = alquilerCrud.listarAlquilerPorId(id);
             if (alquiler != null) {
-                alquiler.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(alquiler.mostrarAlquiler());
 
             }
         } catch (SQLException e) {
@@ -165,7 +165,7 @@ public class ServiceAlquiler {
             Iterator<Alquiler> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Alquiler a = it.next();
-                a.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(a.mostrarAlquiler());
             }
 
         } catch (SQLException e) {
@@ -181,7 +181,7 @@ public class ServiceAlquiler {
             Iterator<Alquiler> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Alquiler a = it.next();
-                a.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(a.mostrarAlquiler());
             }
 
         } catch (SQLException e) {
@@ -197,7 +197,7 @@ public class ServiceAlquiler {
             Iterator<Alquiler> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Alquiler a = it.next();
-                a.mostrarResumen();
+                MenuAlquileres.vMostrarTexto(a.mostrarAlquiler());
             }
 
         } catch (SQLException e) {
@@ -359,18 +359,21 @@ public class ServiceAlquiler {
 
                 case 1:
                     /* 1- Mostrar todos los alquileres */
+                    System.out.println("|| --- TODOS LOS ALQUILERES --- ||");
                     vMostrarTodos();
                     MenuAlquileres.vEspera(sc);
                     break;
 
                 case 2:
                     /* 2- Buscar alquiler por ID */
+                    System.out.println("|| --- BÚSQUEDA DE ALQUILER POR ID DE ALQUILER --- ||");
                     vMostrarPorId(vIntroducirId(sc));
                     MenuAlquileres.vEspera(sc);
                     break;
 
                 case 3:
                     /* 3- Buscar alquileres por cliente (DNI) */
+                    System.out.println("|| --- BÚSQUEDA DE ALQUILER POR CLIENTE --- ||");
                     System.out.println("Introduce el dni del cliente");
                     dni = Validacion.validadorDni(sc);
                     vMostrarPorCliente(dni);
@@ -379,6 +382,7 @@ public class ServiceAlquiler {
 
                 case 4:
                     /* 4- Buscar alquileres por instrumento (ID) */
+                    System.out.println("|| --- BÚSQUEDA DE ALQUILER POR INSTRUMENTO --- ||");
                     System.out.println("Introduce el id del instrumento: ");
                     int idInstrumento = Validacion.validadorInt(sc);
                     vMostrarPorInstrumento(idInstrumento);
@@ -388,6 +392,7 @@ public class ServiceAlquiler {
 
                 case 5:
                     /* 5- Insertar nuevo alquiler */
+                    System.out.println("|| --- REGISTRO DE NUEVO ALQUILER --- ||");
                     alquiler = crearNuevoAlquilerSinId(sc);
                     if (alquiler != null) {
                         vInsertarAlquiler(alquiler);
@@ -397,6 +402,7 @@ public class ServiceAlquiler {
 
                 case 6:
                     /* 6- Modificar alquiler existente */
+                    System.out.println("|| --- MODIFICACIÓN DE ALQUILER EXISTENTE --- ||");
                     alquiler = actualizarAlquilerConID(sc);
                     if (alquiler != null) {
                         vUpdateAlquiler(alquiler);
@@ -406,6 +412,7 @@ public class ServiceAlquiler {
 
                 case 7:
                     /* 7- Cancelar alquiler (soft delete) */
+                    System.out.println("|| --- CANCELACIÓN DE ALQUILER EXISTENTE --- ||");
                     int idCancelar = vIntroducirId(sc);
                     System.out.print("Motivo de la cancelacion: ");
                     String motivo = Validacion.validadorString(sc);
@@ -415,6 +422,7 @@ public class ServiceAlquiler {
 
                 case 8:
                     /* 8- Ver alquileres activos (sin devolver) */
+                    System.out.println("|| --- VISTA DE ALQUILERES ACTIVOS --- ||");
                     vMostrarPorAlquileresActivos();
                     MenuAlquileres.vEspera(sc);
                     break;
@@ -422,12 +430,14 @@ public class ServiceAlquiler {
 
                 case 9:
                     /* 9- Registrar devolucion */
+                    System.out.println("|| --- REGISTRO DE DEVOLUCIÓN DE ALQUILER --- ||");
                     vRegistrarDevolucion(vIntroducirId(sc), sc);
                     MenuAlquileres.vEspera(sc);
                     break;
 
                 case 10:
                     /* 10- Marcar alquiler como pagado */
+                    System.out.println("|| --- MARCAR ALQUILER COMO PAGADO --- ||");
                     vMarcarComoPagado(vIntroducirId(sc));
                     MenuAlquileres.vEspera(sc);
                     break;
