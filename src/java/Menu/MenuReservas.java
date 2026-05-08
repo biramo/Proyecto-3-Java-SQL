@@ -21,6 +21,8 @@ public class MenuReservas {
 
     //Color de fondo
     private static final String FONDO_GRIS = "\u001B[48;5;236m";
+    //Color de los textos
+    private static final String TEXTO_BLANCO = "\u001B[97m";
 
     public static void vOpciones() {
         String estilo = CIAN_B + FONDO_GRIS;
@@ -52,33 +54,8 @@ public class MenuReservas {
         sc.nextLine();
     }
 
-    /*Hay que decidir si menu ... llama a menus o si El servicio de menu .. llama a los servicios y cada servicio llama a su menu para mostrar las opciones */
-    /*
-    public void sReserva(Scanner sc) {
-        int opC;
-
-        do {
-            vMostrarMenu();
-            opC = sc.nextInt();
-            try {
-
-                switch (opC) {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 0:
-                        System.out.println("Volviendo al menú principal...");
-                        break;
-                    default:
-                        System.out.println("Valor Incorrecto.");
-                        sc.nextLine();
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Inserte un número entero válido");
-            }
-        } while (opC != 0);
+    public static void vMostrarTexto(String texto) {
+        System.out.println(TEXTO_BLANCO + texto + RESET);
     }
-    */
 
 }
