@@ -242,12 +242,35 @@ public class Alquiler {
 
 
     // metodo añadir penalizacion
-    public void anadirPenalizacion(Penalizacion p){
+    public void anadirPenalizacion(Penalizacion p) {
         this.penalizaciones.add(p);
     }
 
     public void mostrarResumen() {
         System.out.println(this.toString());
+    }
+
+    //Método devuelve texto con los datos del cliente
+    public String mostrarAlquiler() {
+        //Para mejor gestion de memoria usamos StringBuilder
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Alquiler: id: ").append(getId())
+                .append(", Cliente: ").append(getCliente())
+                .append(", Intrumento: ").append(getInstrumento())
+                .append(", Fecha Inicio: ").append(getFechaInicio())
+                .append(", Fecha Fin Prevista: ").append(getFechaFinPrevista())
+                .append(", Fecha Fin Real: ").append(getFechaFinReal())
+                .append(", Importe Base: ").append(getImporteBase())
+                .append(", Importe Final: ").append(getImporteFinal())
+                .append(", Penalizaciones: ").append(getPenalizaciones())
+                .append(", Observaciones: ").append(getObservaciones())
+                .append(", Estado Pago: ").append(getEstadoPago())
+                .append(", Cancelado: ").append(isCancelado())
+                .append(", Fecha Cancelación: ").append(getFechaCancelacion())
+                .append(", Motivo Cancelación: ").append(getMotivoCancelacion());
+
+        return sb.toString();
     }
 
     @Override
