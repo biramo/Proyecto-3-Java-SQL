@@ -137,16 +137,27 @@ public class ServiceReservas {
                 return;
             }
 
+            // Igual que en el alta de alquiler: el alquiler siempre empieza hoy.
+            LocalDate fechaInicio = LocalDate.now();
 
-            System.out.print("Fecha fin prevista del alquiler (yyyy-mm-dd): ");
-            LocalDate fechaFinPrevista = Validacion.validadorFechaDefault(sc);
-            System.out.print("Observaciones: ");
-            String observaciones = Validacion.validadorString(sc);
+            System.out.print("Duracion del alquiler en dias (>= 1): ");
+            int duracionDias = Validacion.validadorInt(sc);
+            while (duracionDias < 1) {
+                System.out.print("Duracion del alquiler en dias (>= 1): ");
+                duracionDias = Validacion.validadorInt(sc);
+            }
+
+            LocalDate fechaFinPrevista = fechaInicio.plusDays(duracionDias);
+
+            System.out.print("Observaciones (opcional, [ENTER] para ninguna): ");
+            String observaciones = sc.nextLine();
+            if (observaciones == null) observaciones = "";
+            observaciones = observaciones.trim();
 
             Alquiler alquiler = new Alquiler(
                     reserva.getCliente(),
                     reserva.getInstrumento(),
-                    LocalDate.now(),
+                    fechaInicio,
                     fechaFinPrevista,
                     observaciones,
                     EstadoPago.PENDIENTE
