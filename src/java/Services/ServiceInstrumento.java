@@ -63,7 +63,7 @@ public class ServiceInstrumento {
             Iterator<Instrumento> it = resultadoQuery.iterator();
             while (it.hasNext()) {
                 Instrumento i = it.next();
-                i.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(i.mostrarInformacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -78,7 +78,7 @@ public class ServiceInstrumento {
         try {
             instrumento = instrumentoCrud.listarInstrumentoPorId(id);
             if (instrumento != null) {
-                instrumento.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(instrumento.mostrarInformacion());
 
             }
         } catch (SQLException e) {
@@ -124,7 +124,7 @@ public class ServiceInstrumento {
                 return;
             }
             for (Instrumento i : resultado) {
-                i.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(i.mostrarInformacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -139,7 +139,7 @@ public class ServiceInstrumento {
                 return;
             }
             for (Instrumento i : resultado) {
-                i.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(i.mostrarInformacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -154,7 +154,7 @@ public class ServiceInstrumento {
                 return;
             }
             for (Instrumento i : resultado) {
-                i.mostrarInformacion();
+                MenuInstrumentos.vMostrarTexto(i.mostrarInformacion());
             }
         } catch (SQLException e) {
             errorHandler(e);
