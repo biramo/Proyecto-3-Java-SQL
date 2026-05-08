@@ -19,13 +19,30 @@ public class AlquilerCRUD {
 
     // ------------ INSERTAR ALQUILER ------------ //
     public void insertarAlquiler(Alquiler alquiler) throws SQLException {
+        String sqlDescontarStock = "UPDATE Instrumentos " +
+                "SET stock_disponible = stock_disponible - 1, " +
+                "    estado = CASE WHEN (stock_disponible - 1) > 0 THEN 'DISPONIBLE' ELSE 'SIN_STOCK' END " +
+                "WHERE id = ? AND stock_disponible > 0 AND estado <> 'MANTENIMIENTO'";
+
         String sql = "INSERT INTO Alquileres " +
                 "(dni_cliente, id_instrumento, fecha_inicio, fecha_fin_prevista, fecha_fin_real, importe_base, importe_final, observaciones, estadopago) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ConexionBD.conexion()) {
             assert con != null;
-            try (PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            boolean oldAutoCommit = con.getAutoCommit();
+            con.setAutoCommit(false);
+
+            try (PreparedStatement psStock = con.prepareStatement(sqlDescontarStock);
+                 PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+                // 1) Descontar stock disponible si es posible (y no esta en mantenimiento)
+                psStock.setInt(1, alquiler.getInstrumento().getId());
+                int filasStock = psStock.executeUpdate();
+                if (filasStock <= 0) {
+                    con.rollback();
+                    throw new SQLException("No se puede alquilar el instrumento: sin stock disponible o en mantenimiento.");
+                }
 
                 ps.setString(1, alquiler.getCliente().getDni());
                 ps.setInt(2, alquiler.getInstrumento().getId());
@@ -50,6 +67,19 @@ public class AlquilerCRUD {
                     }
 
                     System.out.println("Alquiler registrado correctamente con ID: " + alquiler.getId());
+                }
+
+                con.commit();
+            } catch (SQLException e) {
+                try {
+                    con.rollback();
+                } catch (SQLException ignored) {
+                }
+                throw e;
+            } finally {
+                try {
+                    con.setAutoCommit(oldAutoCommit);
+                } catch (SQLException ignored) {
                 }
             }
         }

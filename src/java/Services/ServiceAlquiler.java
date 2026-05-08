@@ -80,6 +80,13 @@ public class ServiceAlquiler {
             return null;
         }
 
+        // Validacion de disponibilidad antes de crear el alquiler.
+        // (En BD tambien se valida de forma atomica al insertar el alquiler.)
+        if (instrumento.getStockDisponible() <= 0) {
+            System.out.println("El instrumento no tiene stock disponible. Puedes crear una reserva desde el menu de Reservas.");
+            return null;
+        }
+
         Alquiler alq = new Alquiler(cliente, instrumento, fechaInicio, fechaFinPrevista, observaciones, EstadoPago.PENDIENTE);
 
         return alq;
@@ -298,7 +305,12 @@ public class ServiceAlquiler {
 
             boolean entraMantenimiento = leerSiNo(sc, " ¿Entra en mantenimiento?");
             if (entraMantenimiento) {
-                instrumentoCRUD.updateEstado(alquiler.getInstrumento().getId(), EstadoInstrumento.MANTENIMIENTO);
+                // Con stock por "unidades", el mantenimiento es por unidad.
+                // Solo marcamos el estado global como MANTENIMIENTO si ya no queda stock disponible.
+                Instrumento instrActual = instrumentoCRUD.listarInstrumentoPorId(alquiler.getInstrumento().getId());
+                if (instrActual != null && instrActual.getStockDisponible() <= 0) {
+                    instrumentoCRUD.updateEstado(alquiler.getInstrumento().getId(), EstadoInstrumento.MANTENIMIENTO);
+                }
             }
 
             alquiler.setObservaciones(
@@ -310,6 +322,13 @@ public class ServiceAlquiler {
 
             alquiler.recalcularImporteFinal();
             alquilerCrud.registrarDevolucion(alquiler, fechaReal);
+
+            // Reponer stock solo si NO entra en mantenimiento.
+            // Si entra en mantenimiento, se deja fuera de stock disponible hasta que se "recupere"
+            // (por ejemplo ajustando stock/estado desde el menu de instrumentos).
+            if (!entraMantenimiento) {
+                instrumentoCRUD.incrementarStockDisponible(alquiler.getInstrumento().getId());
+            }
         } catch (SQLException e) {
             errorHandler(e);
         }

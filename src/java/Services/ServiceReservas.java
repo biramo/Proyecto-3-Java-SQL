@@ -121,6 +121,22 @@ public class ServiceReservas {
             Reserva reserva = lista.get(0); // El primero lleva más tiempo esperando
             MenuReservas.vMostrarTexto("Confirmando reserva para: " + reserva.mostrarReserva());
 
+            // Comprobacion rapida de disponibilidad antes de confirmar.
+            // La validacion definitiva se hace en BD dentro de AlquilerCRUD.insertarAlquiler(...) (operacion atomica).
+            Instrumento instrActual = instrumentoCrud.listarInstrumentoPorId(idInstrumento);
+            if (instrActual == null) {
+                System.out.println("No se encontro el instrumento con ID: " + idInstrumento);
+                return;
+            }
+            if (instrActual.getEstado() == model.Enum.EstadoInstrumento.MANTENIMIENTO) {
+                System.out.println("El instrumento esta en mantenimiento. No se puede confirmar la reserva ahora.");
+                return;
+            }
+            if (instrActual.getStockDisponible() <= 0) {
+                System.out.println("El instrumento sigue sin stock disponible. No se puede confirmar la reserva ahora.");
+                return;
+            }
+
 
             System.out.print("Fecha fin prevista del alquiler (yyyy-mm-dd): ");
             LocalDate fechaFinPrevista = Validacion.validadorFechaDefault(sc);
