@@ -19,10 +19,16 @@ public class AlquilerCRUD {
 
     // ------------ INSERTAR ALQUILER ------------ //
     public void insertarAlquiler(Alquiler alquiler) throws SQLException {
+        // 1) Descuenta una unidad si hay stock y el instrumento no esta en mantenimiento.
+        // 2) En un segundo UPDATE (en la misma transaccion) se recalcula el estado segun el stock resultante.
+        // Esto evita comportamientos inesperados por el orden de evaluacion del SET en MySQL.
         String sqlDescontarStock = "UPDATE Instrumentos " +
-                "SET stock_disponible = stock_disponible - 1, " +
-                "    estado = CASE WHEN (stock_disponible - 1) > 0 THEN 'DISPONIBLE' ELSE 'SIN_STOCK' END " +
+                "SET stock_disponible = stock_disponible - 1 " +
                 "WHERE id = ? AND stock_disponible > 0 AND estado <> 'MANTENIMIENTO'";
+
+        String sqlRecalcularEstado = "UPDATE Instrumentos " +
+                "SET estado = CASE WHEN stock_disponible > 0 THEN 'DISPONIBLE' ELSE 'SIN_STOCK' END " +
+                "WHERE id = ? AND estado <> 'MANTENIMIENTO'";
 
         String sql = "INSERT INTO Alquileres " +
                 "(dni_cliente, id_instrumento, fecha_inicio, fecha_fin_prevista, fecha_fin_real, importe_base, importe_final, observaciones, estadopago) " +
@@ -34,6 +40,7 @@ public class AlquilerCRUD {
             con.setAutoCommit(false);
 
             try (PreparedStatement psStock = con.prepareStatement(sqlDescontarStock);
+                 PreparedStatement psEstado = con.prepareStatement(sqlRecalcularEstado);
                  PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
                 // 1) Descontar stock disponible si es posible (y no esta en mantenimiento)
@@ -43,6 +50,10 @@ public class AlquilerCRUD {
                     con.rollback();
                     throw new SQLException("No se puede alquilar el instrumento: sin stock disponible o en mantenimiento.");
                 }
+
+                // 2) Recalcular estado segun stock resultante (en la misma transaccion)
+                psEstado.setInt(1, alquiler.getInstrumento().getId());
+                psEstado.executeUpdate();
 
                 ps.setString(1, alquiler.getCliente().getDni());
                 ps.setInt(2, alquiler.getInstrumento().getId());
@@ -139,21 +150,80 @@ public class AlquilerCRUD {
 
     // ------------ CANCELAR ALQUILER (SOFT DELETE) ------------ //
     public void cancelarAlquiler(int id, String motivo, LocalDate fechaCancelacion) throws SQLException {
-        String sql = "UPDATE Alquileres SET cancelado=true, fecha_cancelacion=?, motivo_cancelacion=? WHERE id=?";
+        String sqlInfo = "SELECT id_instrumento, fecha_fin_real, cancelado FROM Alquileres WHERE id=?";
+        String sql = "UPDATE Alquileres SET cancelado=true, fecha_cancelacion=?, motivo_cancelacion=? WHERE id=? AND cancelado=false";
+        String sqlReponerStock = "UPDATE Instrumentos " +
+                "SET stock_disponible = CASE " +
+                "        WHEN stock_disponible < stock_total THEN stock_disponible + 1 " +
+                "        ELSE stock_disponible " +
+                "    END, " +
+                "    estado = CASE " +
+                "        WHEN (CASE WHEN stock_disponible < stock_total THEN stock_disponible + 1 ELSE stock_disponible END) > 0 THEN 'DISPONIBLE' " +
+                "        ELSE 'SIN_STOCK' " +
+                "    END " +
+                "WHERE id = ?";
 
         try (Connection con = ConexionBD.conexion()) {
             assert con != null;
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
+            boolean oldAutoCommit = con.getAutoCommit();
+            con.setAutoCommit(false);
+
+            Integer idInstrumento = null;
+            LocalDate fechaFinReal = null;
+            boolean yaCancelado = false;
+
+            try (PreparedStatement psInfo = con.prepareStatement(sqlInfo)) {
+                psInfo.setInt(1, id);
+                try (ResultSet rs = psInfo.executeQuery()) {
+                    if (!rs.next()) {
+                        con.rollback();
+                        System.out.println("No existe ningun alquiler con ID: " + id);
+                        return;
+                    }
+                    idInstrumento = rs.getInt("id_instrumento");
+                    fechaFinReal = rs.getObject("fecha_fin_real", LocalDate.class);
+                    yaCancelado = rs.getBoolean("cancelado");
+                }
+            }
+
+            if (yaCancelado) {
+                con.rollback();
+                System.out.println("El alquiler con ID: " + id + " ya estaba cancelado.");
+                return;
+            }
+
+            try (PreparedStatement ps = con.prepareStatement(sql);
+                 PreparedStatement psStock = con.prepareStatement(sqlReponerStock)) {
+
                 ps.setObject(1, fechaCancelacion);
                 ps.setString(2, motivo);
                 ps.setInt(3, id);
 
                 int filas = ps.executeUpdate();
+                if (filas <= 0) {
+                    con.rollback();
+                    System.out.println("No se pudo cancelar el alquiler con ID: " + id);
+                    return;
+                }
 
-                if (filas > 0) {
-                    System.out.println("Alquiler con ID: " + id + ", cancelado correctamente");
-                } else {
-                    System.out.println("No existe ningun alquiler con ID: " + id);
+                // Si el alquiler estaba activo (sin devolucion), reponemos 1 unidad al stock disponible.
+                if (fechaFinReal == null && idInstrumento != null) {
+                    psStock.setInt(1, idInstrumento);
+                    psStock.executeUpdate();
+                }
+
+                con.commit();
+                System.out.println("Alquiler con ID: " + id + ", cancelado correctamente");
+            } catch (SQLException e) {
+                try {
+                    con.rollback();
+                } catch (SQLException ignored) {
+                }
+                throw e;
+            } finally {
+                try {
+                    con.setAutoCommit(oldAutoCommit);
+                } catch (SQLException ignored) {
                 }
             }
         }
