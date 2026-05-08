@@ -70,7 +70,7 @@ public class Penalizacion {
         sb.append("Motivo: \n");
         sb.append(motivo);
         if (descripcion != null && !descripcion.isBlank()) {
-            sb.append("\nDescripcion:\n").append(descripcion);
+            sb.append("\nDescripción:\n").append(descripcion);
         }
         //un ternario por si no hay desperfecto y solo es por retraso la penalización
         sb.append(

@@ -322,13 +322,15 @@ public class AlquilerCRUD {
         String sql = "SELECT * FROM Alquileres WHERE fecha_fin_real IS NULL ORDER BY fecha_inicio ASC";
         ArrayList<Alquiler> listaAlquileres = new ArrayList<>();
 
-        try (Connection con = ConexionBD.conexion();
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection con = ConexionBD.conexion()) {
+            assert con != null;
+            try (Statement st = con.createStatement();
+                 ResultSet rs = st.executeQuery(sql)) {
 
-            while (rs.next()) {
-                Alquiler alquiler = crearAlquilerDesdeResultSet(rs);
-                listaAlquileres.add(alquiler);
+                while (rs.next()) {
+                    Alquiler alquiler = crearAlquilerDesdeResultSet(rs);
+                    listaAlquileres.add(alquiler);
+                }
             }
         }
 
@@ -342,19 +344,21 @@ public class AlquilerCRUD {
         alquiler.registrarDevolucion(fechaFinReal);
         alquiler.recalcularImporteFinal();
 
-        try (Connection con = ConexionBD.conexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionBD.conexion()) {
+            assert con != null;
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setObject(1, alquiler.getFechaFinReal());
-            ps.setDouble(2, alquiler.getImporteFinal());
-            ps.setInt(3, alquiler.getId());
+                ps.setObject(1, alquiler.getFechaFinReal());
+                ps.setDouble(2, alquiler.getImporteFinal());
+                ps.setInt(3, alquiler.getId());
 
-            int filas = ps.executeUpdate();
+                int filas = ps.executeUpdate();
 
-            if (filas > 0) {
-                System.out.println("Devolución registrada correctamente");
-            } else {
-                System.out.println("No se encontro ningun alquiler con ID: " + alquiler.getId());
+                if (filas > 0) {
+                    System.out.println("Devolución registrada correctamente");
+                } else {
+                    System.out.println("No se encontro ningun alquiler con ID: " + alquiler.getId());
+                }
             }
         }
     }
@@ -408,10 +412,10 @@ public class AlquilerCRUD {
 
         try {
             alquiler.setCancelado(rs.getBoolean("cancelado"));
-            alquiler.setFechaCancelacion(rs.getObject("fecha_cancelacion", LocalDate.class));
-            alquiler.setMotivoCancelacion(rs.getString("motivo_cancelacion"));
+            alquiler.setFechaCancelacion(rs.getObject("fecha_cancelación", LocalDate.class));
+            alquiler.setMotivoCancelacion(rs.getString("motivo_cancelación"));
         } catch (SQLException ignored) {
-            // Columnas opcionales si la BD aun no fue migrada
+            // Columnas opcionales si la BD aún no fue migrada
         }
 
         //Listamos las penalizacion y las agregamos al objeto de cliente
