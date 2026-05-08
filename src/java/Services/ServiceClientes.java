@@ -179,24 +179,28 @@ public class ServiceClientes {
             switch (opcion) {
                 case 1:
                     /* 1- Listar clientes */
+                    System.out.println("|| --- TODOS LOS CLIENTES --- ||");
                     vMostrarTodosCliente();
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 2:
                     /* 2- Buscar cliente por DNI */
+                    System.out.println("|| --- BÚSQUEDA DE CLIENTE POR DNI --- ||");
                     vMostrarClientePorDni(sc);
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 3:
                     /* 3- Buscar cliente por email */
+                    System.out.println("|| --- BÚSQUEDA DE CLIENTE POR E-MAIL --- ||");
                     vMostrarClientePorEmail(sc);
                     MenuClientes.vEspera(sc);
                     break;
 
                 case 4:
                     /* 4- Dar de alta cliente */
+                    System.out.println("|| --- REGISTRO DE NUEVO DE CLIENTE --- ||");
                     cliente = pedirDatosCliente(sc);
                     if (cliente != null) {
                         vInsertarNuevoCliente(cliente);
@@ -206,6 +210,7 @@ public class ServiceClientes {
 
                 case 5:
                     /* 5- Modificar cliente */
+                    System.out.println("|| --- MODIFICACIÓN DE CLIENTE EXISTENTE --- ||");
                     cliente = pedirDatosCliente(sc);
                     if (cliente != null) {
                         vModificarRegistro(cliente);
@@ -215,6 +220,8 @@ public class ServiceClientes {
 
                 case 6:
                     /* 6- Eliminar cliente */
+                    System.out.println("|| --- ELIMINACIÓN DE CLIENTE --- ||");
+                    System.out.println("⚠️⚠️ ATENCIÓN - EL CLIENTE SE ELIMINARÁ DE FORMA PERMANENTE ⚠️⚠️");
                     System.out.println("Introduce el dni o 0 para salir del proceso: ");
                     dni = Validacion.validadorDni(sc);
                     if (!dni.equals("0")) {
