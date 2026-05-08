@@ -87,9 +87,7 @@ VALUES ('Yamaha', 'F310', 'GUITARRA', 12.50, 5, 3, 'DISPONIBLE'),
        ('Ibanez', 'GSR200', 'BAJO', 16.50, 2, 0, 'SIN_STOCK'),
        ('Roland', 'FP-10', 'TECLADO', 22.00, 1, 0, 'MANTENIMIENTO'),
        ('Fender', 'CD-60', 'GUITARRA', 15.00, 2, 2, 'DISPONIBLE'),
-       ('Mapex', 'Storm', 'BATERIA', 28.00, 1, 1, 'DISPONIBLE'),
-       -- Instrumento de prueba sin stock (stock_total=0, stock_disponible=0)
-       ('Korg', 'B2', 'TECLADO', 19.00, 0, 0, 'SIN_STOCK');
+       ('Mapex', 'Storm', 'BATERIA', 28.00, 1, 1, 'DISPONIBLE');
 
 -- =========================
 -- ALQUILERES
@@ -209,3 +207,10 @@ ALTER TABLE Alquileres
 
 ALTER TABLE Penalizaciones
     ADD COLUMN descripcion TEXT NULL;
+
+-- =========================
+-- INSERT EXTRA (PRUEBAS)
+-- =========================
+-- Instrumento de prueba sin stock (para ejecutarlo aparte cuando ya tienes datos cargados)
+INSERT INTO Instrumentos (marca, modelo, categoria, precio_dia, stock_total, stock_disponible, estado)
+VALUES ('Korg', 'B2', 'TECLADO', 19.00, 0, 0, 'SIN_STOCK');
