@@ -12,8 +12,8 @@ import static java.lang.Thread.sleep;
  * <p>
  * Responsabilidad:
  * <ul>
- *   <li>Muestra el {@link MenuPrincipal}.</li>
- *   <li>Segun la opcion elegida, delega en el service correspondiente.</li>
+ *   <li>Muestra {@link MenuPrincipal}.</li>
+ *   <li>Según la opcion elegida, delega en el service correspondiente.</li>
  *   <li>Al salir de un sub-menu, vuelve al menu principal.</li>
  * </ul>
  */
@@ -33,9 +33,9 @@ public class ServiceMenu {
     // Al volver del submenú, se vuelve a mostrar el menú principal.
 
     /**
-     * Inicia el menu principal y mantiene el bucle de navegacion.
+     * Inicia el menu principal y mantiene el bucle de navegación.
      *
-     * @param sc Scanner compartido por toda la aplicacion.
+     * @param sc Scanner compartido por toda la aplicación.
      * @throws InterruptedException por el uso de {@link Thread#sleep(long)} al iniciar.
      */
     public void initService(Scanner sc) throws InterruptedException {

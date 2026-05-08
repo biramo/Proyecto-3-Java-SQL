@@ -60,7 +60,7 @@ public class Validacion {
             return "0";
         }
         while (!(comprobador.matches(regexDni))) {
-            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el dni (8 numeros y una letra): ");
+            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el dni (8 números y una letra): ");
             comprobador = entrada.nextLine();
         }
 

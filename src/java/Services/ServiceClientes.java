@@ -23,7 +23,7 @@ public class ServiceClientes {
         return Validacion.validadorInt(sc);
     }
 
-    //Metodo para crear nuevo cliente usado en insert y update
+    //Método para crear nuevo cliente usado en insert y update
     public Cliente pedirDatosCliente(Scanner sc) {
         String dni = "", nombre = "", telefono = "", apellidos = "", email = "";
         LocalDate fechaNacimiento = null;
@@ -50,7 +50,7 @@ public class ServiceClientes {
 
     }
 
-    // ------------ METODOS CRUD ------------ //
+    // ------------ MÉTODOS CRUD ------------ //
 
     // ------------ MOSTRAR TODOS LOS CLIENTES ------------ //
     public ArrayList<Cliente> vMostrarTodos() {
@@ -236,7 +236,7 @@ public class ServiceClientes {
                     MenuClientes.vEspera(sc);
                     return;
                 default:
-                    System.out.println("Opcion no valida");
+                    System.out.println("Opción no valida");
                     MenuClientes.vEspera(sc);
                     break;
             }
