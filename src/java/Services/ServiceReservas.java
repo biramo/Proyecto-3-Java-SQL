@@ -170,6 +170,7 @@ public class ServiceReservas {
                 case 1:
                     // Crea una nueva reserva en la lista de espera para un cliente e instrumento.
                     // La posición en la cola se calcula automáticamente según las reservas activas existentes.
+                    System.out.println("|| --- REGISTRO PARA NUEVA RESERVA --- ||");
                     Reserva reserva = pedirDatosReserva(sc);
                     if (reserva != null) {
                         vInsertarReserva(reserva);
@@ -180,6 +181,7 @@ public class ServiceReservas {
                 case 2:
                     // Muestra todas las reservas activas de un instrumento ordenadas por posición,
                     // es decir, la lista de espera completa de ese instrumento.
+                    System.out.println("|| --- LISTA DE ESPERA POR INSTRUMENTO --- ||");
                     System.out.print("ID del instrumento (0 para salir del proceso): ");
                     int idInstr = Validacion.validadorInt(sc);
                     if (idInstr != 0) {
@@ -191,6 +193,7 @@ public class ServiceReservas {
                 case 3:
                     // Cancela una reserva existente por su ID.
                     // Las posiciones de los que estaban por detrás en la cola se reajustan automáticamente.
+                    System.out.println("|| --- CANCELACIÓN DE RESERVA EXISTENTE --- ||");
                     System.out.print("Introduce el ID (0 para salir del proceso): ");
                     int idReserva = Validacion.validadorInt(sc);
                     if (idReserva != 0) {
@@ -203,6 +206,7 @@ public class ServiceReservas {
                     // Confirma la primera reserva de la lista de espera de un instrumento
                     // creando el alquiler correspondiente y eliminando la reserva de la cola.
                     // Se usa cuando el instrumento vuelve a estar disponible.
+                    System.out.println("|| --- CONFIRMACIÓN DE RESERVA Y ACTIVACIÓN DEL ALQUILER --- ||");
                     System.out.print("ID del instrumento disponible (0 para salir del proceso): ");
                     int idInstrConf = Validacion.validadorInt(sc);
                     if (idInstrConf != 0) {
