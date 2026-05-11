@@ -85,8 +85,7 @@ public class ServiceReservas {
             Iterator<Reserva> it = lista.iterator();
             while (it.hasNext()) {
                 MenuReservas.vMostrarTexto(it.next().mostrarReserva());
-                //PTE BORRAR
-                //System.out.println(it.next().mostrarReserva());
+
             }
         } catch (SQLException e) {
             errorHandler(e);
@@ -121,18 +120,44 @@ public class ServiceReservas {
 
             Reserva reserva = lista.get(0); // El primero lleva más tiempo esperando
             MenuReservas.vMostrarTexto("Confirmando reserva para: " + reserva.mostrarReserva());
-            //pa borrar
-            //System.out.println("Confirmando reserva para: " + reserva.mostrarReserva());
 
-            System.out.print("Fecha fin prevista del alquiler (yyyy-mm-dd): ");
-            LocalDate fechaFinPrevista = Validacion.validadorFechaDefault(sc);
-            System.out.print("Observaciones: ");
-            String observaciones = Validacion.validadorString(sc);
+            // Comprobacion rapida de disponibilidad antes de confirmar.
+            // La validacion definitiva se hace en BD dentro de AlquilerCRUD.insertarAlquiler(...) (operacion atomica).
+            Instrumento instrActual = instrumentoCrud.listarInstrumentoPorId(idInstrumento);
+            if (instrActual == null) {
+                System.out.println("No se encontro el instrumento con ID: " + idInstrumento);
+                return;
+            }
+            if (instrActual.getEstado() == model.Enum.EstadoInstrumento.MANTENIMIENTO) {
+                System.out.println("El instrumento esta en mantenimiento. No se puede confirmar la reserva ahora.");
+                return;
+            }
+            if (instrActual.getStockDisponible() <= 0) {
+                System.out.println("El instrumento sigue sin stock disponible. No se puede confirmar la reserva ahora.");
+                return;
+            }
+
+            // Igual que en el alta de alquiler: el alquiler siempre empieza hoy.
+            LocalDate fechaInicio = LocalDate.now();
+
+            System.out.print("Duracion del alquiler en dias (>= 1): ");
+            int duracionDias = Validacion.validadorInt(sc);
+            while (duracionDias < 1) {
+                System.out.print("Duracion del alquiler en dias (>= 1): ");
+                duracionDias = Validacion.validadorInt(sc);
+            }
+
+            LocalDate fechaFinPrevista = fechaInicio.plusDays(duracionDias);
+
+            System.out.print("Observaciones (opcional, [ENTER] para ninguna): ");
+            String observaciones = sc.nextLine();
+            if (observaciones == null) observaciones = "";
+            observaciones = observaciones.trim();
 
             Alquiler alquiler = new Alquiler(
                     reserva.getCliente(),
                     reserva.getInstrumento(),
-                    LocalDate.now(),
+                    fechaInicio,
                     fechaFinPrevista,
                     observaciones,
                     EstadoPago.PENDIENTE
@@ -169,6 +194,7 @@ public class ServiceReservas {
                 case 1:
                     // Crea una nueva reserva en la lista de espera para un cliente e instrumento.
                     // La posición en la cola se calcula automáticamente según las reservas activas existentes.
+                    System.out.println("|| --- REGISTRO PARA NUEVA RESERVA --- ||");
                     Reserva reserva = pedirDatosReserva(sc);
                     if (reserva != null) {
                         vInsertarReserva(reserva);
@@ -179,6 +205,7 @@ public class ServiceReservas {
                 case 2:
                     // Muestra todas las reservas activas de un instrumento ordenadas por posición,
                     // es decir, la lista de espera completa de ese instrumento.
+                    System.out.println("|| --- LISTA DE ESPERA POR INSTRUMENTO --- ||");
                     System.out.print("ID del instrumento (0 para salir del proceso): ");
                     int idInstr = Validacion.validadorInt(sc);
                     if (idInstr != 0) {
@@ -190,6 +217,7 @@ public class ServiceReservas {
                 case 3:
                     // Cancela una reserva existente por su ID.
                     // Las posiciones de los que estaban por detrás en la cola se reajustan automáticamente.
+                    System.out.println("|| --- CANCELACIÓN DE RESERVA EXISTENTE --- ||");
                     System.out.print("Introduce el ID (0 para salir del proceso): ");
                     int idReserva = Validacion.validadorInt(sc);
                     if (idReserva != 0) {
@@ -202,6 +230,7 @@ public class ServiceReservas {
                     // Confirma la primera reserva de la lista de espera de un instrumento
                     // creando el alquiler correspondiente y eliminando la reserva de la cola.
                     // Se usa cuando el instrumento vuelve a estar disponible.
+                    System.out.println("|| --- CONFIRMACIÓN DE RESERVA Y ACTIVACIÓN DEL ALQUILER --- ||");
                     System.out.print("ID del instrumento disponible (0 para salir del proceso): ");
                     int idInstrConf = Validacion.validadorInt(sc);
                     if (idInstrConf != 0) {

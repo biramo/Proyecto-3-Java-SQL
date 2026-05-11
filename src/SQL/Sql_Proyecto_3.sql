@@ -207,3 +207,10 @@ ALTER TABLE Alquileres
 
 ALTER TABLE Penalizaciones
     ADD COLUMN descripcion TEXT NULL;
+
+-- =========================
+-- INSERT EXTRA (PRUEBAS)
+-- =========================
+-- Instrumento de prueba sin stock (para ejecutarlo aparte cuando ya tienes datos cargados)
+INSERT INTO Instrumentos (marca, modelo, categoria, precio_dia, stock_total, stock_disponible, estado)
+VALUES ('Korg', 'B2', 'TECLADO', 19.00, 0, 0, 'SIN_STOCK');

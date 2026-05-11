@@ -1,8 +1,8 @@
 package model.Interfaces;
 
 public interface InCliente {
-    public int calcularEdad();
+    int calcularEdad();
 
-    //-------------------------Metodo en STANDBY-------------------------
-    public int totalAlquileres();
+    //-------------------------Método en STANDBY-------------------------
+    int totalAlquileres();
 }

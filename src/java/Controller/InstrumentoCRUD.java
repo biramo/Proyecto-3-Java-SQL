@@ -220,5 +220,27 @@ public class InstrumentoCRUD {
             }
         }
     }
+
+    /**
+     * Incrementa el stock disponible en 1 (si no supera el stock total) y marca el estado como DISPONIBLE.
+     * Se usa al registrar una devolucion cuando el instrumento NO entra en mantenimiento.
+     */
+    public void incrementarStockDisponible(int idInstrumento) throws SQLException {
+        String sql = "UPDATE Instrumentos " +
+                "SET stock_disponible = CASE " +
+                "        WHEN stock_disponible < stock_total THEN stock_disponible + 1 " +
+                "        ELSE stock_disponible " +
+                "    END, " +
+                "    estado = 'DISPONIBLE' " +
+                "WHERE id = ?";
+
+        try (Connection conn = ConexionBD.conexion()) {
+            assert conn != null;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, idInstrumento);
+                ps.executeUpdate();
+            }
+        }
+    }
 }
 

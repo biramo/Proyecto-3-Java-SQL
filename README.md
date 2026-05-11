@@ -33,6 +33,8 @@ Notas importantes del SQL:
   `importe_final`, columnas de cancelacion soft-delete, y `descripcion` en penalizaciones).
 - Incluye un `SET GLOBAL time_zone = '+1:00';` (requiere permisos) pensado para evitar problemas de zona horaria en
   algunos entornos.
+- Al final del fichero hay un bloque `INSERT EXTRA (PRUEBAS)` con un `INSERT INTO Instrumentos` (sin stock) para
+  ejecutarlo aparte cuando ya tengas datos cargados.
 
 ### Ejecucion
 
@@ -239,8 +241,8 @@ Ubicacion: `src/java/model/Interfaces`
 
 Operaciones clave:
 
-- Crear/modificar alquiler: pide `dni`, `idInstrumento`, fechas y observaciones; valida que cliente e instrumento
-  existan.
+- Crear/modificar alquiler: pide `dni`, `idInstrumento`, duracion en dias (se calcula `fechaFinPrevista` desde hoy) y
+  observaciones (opcional). Valida que cliente e instrumento existan y que haya stock.
 - **Cancelacion (soft delete)**: marca el alquiler como cancelado y guarda motivo/fecha.
 - **Devolucion**:
     - Calcula retraso (`fechaFinPrevista` -> `fechaReal`) y aplica una penalizacion fija:
@@ -322,3 +324,27 @@ Tablas principales (ver script para detalle):
 - Se prefiere **cancelar** un alquiler (soft delete) a borrarlo fisicamente.
 - `MenuClientes` contiene algunas funciones que llaman directamente al `ServiceClientes` para mostrar resultados; el
   resto de menus delegan en sus `Service`.
+
+## 13. Stock y mantenimiento (como se gestiona)
+
+Este proyecto modela los instrumentos por "tipo/modelo" (una fila en `Instrumentos`) con stock:
+
+- `stock_total`: unidades totales.
+- `stock_disponible`: unidades alquilables ahora.
+
+Reglas actuales:
+
+- Al crear un alquiler se exige `stock_disponible > 0`. Ademas, en BD se descuenta stock de forma atomica y se evita
+  alquilar si el instrumento esta en `MANTENIMIENTO`.
+- En devolucion:
+    - Si NO entra en mantenimiento, se repone `stock_disponible` (+1) y se deja el estado como `DISPONIBLE`.
+    - Si entra en mantenimiento, esa unidad no vuelve a `stock_disponible` (queda "fuera"). Solo se marca el estado
+      global
+      como `MANTENIMIENTO` cuando ya no queda stock disponible.
+
+Limitacion importante:
+
+- Con el esquema actual, `estado` es un estado "global" de la fila, pero el mantenimiento suele ser por unidad. Para un
+  control fino (cuantas unidades estan en mantenimiento y cuales), lo correcto seria extender el modelo, por ejemplo:
+    - Anadir `stock_mantenimiento` y mover unidades entre `stock_disponible` y `stock_mantenimiento`, o
+    - Crear una tabla de unidades (por ejemplo `InstrumentosUnidades`) y alquilar por unidad.

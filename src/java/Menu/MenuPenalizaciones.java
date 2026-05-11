@@ -8,7 +8,7 @@ public class MenuPenalizaciones {
     Opciones:
     1- Listar penalizaciones
     2- Buscar penalización por ID Alquiler
-    3- Buscar penalizacion por ID CLiente
+    3- Buscar penalización por ID Cliente
     0- Salir
     */
 

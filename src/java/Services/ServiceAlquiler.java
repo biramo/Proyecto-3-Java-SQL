@@ -46,6 +46,7 @@ public class ServiceAlquiler {
         int idInstrumento;
         LocalDate fechaInicio, fechaFinPrevista;
         String observaciones, dni;
+        int duracionDias;
 
         System.out.println("El cliente es nuevo?(s/n): ");
         boolean nuevo = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
@@ -62,11 +63,7 @@ public class ServiceAlquiler {
 
         System.out.print("ID del instrumento: ");
         idInstrumento = Validacion.validadorInt(sc);
-        fechaInicio = Validacion.validadorFecha(sc, "Fecha inicio (yyyy-mm-dd) o [ENTER] para hoy: ", true);
-        System.out.print("Fecha fin prevista (yyyy-mm-dd): ");
-        fechaFinPrevista = Validacion.validadorFechaDefault(sc);
-        System.out.print("Introduce alguna observacion si es necesario: ");
-        observaciones = Validacion.validadorString(sc);
+        // Primero cargamos cliente/instrumento y validamos stock/estado para no pedir datos innecesarios.
 
         try {
             cliente = clienteCrud.listarClientePorDni(dni);
@@ -79,6 +76,34 @@ public class ServiceAlquiler {
             System.out.println("¡ERROR!, cliente o instrumento no encontrados. Operacion Cancelada");
             return null;
         }
+
+        // Validacion de disponibilidad antes de pedir mas datos.
+        // (En BD tambien se valida de forma atomica al insertar el alquiler.)
+        if (instrumento.getEstado() == EstadoInstrumento.MANTENIMIENTO) {
+            System.out.println("El instrumento esta en mantenimiento y no se puede alquilar.");
+            return null;
+        }
+        if (instrumento.getStockDisponible() <= 0) {
+            System.out.println("El instrumento no tiene stock disponible. Puedes crear una reserva desde el menu de Reservas.");
+            return null;
+        }
+
+        // A partir de aqui, ya sabemos que el instrumento es alquilable a nivel UI.
+        // Para simplificar la gestion de stock, el alquiler siempre empieza "hoy".
+        fechaInicio = LocalDate.now();
+
+        System.out.print("Duracion del alquiler en dias (>= 1): ");
+        duracionDias = Validacion.validadorInt(sc);
+        while (duracionDias < 1) {
+            System.out.print("Duracion del alquiler en dias (>= 1): ");
+            duracionDias = Validacion.validadorInt(sc);
+        }
+        fechaFinPrevista = fechaInicio.plusDays(duracionDias);
+
+        System.out.print("Observaciones (opcional, [ENTER] para ninguna): ");
+        observaciones = sc.nextLine();
+        if (observaciones == null) observaciones = "";
+        observaciones = observaciones.trim();
 
         Alquiler alq = new Alquiler(cliente, instrumento, fechaInicio, fechaFinPrevista, observaciones, EstadoPago.PENDIENTE);
 
@@ -239,7 +264,7 @@ public class ServiceAlquiler {
             String r = sc.nextLine().trim().toUpperCase();
             if (r.equals("S")) return true;
             if (r.equals("N")) return false;
-            System.out.println("Respuesta no vÃ¡lida. Usa S o N.");
+            System.out.println("Respuesta no valida. Usa S o N.");
         }
     }
 
@@ -298,7 +323,12 @@ public class ServiceAlquiler {
 
             boolean entraMantenimiento = leerSiNo(sc, " ¿Entra en mantenimiento?");
             if (entraMantenimiento) {
-                instrumentoCRUD.updateEstado(alquiler.getInstrumento().getId(), EstadoInstrumento.MANTENIMIENTO);
+                // Con stock por "unidades", el mantenimiento es por unidad.
+                // Solo marcamos el estado global como MANTENIMIENTO si ya no queda stock disponible.
+                Instrumento instrActual = instrumentoCRUD.listarInstrumentoPorId(alquiler.getInstrumento().getId());
+                if (instrActual != null && instrActual.getStockDisponible() <= 0) {
+                    instrumentoCRUD.updateEstado(alquiler.getInstrumento().getId(), EstadoInstrumento.MANTENIMIENTO);
+                }
             }
 
             alquiler.setObservaciones(
@@ -310,6 +340,13 @@ public class ServiceAlquiler {
 
             alquiler.recalcularImporteFinal();
             alquilerCrud.registrarDevolucion(alquiler, fechaReal);
+
+            // Reponer stock solo si NO entra en mantenimiento.
+            // Si entra en mantenimiento, se deja fuera de stock disponible hasta que se "recupere"
+            // (por ejemplo ajustando stock/estado desde el menu de instrumentos).
+            if (!entraMantenimiento) {
+                instrumentoCRUD.incrementarStockDisponible(alquiler.getInstrumento().getId());
+            }
         } catch (SQLException e) {
             errorHandler(e);
         }

@@ -122,7 +122,7 @@ public class Instrumento implements InAlquilable {
                 .append(", Modelo: ").append(getModelo())
                 .append(", Precio por dia: ").append(getPrecioDia()).append(", Stock total: ")
                 .append(getStockTotal()).append(", Stock disponible: ").append(getStockDisponible())
-                .append(", Categoria").append(getCategoria()).append(", Estado: ").append(getEstado());
+                .append(", Categoria: ").append(getCategoria()).append(", Estado: ").append(getEstado());
 
         return sb.toString();
     }

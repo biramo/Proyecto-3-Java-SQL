@@ -69,35 +69,4 @@ public class MenuPrincipal {
         vOpciones();
     }
 
-    /*
-    public static void sPrincipal(Scanner sc) throws InterruptedException {
-        int opcion;
-
-        System.out.println("Iniciando Menú...");
-        sleep(500);
-
-        do
-        { //Bucle DTCW(do-try-catch-while) para que el usuario pueda volver a introducir un valor, esta vez correcto, en vez de cerrarse el programa.
-            vMostrarMenu(sc);
-            opcion = sc.nextInt();
-            try {
-                switch (opcion) {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 0:
-                        System.out.println("Gracias por usar el programa!");
-                        System.exit(0);
-                    default:
-                        System.out.println("Valor Incorrecto.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Inserte un número entero válido");
-            }
-        } while (opcion != 0);
-    }
-     */
 }
