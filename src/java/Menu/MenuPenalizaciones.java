@@ -30,7 +30,7 @@ public class MenuPenalizaciones {
         System.out.println(estilo + "│                GESTIÓN DE PENALIZACIONES                │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
         System.out.println(estilo + "│  1. Listar Penalizaciones  |  2. Buscar por ID Alquiler │" + RESET);
-        System.out.println(estilo + "│  3. Buscar por ID Cliente  |                            │" + RESET);
+        System.out.println(estilo + "│  3. Buscar por DNI Cliente |                            │" + RESET);
         System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
         System.out.println(estilo + "│  0. Salir                                               │" + RESET);
         System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);

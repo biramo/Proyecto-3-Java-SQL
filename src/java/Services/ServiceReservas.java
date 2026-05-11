@@ -147,6 +147,19 @@ public class ServiceReservas {
         }
     }
 
+    public void vListarTodasReservas() {
+        ArrayList<Reserva> listaReservas;
+        try {
+            listaReservas = reservaCrud.listarTodasReservas();
+
+            for (Reserva r : listaReservas) {
+                MenuReservas.vMostrarTexto(r.mostrarReserva());
+            }
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
     // ------------ SWITCH PRINCIPAL ------------ //
     public void vLlamarFunciones(Scanner sc) {
         while (true) {
@@ -194,6 +207,12 @@ public class ServiceReservas {
                     if (idInstrConf != 0) {
                         vConfirmarReserva(idInstrConf, sc);
                     }
+                    MenuReservas.vEspera(sc);
+                    break;
+
+                case 5:
+                    //Muestra todas las reservas que existen
+                    vListarTodasReservas();
                     MenuReservas.vEspera(sc);
                     break;
 
