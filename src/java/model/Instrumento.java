@@ -4,7 +4,7 @@ import model.Enum.CategoriaInstrumento;
 import model.Enum.EstadoInstrumento;
 import model.Interfaces.InAlquilable;
 
-public class Instrumento implements InAlquilable {
+public class Instrumento implements InAlquilable, Comparable<Instrumento>, Cloneable {
     private int id;
     private String marca;
     private String modelo;
@@ -161,5 +161,16 @@ public class Instrumento implements InAlquilable {
 
     public void aumentarStock() {
         stockTotal++;
+    }
+
+    //Metodo comapreTo(), compara el stock total de dos instrumentos.
+    @Override
+    public int compareTo(Instrumento o) {
+        return Integer.compare(this.stockTotal, o.stockTotal);
+    }
+    //Motodo clone(), devuelve un objeto cuyos campos referencian al objeto original
+    @Override
+    protected Instrumento clone() throws CloneNotSupportedException {
+        return (Instrumento) super.clone();
     }
 }
