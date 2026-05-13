@@ -165,7 +165,7 @@ public class ServiceReservas {
 
             alquilerCrud.insertarAlquiler(alquiler);
             reserva.cancelarReserva(); // Cancela la reserva y reordena la cola
-            System.out.println("Alquiler creado y reserva eliminada de la lista de espera correctamente.");
+            //System.out.println("Alquiler creado y reserva eliminada de la lista de espera correctamente.");
 
         } catch (SQLException e) {
             errorHandler(e);

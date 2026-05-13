@@ -82,7 +82,7 @@ public class Reserva {
             //llamamos al crud para realizar el cancel
             ReservaCRUD reservaCRUD = new ReservaCRUD();
             reservaCRUD.cancelarReserva(this);
-            System.out.println("Reserva cancelada correctamente!");
+            //System.out.println("Reserva cancelada correctamente!");
         }
     }
 
