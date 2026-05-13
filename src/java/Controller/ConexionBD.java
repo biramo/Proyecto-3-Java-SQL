@@ -10,7 +10,7 @@ public class ConexionBD {
     private static final String URL = "jdbc:mysql://localhost:3306/dbAlquilerInstrumentos";
     //Credenciales
     private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "1234"; //root para todos, el rarito de mí usa 1234.
 
     public static Connection conexion() {
         try {
