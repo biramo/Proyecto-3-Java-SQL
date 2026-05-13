@@ -150,7 +150,7 @@ public class PenalizacionCRUD {
     private Penalizacion crearPenalizacionDesdeResultSet(ResultSet rs) throws SQLException {
         Penalizacion penalizacion = new Penalizacion(
                 rs.getString("motivo"),
-                rs.getString("descripción"),
+                rs.getString("descripcion"),
                 rs.getDouble("importe"),
                 TipoDesperfecto.valueOf(rs.getString("desperfecto"))
         );
