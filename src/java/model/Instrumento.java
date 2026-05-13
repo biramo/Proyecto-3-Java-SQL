@@ -170,7 +170,7 @@ public class Instrumento implements InAlquilable, Comparable<Instrumento>, Clone
     }
     //Motodo clone(), devuelve un objeto cuyos campos referencian al objeto original
     @Override
-    protected Instrumento clone() throws CloneNotSupportedException {
+    public Instrumento clone() throws CloneNotSupportedException {
         return (Instrumento) super.clone();
     }
 }
