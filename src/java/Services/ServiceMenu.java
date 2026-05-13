@@ -85,6 +85,8 @@ public class ServiceMenu {
                     System.out.println("Resultado del compareto(): " + i1.compareTo(i2));
                     System.out.println("Resultado del clone() (i1.clone()):");
                     System.out.println(i1.clone());
+                    MenuPrincipal.vEspera(sc);
+                    break;
                 case 0:
                     // Salir del sistema
                     System.out.println("Gracias por usar el programa!");
