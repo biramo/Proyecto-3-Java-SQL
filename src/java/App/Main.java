@@ -11,6 +11,5 @@ public class Main {
         if (AccesoAdministrador.validador(sc)){
             new ServiceMenu().initService(sc);
         }
-
     }
 }

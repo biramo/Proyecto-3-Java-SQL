@@ -77,7 +77,7 @@ public class Validacion {
         }
 
         while (!(comprobador.matches(regexTelefono))) {
-            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el email ej: +34123456789: ");
+            mostrarError(" [!] '" + comprobador + "' no es una opción válida para el teléfono ej: +34123456789: ");
             comprobador = entrada.nextLine().trim();
         }
 
