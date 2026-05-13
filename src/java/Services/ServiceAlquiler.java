@@ -13,7 +13,6 @@ import model.Enum.TipoDesperfecto;
 import model.Instrumento;
 import model.Penalizacion;
 
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -40,7 +39,7 @@ public class ServiceAlquiler {
     }
 
     //Funcion para pedir datos necesarios para el insert y update
-    private Alquiler pedirDatosComunes(Scanner sc) {
+    private Alquiler pedirDatosComunes(Scanner sc, boolean permitirNuevoCliente, boolean validarDisponibilidadStock) {
         Cliente cliente = null;
         Instrumento instrumento = null;
         int idInstrumento;
@@ -48,15 +47,21 @@ public class ServiceAlquiler {
         String observaciones, dni;
         int duracionDias;
 
-        System.out.println("El cliente es nuevo?(s/n): ");
-        boolean nuevo = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
-        if (nuevo) {
-            cliente = nuevoCliente(sc);
-            dni = cliente != null ? cliente.getDni() : "0";
+        if (permitirNuevoCliente) {
+            System.out.println("El cliente es nuevo?(s/n): ");
+            boolean nuevo = (sc.nextLine().toUpperCase().equals("S")) ? true : false;
+            if (nuevo) {
+                cliente = nuevoCliente(sc);
+                dni = cliente != null ? cliente.getDni() : "0";
+            } else {
+                System.out.print("DNI del cliente o 0 para salir del proceso: ");
+                dni = Validacion.validadorDni(sc);
+            }
         } else {
-            System.out.print("DNI del cliente o 0 para salir del proceso: ");
+            System.out.print("DNI del cliente existente o 0 para salir del proceso: ");
             dni = Validacion.validadorDni(sc);
         }
+
         if (dni.equals("0")) {
             return null;
         }
@@ -78,14 +83,18 @@ public class ServiceAlquiler {
         }
 
         // Validacion de disponibilidad antes de pedir mas datos.
-        // (En BD tambien se valida de forma atomica al insertar el alquiler.)
-        if (instrumento.getEstado() == EstadoInstrumento.MANTENIMIENTO) {
-            System.out.println("El instrumento esta en mantenimiento y no se puede alquilar.");
-            return null;
-        }
-        if (instrumento.getStockDisponible() <= 0) {
-            System.out.println("El instrumento no tiene stock disponible. Puedes crear una reserva desde el menu de Reservas.");
-            return null;
+        // (En BD tambien se valida al insertar el alquiler.)
+        // En update no lo validamos porque puede estar modificando un alquiler ya existente
+        // cuyo instrumento tiene stock 0 precisamente porque ya está alquilado.
+        if (validarDisponibilidadStock) {
+            if (instrumento.getEstado() == EstadoInstrumento.MANTENIMIENTO) {
+                System.out.println("El instrumento esta en mantenimiento y no se puede alquilar.");
+                return null;
+            }
+            if (instrumento.getStockDisponible() <= 0) {
+                System.out.println("El instrumento no tiene stock disponible. Puedes crear una reserva desde el menu de Reservas.");
+                return null;
+            }
         }
 
         // A partir de aqui, ya sabemos que el instrumento es alquilable a nivel UI.
@@ -112,7 +121,7 @@ public class ServiceAlquiler {
 
     //Crea nuevo cliente sin id, usado en el insert
     public Alquiler crearNuevoAlquilerSinId(Scanner sc) {
-        return pedirDatosComunes(sc);
+        return pedirDatosComunes(sc, true, true);
     }
 
     //Crea nuevo cliente con id, usado en el update
@@ -120,7 +129,7 @@ public class ServiceAlquiler {
         System.out.println("Introduce el id del alquiler existente: ");
         int id = Validacion.validadorInt(sc);
 
-        Alquiler alquiler = pedirDatosComunes(sc);
+        Alquiler alquiler = pedirDatosComunes(sc, false, false);
         if (alquiler != null) {
             alquiler.setId(id);
         }
@@ -233,7 +242,7 @@ public class ServiceAlquiler {
     // ------------ ALQUILER CON NUEVO CLIENTE -------- //
 
     public Cliente nuevoCliente(Scanner sc) {
-            Cliente cliente = serviceClientes.pedirDatosCliente(sc);
+        Cliente cliente = serviceClientes.pedirDatosCliente(sc);
         if (cliente != null) {
             serviceClientes.vInsertarNuevoCliente(cliente);
         }
