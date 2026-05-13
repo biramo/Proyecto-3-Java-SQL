@@ -80,8 +80,8 @@ public class ServiceMenu {
                     // compareto() y clone()
                     Instrumento i1 = new Instrumento(10,"yamaha", "p145", 50, 40, 30, OTRO, DISPONIBLE);
                     Instrumento i2 = new Instrumento(11,"yamaha", "C40", 50, 50, 36, GUITARRA, DISPONIBLE);
-                    System.out.println(i1);
-                    System.out.println(i2);
+                    System.out.println("Instrumento 1: " + i1);
+                    System.out.println("Instrumento 2: " + i2);
                     System.out.println("Resultado del compareto(): " + i1.compareTo(i2));
                     System.out.println("Resultado del clone() (i1.clone()):");
                     System.out.println(i1.clone());
