@@ -12,6 +12,7 @@ public class ControlErrores {
         System.out.println(ROJO + texto + RESET);
     }
 
+
     public static void errorHandler(SQLException e) {
 
         if (e instanceof SQLIntegrityConstraintViolationException) {
