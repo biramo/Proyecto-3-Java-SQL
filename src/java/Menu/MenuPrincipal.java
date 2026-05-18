@@ -44,10 +44,10 @@ public class MenuPrincipal {
         System.out.println(estilo + "├────────────────────────────────────────────────────🎻────┤" + RESET);
         System.out.println(estilo + "│  1. 🎸 Menú Instrumentos  |  2. 👥 Menú Clientes         │" + RESET);
         System.out.println(estilo + "│  3. 📝 Menú Reservas      |  4. 🤝 Menú Alquiler         │" + RESET);
-        System.out.println(estilo + "│  5. 🔄 Menú Devolución    |  6. ⚠️ Menú Penalización     │" + RESET);
+        System.out.println(estilo + "│  5. 🔄 Menú Devolución    |  6. ⚠️ Menú Penalización      │" + RESET);
         System.out.println(estilo + "│  7. ⚙️ Métodos CopareTo/Clone                            │" + RESET);
         System.out.println(estilo + "├─🎸───────────────────────────────────────────────────────┤" + RESET);
-        System.out.println(estilo + "│  0. ❌ Salir del Sistema                                 │" + RESET);
+        System.out.println(estilo + "│  0. ❌ Salir del Sistema                                  │" + RESET);
         System.out.println(estilo + "└────────────────────────────────────────────────────🎻────┘" + RESET);
         System.out.print("Seleccione una opción: "); // Sin estilo de fondo para la entrada del usuario
     }
