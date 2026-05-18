@@ -1,0 +1,261 @@
+package Services;
+
+import Controller.AlquilerCRUD;
+import Controller.ClienteCRUD;
+import Controller.InstrumentoCRUD;
+import Controller.ReservaCRUD;
+import Funciones.Validacion;
+import Menu.MenuReservas;
+import model.Alquiler;
+import model.Cliente;
+import model.Enum.EstadoPago;
+import model.Instrumento;
+import model.Reserva;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+import static Funciones.ControlErrores.errorHandler;
+
+public class ServiceReservas {
+    private static final ReservaCRUD reservaCrud = new ReservaCRUD();
+    private static final ClienteCRUD clienteCrud = new ClienteCRUD();
+    private static final InstrumentoCRUD instrumentoCrud = new InstrumentoCRUD();
+    private static final AlquilerCRUD alquilerCrud = new AlquilerCRUD();
+
+    // Muestra el menú y devuelve la opción elegida por el usuario
+    public int intMostrarMenu(Scanner sc) {
+        MenuReservas.vMostrarMenu();
+        return Validacion.validadorInt(sc);
+    }
+
+    // Pide los datos mínimos para crear una reserva: cliente, instrumento y fecha
+    private Reserva pedirDatosReserva(Scanner sc) {
+        Cliente cliente = null;
+        Instrumento instrumento = null;
+
+        System.out.print("DNI del cliente o 0 para salir del proceso: ");
+        String dni = Validacion.validadorDni(sc);
+        if (dni.equals("0")) {
+            return null;
+        }
+
+        System.out.print("ID del instrumento: ");
+        int idInstrumento = Validacion.validadorInt(sc);
+        LocalDate fechaReserva = Validacion.validadorFecha(sc, "Fecha de reserva (yyyy-mm-dd) o [ENTER] para usar la fecha de hoy: ", true);
+
+        try {
+            cliente = clienteCrud.listarClientePorDni(dni);
+            instrumento = instrumentoCrud.listarInstrumentoPorId(idInstrumento);
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+
+        if (cliente == null || instrumento == null) {
+            System.out.println("¡ERROR! Cliente o instrumento no encontrados. Operación cancelada.");
+            return null;
+        }
+
+        return new Reserva(cliente, instrumento, fechaReserva);
+    }
+
+    // ------------ MÉTODOS CRUD ------------ //
+
+    // ------------ INSERTAR RESERVA ------------ //
+    public void vInsertarReserva(Reserva reserva) {
+        try {
+            reservaCrud.insertarReserva(reserva);
+            System.out.println("Reserva creada correctamente. Posición en lista de espera: " + reserva.getPosicionListaEspera());
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+    // ------------ MOSTRAR LISTA DE ESPERA POR INSTRUMENTO ------------ //
+    public void vMostrarListaEspera(int idInstrumento) {
+        try {
+            ArrayList<Reserva> lista = reservaCrud.listarReservasActivasPorInstrumento(idInstrumento);
+            if (lista.isEmpty()) {
+                System.out.println("No hay reservas activas para este instrumento.");
+                return;
+            }
+            Iterator<Reserva> it = lista.iterator();
+            while (it.hasNext()) {
+                MenuReservas.vMostrarTexto(it.next().mostrarReserva());
+
+            }
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+    // ------------ CANCELAR RESERVA ------------ //
+    public void vCancelarReserva(int id) {
+        try {
+            Reserva reserva = reservaCrud.listarReservaPorId(id);
+            if (reserva == null) {
+                System.out.println("No se encontró ninguna reserva con ID: " + id);
+                return;
+            }
+            // cancelarReserva() ya se encarga de reordenar la cola internamente
+            reserva.cancelarReserva();
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+    // ------------ CONFIRMAR RESERVA ------------ //
+    // Cuando el instrumento vuelve a tener stock, coge al primero de la lista de espera,
+    // crea un alquiler para él y cancela su reserva liberando su posición en la cola.
+    public void vConfirmarReserva(int idInstrumento, Scanner sc) {
+        try {
+            ArrayList<Reserva> lista = reservaCrud.listarReservasActivasPorInstrumento(idInstrumento);
+            if (lista.isEmpty()) {
+                System.out.println("No hay reservas activas para el instrumento con ID: " + idInstrumento);
+                return;
+            }
+
+            Reserva reserva = lista.get(0); // El primero lleva más tiempo esperando
+            MenuReservas.vMostrarTexto("Confirmando reserva para: " + reserva.mostrarReserva());
+
+            // Comprobacion rapida de disponibilidad antes de confirmar.
+            // La validacion definitiva se hace en BD dentro de AlquilerCRUD.insertarAlquiler(...) (operacion atomica).
+            Instrumento instrActual = instrumentoCrud.listarInstrumentoPorId(idInstrumento);
+            if (instrActual == null) {
+                System.out.println("No se encontro el instrumento con ID: " + idInstrumento);
+                return;
+            }
+            if (instrActual.getEstado() == model.Enum.EstadoInstrumento.MANTENIMIENTO) {
+                System.out.println("El instrumento esta en mantenimiento. No se puede confirmar la reserva ahora.");
+                return;
+            }
+            if (instrActual.getStockDisponible() <= 0) {
+                System.out.println("El instrumento sigue sin stock disponible. No se puede confirmar la reserva ahora.");
+                return;
+            }
+
+            // Igual que en el alta de alquiler: el alquiler siempre empieza hoy.
+            LocalDate fechaInicio = LocalDate.now();
+
+            System.out.print("Duracion del alquiler en dias (>= 1): ");
+            int duracionDias = Validacion.validadorInt(sc);
+            while (duracionDias < 1) {
+                System.out.print("Duracion del alquiler en dias (>= 1): ");
+                duracionDias = Validacion.validadorInt(sc);
+            }
+
+            LocalDate fechaFinPrevista = fechaInicio.plusDays(duracionDias);
+
+            System.out.print("Observaciones (opcional, [ENTER] para ninguna): ");
+            String observaciones = sc.nextLine();
+            if (observaciones == null) observaciones = "";
+            observaciones = observaciones.trim();
+
+            Alquiler alquiler = new Alquiler(
+                    reserva.getCliente(),
+                    reserva.getInstrumento(),
+                    fechaInicio,
+                    fechaFinPrevista,
+                    observaciones,
+                    EstadoPago.PENDIENTE
+            );
+
+            alquilerCrud.insertarAlquiler(alquiler);
+            reserva.cancelarReserva(); // Cancela la reserva y reordena la cola
+            //System.out.println("Alquiler creado y reserva eliminada de la lista de espera correctamente.");
+
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+    public void vListarTodasReservas() {
+        ArrayList<Reserva> listaReservas;
+        try {
+            listaReservas = reservaCrud.listarTodasReservas();
+
+            for (Reserva r : listaReservas) {
+                MenuReservas.vMostrarTexto(r.mostrarReserva());
+            }
+        } catch (SQLException e) {
+            errorHandler(e);
+        }
+    }
+
+    // ------------ SWITCH PRINCIPAL ------------ //
+    public void vLlamarFunciones(Scanner sc) {
+        while (true) {
+            int opcion = intMostrarMenu(sc);
+            switch (opcion) {
+
+                case 1:
+                    // Crea una nueva reserva en la lista de espera para un cliente e instrumento.
+                    // La posición en la cola se calcula automáticamente según las reservas activas existentes.
+                    System.out.println("|| --- REGISTRO PARA NUEVA RESERVA --- ||");
+                    Reserva reserva = pedirDatosReserva(sc);
+                    if (reserva != null) {
+                        vInsertarReserva(reserva);
+                    }
+                    MenuReservas.vEspera(sc);
+                    break;
+
+                case 2:
+                    // Muestra todas las reservas activas de un instrumento ordenadas por posición,
+                    // es decir, la lista de espera completa de ese instrumento.
+                    System.out.println("|| --- LISTA DE ESPERA POR INSTRUMENTO --- ||");
+                    System.out.print("ID del instrumento (0 para salir del proceso): ");
+                    int idInstr = Validacion.validadorInt(sc);
+                    if (idInstr != 0) {
+                        vMostrarListaEspera(idInstr);
+                    }
+                    MenuReservas.vEspera(sc);
+                    break;
+
+                case 3:
+                    // Cancela una reserva existente por su ID.
+                    // Las posiciones de los que estaban por detrás en la cola se reajustan automáticamente.
+                    System.out.println("|| --- CANCELACIÓN DE RESERVA EXISTENTE --- ||");
+                    System.out.print("Introduce el ID (0 para salir del proceso): ");
+                    int idReserva = Validacion.validadorInt(sc);
+                    if (idReserva != 0) {
+                        vCancelarReserva(idReserva);
+                    }
+                    MenuReservas.vEspera(sc);
+                    break;
+
+                case 4:
+                    // Confirma la primera reserva de la lista de espera de un instrumento
+                    // creando el alquiler correspondiente y eliminando la reserva de la cola.
+                    // Se usa cuando el instrumento vuelve a estar disponible.
+                    System.out.println("|| --- CONFIRMACIÓN DE RESERVA Y ACTIVACIÓN DEL ALQUILER --- ||");
+                    System.out.print("ID del instrumento disponible (0 para salir del proceso): ");
+                    int idInstrConf = Validacion.validadorInt(sc);
+                    if (idInstrConf != 0) {
+                        vConfirmarReserva(idInstrConf, sc);
+                    }
+                    MenuReservas.vEspera(sc);
+                    break;
+
+                case 5:
+                    //Muestra todas las reservas que existen
+                    vListarTodasReservas();
+                    MenuReservas.vEspera(sc);
+                    break;
+
+                case 0:
+                    // Sale del menú de reservas y vuelve al menú principal.
+                    System.out.println("Saliendo del menú de reservas...");
+                    MenuReservas.vEspera(sc);
+                    return;
+
+                default:
+                    System.out.println("Opción no válida.");
+                    MenuReservas.vEspera(sc);
+                    break;
+            }
+        }
+    }
+}

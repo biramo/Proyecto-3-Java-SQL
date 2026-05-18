@@ -1,4 +1,10 @@
 package model.Enum;
 
-public class CategoriaInstrumento {
+public enum CategoriaInstrumento {
+    GUITARRA,
+    TECLADO,
+    BATERIA,
+    VIOLIN,
+    BAJO,
+    OTRO
 }

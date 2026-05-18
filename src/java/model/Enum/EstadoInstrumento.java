@@ -1,4 +1,7 @@
 package model.Enum;
 
-public class EstadoInstrumento {
+public enum EstadoInstrumento {
+    DISPONIBLE,
+    SIN_STOCK,
+    MANTENIMIENTO
 }

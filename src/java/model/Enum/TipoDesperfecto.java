@@ -1,4 +1,8 @@
 package model.Enum;
 
-public class TipoDesperfecto {
+public enum TipoDesperfecto {
+    NINGUNO,
+    LEVE,
+    MODERADO,
+    GRAVE
 }

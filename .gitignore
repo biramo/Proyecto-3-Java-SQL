@@ -2,10 +2,17 @@
 .idea/
 *.iml
 out/
+*.class
 
-# Permitir código fuente
-!src/
-!src/**
+# Archivos auxiliares
+sources.txt
+AGENT.md
+
+# Ignorar conexión a base de datos / credenciales
+src/java/Controller/ConexionBD.java
+src/java/Controller/ConexionBD
+.env
+src/.env
 
 # Permitir archivos útiles del proyecto
 !.gitignore

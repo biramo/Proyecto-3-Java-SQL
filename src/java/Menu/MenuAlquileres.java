@@ -1,4 +1,71 @@
 package Menu;
 
+import java.util.Scanner;
+
 public class MenuAlquileres {
+    /*
+    MenuAlquileres
+    Opciones:
+    1- Mostrar todos
+    2- Buscar por ID
+    3- Buscar alquiler por cliente
+    4- Buscar alquiler por instrumento
+    5- Insertar nuevo
+    6- Modificar
+    7- Cancelar (soft delete)
+    8- Ver alquileres activos
+    9- Registrar Devolución
+    10- Marcar como pagado
+    0- Salir
+    */
+    //Reset
+    private static final String RESET = "\u001B[0m";
+
+    //Color
+    private static final String CIAN_B = "\u001B[96m";
+
+    //Color de fondo
+    private static final String FONDO_GRIS = "\u001B[48;5;236m";  // Un gris oscuro profundo
+
+    //Color de los textos
+    private static final String TEXTO_BLANCO = "\u001B[97m";
+
+    public static void vOpciones() {
+        String estilo = CIAN_B + FONDO_GRIS;
+        System.out.println(estilo + "┌─────────────────────────────────────────────────────────┐" + RESET);
+        System.out.println(estilo + "│                GESTIÓN DE ALQUILERES                    │" + RESET);
+        System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
+        System.out.println(estilo + "│  1. Mostrar todos        |  6. Modificar registro       │" + RESET);
+        System.out.println(estilo + "│  2. Buscar por ID        |  7. Cancelar alquiler        │" + RESET);
+        System.out.println(estilo + "│  3. Por Cliente          |  8. Activos (Sin devolver)   │" + RESET);
+        System.out.println(estilo + "│  4. Por Instrumento      |  9. Registrar Devolución     │" + RESET);
+        System.out.println(estilo + "│  5. Insertar nuevo       | 10. Marcar como pagado       │" + RESET);
+        System.out.println(estilo + "├─────────────────────────────────────────────────────────┤" + RESET);
+        System.out.println(estilo + "│  0. Salir                                               │" + RESET);
+        System.out.println(estilo + "└─────────────────────────────────────────────────────────┘" + RESET);
+        System.out.print("Seleccione una opción: ");
+    }
+
+
+    public static void vLimpiarConsola() {
+        // Código ANSI: \033[H (mueve el cursor al inicio) \033[2J (limpia la pantalla)
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    public static void vMostrarMenu() {
+        vLimpiarConsola();
+        vOpciones();
+
+    }
+
+    public static void vEspera(Scanner sc) {
+        System.out.println("PRESIONA [ENTER] para continuar...");
+        sc.nextLine();
+    }
+
+    public static void vMostrarTexto(String texto) {
+        System.out.println(TEXTO_BLANCO + texto + RESET);
+    }
+
 }
